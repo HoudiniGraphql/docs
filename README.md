@@ -1,2 +1,3 @@
-# docs
-The documentation site for houdini
+# Docs
+
+Houdini docs
