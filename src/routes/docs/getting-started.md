@@ -21,12 +21,19 @@ Adding houdini to an existing project can easily be done with the provided comma
 npx houdini init
 ```
 
-This will send a request to your API to download your schema definition. If you need
+This will send a request to your API to download your schema definition.
+
+If you need
 headers to authenticate this request, you can pass them in with the `--pull-header`
 flag (abbreviated `-ph`). For example,
-`npx houdini init -ph Authorization="Bearer MyToken"`.
+
+```sh
+npx houdini init -ph Authorization="Bearer MyToken"
+```
+
 You will also need to provide the same flag to `generate` when using the
 `--pull-schema` flag.
+
 Finally, follow the steps appropriate for your framework.
 
 ## SvelteKit
@@ -54,8 +61,9 @@ import houdini from 'houdini-preprocess'
 And finally, we need to configure our application to use the generated network layer. To do this, add the following block of code to `src/routes/__layout.svelte`:
 
 ```typescript
-<script context="module">
-	import env from '../environment'; import {setEnvironment} from '$houdini'; setEnvironment(env);
+<script context='module'>
+	import env from '../environment'; import {setEnvironment} from '$houdini';
+	setEnvironment(env);
 </script>
 ```
 
@@ -70,7 +78,7 @@ your application into a static site), you will need to set the `static` value in
 You'll need to add the preprocessor to both your client and your server configuration:
 
 ```typescript
-import houdini from 'houdini-preprocess'
+import houdini from 'houdini-preprocess';
 
 // add to both server and client configurations
 {
@@ -78,7 +86,7 @@ import houdini from 'houdini-preprocess'
 		svelte({
 			preprocess: [houdini()],
 		}),
-	]
+	];
 }
 ```
 
@@ -87,10 +95,10 @@ With that in place, the only thing left to configure your Sapper application is 
 ```typescript
 // in both src/client.js and src/server.js
 
-import { setEnvironment } from '$houdini'
-import env from './environment'
+import { setEnvironment } from '$houdini';
+import env from './environment';
 
-setEnvironment(env)
+setEnvironment(env);
 ```
 
 ### Svelte
@@ -106,7 +114,7 @@ use `this.error` to return an error and handle the redirect in a way that's appr
 ## Running the Compiler
 
 The compiler is responsible for a number of things, ranging from generating the actual runtime
-to creating types for your documents. Running the compiler can be done with npx or via a script
+to creating types for your documents. Running the compiler can be done with `npx` or via a script
 in `package.json` and needs to be run every time a GraphQL document in your source code changes:
 
 ```sh

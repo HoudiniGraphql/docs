@@ -7,6 +7,18 @@
 	const pages = [
 		{ name: 'Introduction', href: '/docs' },
 		{ name: 'Getting Started', href: '/docs/getting-started' },
+		{ name: 'Queries', href: '/docs/queries' },
+		{ name: 'Fragments', href: '/docs/fragments' },
+		{ name: 'Mutations', href: '/docs/mutations' },
+		{ name: 'Subscriptions', href: '/docs/subscriptions' },
+		{ name: 'Pagination', href: '/docs/pagination' },
+		{ name: 'Custom Scalars', href: '/docs/custom-scalars' },
+		{ name: 'Authentication', href: '/docs/authentication' },
+		{ name: 'Persisted Queries', href: '/docs/persisted-queries' },
+		{
+			name: 'Notes, Constraints, and Conventions',
+			href: '/docs/notes-constraints-conventions',
+		},
 	];
 
 	const otherPages = [{ name: 'Contributing', href: '/docs/contributing' }];
