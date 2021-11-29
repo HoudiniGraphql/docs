@@ -11,14 +11,13 @@
 		"preview": "svelte-kit preview",
 		"check": "svelte-check",
 		"check:watch": "svelte-check --watch",
-		"cache-search": "node src/cache/script.js",
-		"prepare": "husky install"
+		"cache-search": "node src/cache/script.js"
 	},
 	"devDependencies": {
 		"@sveltejs/adapter-static": "^1.0.0-next.21",
 		"@sveltejs/kit": "next",
 		"github-slugger": "^1.4.0",
-		"husky": "^7.0.0",
+		"husky": "^4.2.5",
 		"mdsvex": "^0.9.8",
 		"rehype-autolink-headings": "^6.1.0",
 		"rehype-slug": "^5.0.0",
