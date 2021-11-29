@@ -23,3 +23,5 @@ yarn-error.log
 
 /playground.js
 .svelte-kit
+
+.husky

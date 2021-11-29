@@ -1,4 +1,5 @@
 import preprocess from 'svelte-preprocess';
+import adapter from '@sveltejs/adapter-static';
 import path from 'path';
 import { mdsvex } from 'mdsvex';
 import rehypeSlug from 'rehype-slug';
@@ -33,6 +34,8 @@ export default {
 	],
 
 	kit: {
+		router: false,
+		adapter: adapter(),
 		// hydrate the <div id="svelte"> element in src/app.html
 		target: '#svelte',
 		vite: {

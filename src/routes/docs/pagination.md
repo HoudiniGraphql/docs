@@ -5,7 +5,7 @@ description: How to pagination in Houdini Graphql
 
 # ♻️&nbsp;Pagination
 
-Pagination in Houdini follows the [connection](https://relay.dev/graphql/connections.htm).
+Pagination in Houdini follows the [connection standard](https://relay.dev/graphql/connections.htm).
 
 It's often the case that you want to avoid querying an entire list from your API in order
 to minimize the amount of data transfers over the network. To support this, GraphQL APIs will
