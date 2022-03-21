@@ -1,6 +1,6 @@
 <script>
 	import { page, navigating } from '$app/stores'
-	import { Icon, SEO } from '~/components'
+	import { Icon, SEO, SearchInput } from '~/components'
 	import { onMount } from 'svelte'
 	import throttle from 'lodash/throttle.js'
 
@@ -126,6 +126,7 @@
 				{/each}
 			</nav>
 		</div>
+		<SearchInput />
 		<div class:hidden={!menuOpen} role="list">
 			{#each currentFiles as file}
 				<a
