@@ -1,13 +1,43 @@
 <script>
-	import { Icon } from '.'
+	import { onMount } from 'svelte'
+	import { Icon, SearchDialog } from '.'
+
+	let open = false
+
+	export let setOpen
+
+	let modifier = 'Ctrl'
+
+	onMount(() => {
+		// check the current platform to fix the search modifier
+		if (navigator.platform === 'MacIntel') {
+			modifier = '⌘'
+		}
+	})
 </script>
 
-<button class="container">
+<svelte:window
+	on:keydown={(e) => {
+		// if the user pressed ctrl+k, open the search dialog
+		if (e.key === 'k' && (navigator.platform === 'MacIntel' ? e.metaKey : e.ctrlKey)) {
+			e.preventDefault()
+			setOpen((open) => !open)
+		}
+
+		if (e.code === 'Escape') {
+			setOpen(() => false)
+		}
+	}}
+/>
+
+<button class="container" on:click={() => setOpen(true)}>
 	<div class="column">
 		<Icon name="search" strokeWidth="3px" />
-		<span> Search </span>
+		<span>Search</span>
 	</div>
-	<span class="column" aria-hidden="true"> Ctrl + K </span>
+	<span class="column" aria-hidden="true">
+		{modifier} + K
+	</span>
 </button>
 
 <style>
@@ -27,6 +57,7 @@
 		background: none;
 		cursor: pointer;
 		font-family: 'Hind', sans-serif;
+		outline: none;
 	}
 
 	span {
@@ -41,7 +72,8 @@
 		align-items: center;
 	}
 
-	button:hover {
+	button:hover,
+	button:focus {
 		color: #7e90ac;
 		border-color: #7e90ac;
 	}

@@ -1,8 +1,9 @@
 <script>
 	import { page, navigating } from '$app/stores'
-	import { Icon, SEO, SearchInput } from '~/components'
+	import { Icon, SEO, SearchInput, SearchDialog } from '~/components'
 	import { onMount } from 'svelte'
 	import throttle from 'lodash/throttle.js'
+	import { browser } from '$app/env'
 
 	export let title = ''
 	export let link = ''
@@ -50,6 +51,18 @@
 	$: previous = currentFiles[index]?.previous
 	$: next = currentFiles[index]?.next
 
+	let searching = false
+	// when the searching state toggles on the browser, hide the body's scroll
+	$: {
+		if (browser && searching) {
+			document.body.style.overflowY = 'hidden'
+		}
+
+		if (browser && !searching) {
+			document.body.style.overflowY = 'auto'
+		}
+	}
+
 	function highlightSubsection() {
 		// reset the category
 		let value = null
@@ -86,8 +99,12 @@
 
 <SEO {title} url={`https://www.houdinigraphql.com${link}`} {description} />
 
+{#if searching}
+	<SearchDialog />
+{/if}
+
 <main>
-	<aside class:open={menuOpen}>
+	<aside class:open={menuOpen} class:blur={searching}>
 		<div class="aside-head">
 			<h1>
 				<buton
@@ -126,7 +143,7 @@
 				{/each}
 			</nav>
 		</div>
-		<SearchInput />
+		<SearchInput setOpen={(val) => (searching = val(searching))} />
 		<div class:hidden={!menuOpen} role="list">
 			{#each currentFiles as file}
 				<a
@@ -155,10 +172,10 @@
 		</div>
 	</aside>
 
-	<article id="doc-content">
+	<article id="doc-content" class:blur={searching}>
 		<slot />
 	</article>
-	<footer>
+	<footer class:blur={searching}>
 		{#if previous}
 			<a id="previous-page" class="pagination" href={previous.slug} sveltekit:prefetch>
 				<Icon name="chevron-left" class="icon" width="20px" height="20px" />
@@ -404,6 +421,14 @@
 
 	.pagination p {
 		color: #ff3e00;
+	}
+
+	.blur {
+		filter: blur(10px);
+		-o-filter: blur(10px);
+		-ms-filter: blur(10px);
+		-moz-filter: blur(10px);
+		-webkit-filter: blur(10px);
 	}
 
 	@media (max-width: 1000px) {
