@@ -2,8 +2,6 @@
 	import { onMount } from 'svelte'
 	import { Icon, SearchDialog } from '.'
 
-	let open = false
-
 	export let setOpen
 
 	let modifier = 'Ctrl'
@@ -16,21 +14,7 @@
 	})
 </script>
 
-<svelte:window
-	on:keydown={(e) => {
-		// if the user pressed ctrl+k, open the search dialog
-		if (e.key === 'k' && (navigator.platform === 'MacIntel' ? e.metaKey : e.ctrlKey)) {
-			e.preventDefault()
-			setOpen((open) => !open)
-		}
-
-		if (e.code === 'Escape') {
-			setOpen(() => false)
-		}
-	}}
-/>
-
-<button class="container" on:click={() => setOpen(true)}>
+<button class={`container ${$$props.class}`} on:click={() => setOpen(() => true)} id={$$props.id}>
 	<div class="column">
 		<Icon name="search" strokeWidth="3px" />
 		<span>Search</span>
@@ -49,7 +33,6 @@
 		display: flex;
 		flex-direction: row;
 		align-items: center;
-		margin-bottom: 1rem;
 		width: 80%;
 		font-size: 16px;
 		align-self: center;

@@ -99,9 +99,7 @@
 
 <SEO {title} url={`https://www.houdinigraphql.com${link}`} {description} />
 
-{#if searching}
-	<SearchDialog />
-{/if}
+<SearchDialog open={searching} setOpen={(val) => (searching = val(searching))} />
 
 <main>
 	<aside class:open={menuOpen} class:blur={searching}>
@@ -121,6 +119,7 @@
 					{/if}
 				</buton>
 				<a href="/">Houdini</a>
+				<SearchInput setOpen={(val) => (searching = val(searching))} id="nav-search-input" />
 			</h1>
 			<nav class:hidden={!menuOpen}>
 				{#each categoryNames as category}
@@ -143,7 +142,7 @@
 				{/each}
 			</nav>
 		</div>
-		<SearchInput setOpen={(val) => (searching = val(searching))} />
+		<SearchInput setOpen={(val) => (searching = val(searching))} id="left-nav-search-input" />
 		<div class:hidden={!menuOpen} role="list">
 			{#each currentFiles as file}
 				<a
@@ -233,7 +232,6 @@
 	}
 
 	:global(.menu-icon) {
-		margin-right: 15px;
 		display: none;
 	}
 
@@ -266,6 +264,7 @@
 		margin-bottom: 14px;
 		color: white;
 		height: 45px;
+		gap: 20px;
 	}
 
 	a,
@@ -431,6 +430,15 @@
 		-webkit-filter: blur(10px);
 	}
 
+	:global(#nav-search-input) {
+		margin-top: -5px;
+		display: none;
+	}
+
+	:global(#left-nav-search-input) {
+		margin-bottom: 1rem;
+	}
+
 	@media (max-width: 1000px) {
 		article,
 		footer {
@@ -472,6 +480,7 @@
 
 		h1 {
 			margin-left: 20px;
+			margin-right: 20px;
 		}
 
 		:global(.menu-icon) {
@@ -498,6 +507,14 @@
 		a.current {
 			border-top-right-radius: 0px !important;
 			border-bottom-right-radius: 0px !important;
+		}
+
+		:global(#left-nav-search-input) {
+			display: none;
+		}
+
+		:global(#nav-search-input) {
+			display: flex;
 		}
 	}
 
