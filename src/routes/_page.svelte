@@ -432,6 +432,7 @@
 	:global(#nav-search-input) {
 		margin-top: -5px;
 		display: none;
+		width: 60%;
 	}
 
 	:global(#left-nav-search-input) {

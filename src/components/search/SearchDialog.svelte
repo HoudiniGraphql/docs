@@ -4,11 +4,14 @@
 	import { Icon } from '~/components'
 
 	import { searching } from './stores'
+	import { trap, focusable_children } from './focus'
 
 	let results = []
 	let lookup = new Map()
 	let index
 	let query = ''
+
+	let container
 
 	onMount(async () => {
 		const response = await fetch('/_content')
@@ -29,7 +32,10 @@
 	})
 
 	function update() {
-		results = (index ? index.search(query) : []).map((href) => lookup.get(href))
+		const searchResult = (index ? index.search(query) : []).map((href) => lookup.get(href))
+
+		// update the component state
+		results = searchResult
 	}
 	function escape(text) {
 		return text.replace(/</g, '&lt;').replace(/>/g, '&gt;')
@@ -70,7 +76,27 @@
 
 {#if $searching}
 	<div class="container" on:click={() => ($searching = false)} id="search-dialog">
-		<div class="body" on:click={(e) => e.stopPropagation()}>
+		<div
+			class="body"
+			on:click={(e) => e.stopPropagation()}
+			bind:this={container}
+			use:trap
+			on:keydown={(e) => {
+				if (e.key === 'ArrowDown' || e.key === 'ArrowUp') {
+					e.preventDefault()
+					const group = focusable_children(e.currentTarget)
+
+					// when using arrow keys (as opposed to tab), don't focus buttons
+					const selector = 'a, input'
+
+					if (e.key === 'ArrowDown') {
+						group.next(selector)
+					} else {
+						group.prev(selector)
+					}
+				}
+			}}
+		>
 			<!-- svelte-ignore a11y-autofocus -->
 			<input
 				autofocus
@@ -78,12 +104,19 @@
 					query = e.target.value
 					update()
 				}}
+				on:keydown={(e) => {
+					if (e.key === 'Enter') {
+						if (results.length > 0) {
+							container.querySelector('a').click()
+						}
+					}
+				}}
 				value={query}
 				placeholder="Search"
 				aria-describedby="search-description"
 			/>
 			<Icon name="search" class="search-input-search-icon" stroke="#475365" />
-			<button on:click={() => ($searching = false)} class="close-button">
+			<button aria-label="Close" on:click={() => ($searching = false)} class="close-button">
 				<Icon name="x" class="search-input-close-icon" stroke="#475365" />
 			</button>
 
@@ -215,8 +248,10 @@
 		padding: 10px 15px;
 	}
 
-	a:hover {
+	a:hover,
+	a:focus {
 		background: #1b2129;
+		outline: none;
 	}
 
 	small {
@@ -235,6 +270,7 @@
 		color: white;
 		font-family: 'Hind', sans-serif;
 		font-size: 1rem;
+		line-height: 1.5rem;
 	}
 
 	:global(.breadcrumb-icon) {
