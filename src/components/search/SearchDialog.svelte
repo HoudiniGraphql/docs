@@ -3,8 +3,7 @@
 	import { onMount } from 'svelte'
 	import { Icon } from '~/components'
 
-	export let setOpen
-	export let open
+	import { searching } from './stores'
 
 	let results = []
 	let lookup = new Map()
@@ -56,24 +55,21 @@
 		close()
 	}
 	function close() {
-		setOpen(($searching) => {
-			if ($searching) {
-				const scroll = -parseInt(document.body.style.top || '0')
-				document.body.style.position = ''
-				document.body.style.top = ''
-				document.body.tabIndex = -1
-				document.body.focus()
-				document.body.removeAttribute('tabindex')
-				window.scrollTo(0, scroll)
-			}
-
-			return false
-		})
+		if ($searching) {
+			$searching = false
+			const scroll = -parseInt(document.body.style.top || '0')
+			document.body.style.position = ''
+			document.body.style.top = ''
+			document.body.tabIndex = -1
+			document.body.focus()
+			document.body.removeAttribute('tabindex')
+			window.scrollTo(0, scroll)
+		}
 	}
 </script>
 
-{#if open}
-	<div class="container" on:click={() => setOpen(() => false)} id="search-dialog">
+{#if $searching}
+	<div class="container" on:click={() => ($searching = false)} id="search-dialog">
 		<div class="body" on:click={(e) => e.stopPropagation()}>
 			<!-- svelte-ignore a11y-autofocus -->
 			<input
@@ -87,7 +83,7 @@
 				aria-describedby="search-description"
 			/>
 			<Icon name="search" class="search-input-search-icon" stroke="#475365" />
-			<button on:click={() => setOpen(() => false)} class="close-button">
+			<button on:click={() => ($searching = false)} class="close-button">
 				<Icon name="x" class="search-input-close-icon" stroke="#475365" />
 			</button>
 
@@ -125,11 +121,11 @@
 		// if the user pressed ctrl+k, open the search dialog
 		if (e.key === 'k' && (navigator.platform === 'MacIntel' ? e.metaKey : e.ctrlKey)) {
 			e.preventDefault()
-			setOpen((val) => !val)
+			$searching = !$searching
 		}
 
 		if (e.code === 'Escape') {
-			setOpen(() => false)
+			$searching = false
 		}
 	}}
 />

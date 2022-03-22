@@ -1,8 +1,7 @@
 <script>
 	import { onMount } from 'svelte'
-	import { Icon, SearchDialog } from '.'
-
-	export let setOpen
+	import { Icon } from '~/components'
+	import { searching } from './stores'
 
 	let modifier = 'Ctrl'
 
@@ -14,7 +13,7 @@
 	})
 </script>
 
-<button class={`container ${$$props.class}`} on:click={() => setOpen(() => true)} id={$$props.id}>
+<button class={`container ${$$props.class}`} on:click={() => ($searching = true)} id={$$props.id}>
 	<div class="column">
 		<Icon name="search" strokeWidth="3px" />
 		<span>Search</span>

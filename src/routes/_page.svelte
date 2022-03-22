@@ -1,6 +1,6 @@
 <script>
 	import { page, navigating } from '$app/stores'
-	import { Icon, SEO, SearchInput, SearchDialog } from '~/components'
+	import { Icon, SEO, SearchInput, SearchDialog, searching } from '~/components'
 	import { onMount } from 'svelte'
 	import throttle from 'lodash/throttle.js'
 	import { browser } from '$app/env'
@@ -51,10 +51,9 @@
 	$: previous = currentFiles[index]?.previous
 	$: next = currentFiles[index]?.next
 
-	let searching = false
 	// when the searching state toggles on the browser, hide the body's scroll
 	$: {
-		if (browser && searching) {
+		if (browser && $searching) {
 			document.body.style.overflowY = 'hidden'
 		}
 
@@ -99,10 +98,10 @@
 
 <SEO {title} url={`https://www.houdinigraphql.com${link}`} {description} />
 
-<SearchDialog open={searching} setOpen={(val) => (searching = val(searching))} />
+<SearchDialog />
 
 <main>
-	<aside class:open={menuOpen} class:blur={searching}>
+	<aside class:open={menuOpen} class:blur={$searching}>
 		<div class="aside-head">
 			<h1>
 				<buton
@@ -119,7 +118,7 @@
 					{/if}
 				</buton>
 				<a href="/">Houdini</a>
-				<SearchInput setOpen={(val) => (searching = val(searching))} id="nav-search-input" />
+				<SearchInput id="nav-search-input" />
 			</h1>
 			<nav class:hidden={!menuOpen}>
 				{#each categoryNames as category}
@@ -142,7 +141,7 @@
 				{/each}
 			</nav>
 		</div>
-		<SearchInput setOpen={(val) => (searching = val(searching))} id="left-nav-search-input" />
+		<SearchInput id="left-nav-search-input" />
 		<div class:hidden={!menuOpen} role="list">
 			{#each currentFiles as file}
 				<a
@@ -171,10 +170,10 @@
 		</div>
 	</aside>
 
-	<article id="doc-content" class:blur={searching}>
+	<article id="doc-content" class:blur={$searching}>
 		<slot />
 	</article>
-	<footer class:blur={searching}>
+	<footer class:blur={$searching}>
 		{#if previous}
 			<a id="previous-page" class="pagination" href={previous.slug} sveltekit:prefetch>
 				<Icon name="chevron-left" class="icon" width="20px" height="20px" />
