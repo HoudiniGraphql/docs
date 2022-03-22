@@ -43,6 +43,7 @@
 	},
 	"dependencies": {
 		"feather-icons": "^4.28.0",
+		"flexsearch": "^0.7.21",
 		"highlightjs-svelte": "^1.0.6",
 		"lodash": "^4.17.21",
 		"vite-plugin-replace": "^0.1.1"

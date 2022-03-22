@@ -16,6 +16,10 @@ export async function loadContent() {
 			(
 				await fs.readdir(routeDir)
 			).map(async (category) => {
+				if (category === 'intro') {
+					return []
+				}
+
 				const categoryDir = path.join(routeDir, category)
 				// if the path is not a directory, ignore it
 				if (!(await fs.lstat(categoryDir)).isDirectory()) {
@@ -47,7 +51,10 @@ export async function loadContent() {
 						// if we ran into a header and there is a content accumulator, add what we have to the list
 						if (tag.tagName.startsWith('H') && content) {
 							const passage = {
-								breadcrumb: breadcrumb.map((element) => element.text),
+								breadcrumb: [
+									category[0].toUpperCase() + category.slice(1),
+									...breadcrumb.map((element) => element.text)
+								],
 								content: content.replace(/\n/g, ' '),
 								href: `/${category}/${path.basename(file).split('.')[0]}`
 							}
@@ -87,6 +94,26 @@ export async function loadContent() {
 						if (tag.tagName === 'P') {
 							content += tag.text + ' '
 						}
+					}
+
+					if (content) {
+						const passage = {
+							breadcrumb: [
+								category[0].toUpperCase() + category.slice(1),
+								...breadcrumb.map((element) => element.text)
+							],
+							content: content.replace(/\n/g, ' '),
+							href: `/${category}/${path.basename(file).split('.')[0]}`
+						}
+
+						// if the content is nested under a header
+						if (breadcrumb.length > 1) {
+							passage.href += `#${breadcrumb[breadcrumb.length - 1].attributes.id}`
+						}
+
+						passages.push(passage)
+
+						content = ''
 					}
 				}
 

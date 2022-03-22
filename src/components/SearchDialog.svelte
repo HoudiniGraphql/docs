@@ -1,18 +1,121 @@
 <script>
+	import flexsearch from 'flexsearch'
+	import { onMount } from 'svelte'
 	import { Icon } from '~/components'
 
 	export let setOpen
 	export let open
+
+	let results = []
+	let lookup = new Map()
+	let index
+	let query = ''
+
+	onMount(async () => {
+		const response = await fetch('/_content')
+		index = new flexsearch.Index({
+			tokenize: 'forward'
+		})
+
+		for (const passage of await response.json()) {
+			const title = passage.breadcrumb[passage.breadcrumb.length - 1]
+			lookup.set(passage.href, {
+				title,
+				href: passage.href,
+				breadcrumbs: passage.breadcrumb.slice(0, -1),
+				content: passage.content
+			})
+			index.add(passage.href, `${title} ${passage.content}`)
+		}
+	})
+
+	function update() {
+		results = (index ? index.search(query) : []).map((href) => lookup.get(href))
+	}
+	function escape(text) {
+		return text.replace(/</g, '&lt;').replace(/>/g, '&gt;')
+	}
+	function excerpt(content, query) {
+		const index = content.toLowerCase().indexOf(query.toLowerCase())
+		if (index === -1) {
+			return content.slice(0, 100)
+		}
+		const prefix = index > 20 ? `…${content.slice(index - 15, index)}` : content.slice(0, index)
+		const suffix = content.slice(
+			index + query.length,
+			index + query.length + (80 - (prefix.length + query.length))
+		)
+		return (
+			escape(prefix) +
+			`<mark>${escape(content.slice(index, index + query.length))}</mark>` +
+			escape(suffix)
+		)
+	}
+
+	function navigate(href) {
+		close()
+	}
+	function close() {
+		setOpen(($searching) => {
+			if ($searching) {
+				const scroll = -parseInt(document.body.style.top || '0')
+				document.body.style.position = ''
+				document.body.style.top = ''
+				document.body.tabIndex = -1
+				document.body.focus()
+				document.body.removeAttribute('tabindex')
+				window.scrollTo(0, scroll)
+			}
+
+			return false
+		})
+	}
 </script>
 
 {#if open}
 	<div class="container" on:click={() => setOpen(() => false)} id="search-dialog">
 		<div class="body" on:click={(e) => e.stopPropagation()}>
-			<input autofocus />
+			<!-- svelte-ignore a11y-autofocus -->
+			<input
+				autofocus
+				on:input={(e) => {
+					query = e.target.value
+					update()
+				}}
+				value={query}
+				placeholder="Search"
+				aria-describedby="search-description"
+			/>
 			<Icon name="search" class="search-input-search-icon" stroke="#475365" />
 			<button on:click={() => setOpen(() => false)} class="close-button">
 				<Icon name="x" class="search-input-close-icon" stroke="#475365" />
 			</button>
+
+			<div class="results">
+				{#if results.length > 0}
+					<ul>
+						{#each results as result, i}
+							<!-- svelte-ignore a11y-mouse-events-have-key-events -->
+							<li>
+								<a on:click={() => navigate(result.href)} href={result.href}>
+									<small>
+										{#each result.breadcrumbs as value, i}
+											{value}
+											{#if i !== result.breadcrumbs.length - 1}
+												<Icon name="chevron-right" class="breadcrumb-icon" />
+											{/if}
+										{/each}
+									</small>
+									<strong>{@html excerpt(result.title, query)}</strong>
+									<span>{@html excerpt(result.content, query)}</span>
+								</a>
+							</li>
+						{/each}
+					</ul>
+				{:else}
+					<p class="info">No results</p>
+				{/if}
+			</div>
 		</div>
 	</div>
 {/if}
@@ -57,7 +160,7 @@
 
 		box-shadow: 0 5px 20px 20px rgba(22, 27, 34, 0.2);
 
-		min-height: 18.75rem;
+		color: white;
 	}
 
 	input {
@@ -73,6 +176,7 @@
 		font-size: 1rem;
 		line-height: 3.25rem;
 		color: #475365;
+		position: sticky;
 	}
 
 	:global(.search-input-search-icon) {
@@ -94,5 +198,62 @@
 	:global(.search-input-close-icon) {
 		width: 1.25rem !important;
 		height: 1.25rem !important;
+	}
+
+	ul {
+		display: flex;
+		flex-direction: column;
+		gap: 20px;
+		overflow-y: auto;
+		max-height: 450px;
+
+		margin-top: 20px;
+		padding-bottom: 30px;
+	}
+
+	a {
+		display: flex;
+		flex-direction: column;
+		text-decoration: none;
+		gap: 6px;
+		padding: 10px 15px;
+	}
+
+	a:hover {
+		background: #1b2129;
+	}
+
+	small {
+		font-size: 14px;
+		font-family: 'Hind', sans-serif;
+		color: #7687a0;
+	}
+
+	strong {
+		font-family: 'Hind', sans-serif;
+		font-size: 1rem;
+		color: white;
+	}
+
+	span {
+		color: white;
+		font-family: 'Hind', sans-serif;
+		font-size: 1rem;
+	}
+
+	:global(.breadcrumb-icon) {
+		margin-bottom: -3px;
+	}
+
+	:global(mark) {
+		background-color: rgb(71, 83, 101);
+		color: white;
+	}
+
+	p {
+		font-family: 'Hind', sans-serif;
+		color: white;
+		font-size: 1rem;
+		padding: 30px 15px;
 	}
 </style>
