@@ -117,25 +117,27 @@ Now that you've generated the necessary files, you should see a description of t
 
 <DeepDive title="What happened to load?">
 
-If you were looking carefully, you might have noticed that we didn't define a `load` function as described in the [SvelteKit docs](https://kit.svelte.dev/docs/loading). Don't worry - that's where the preprocessor comes in. One of its responsibilities is moving the actual fetch into a `load`. You can think of the block at the top of this section as equivalent to:
+If you were looking carefully, you might have noticed that we didn't define a `load` function as described in the [SvelteKit docs](https://kit.svelte.dev/docs/loading). Don't worry, this route is still rendered on the server thanks to the preprocessor. One of its responsibilities is moving the actual fetch into a `load`. You can think of the block at the top of this section as equivalent to:
 
 ```svelte
 <script context="module">
     export async function load({ fetch }) {
             return {
-                _data: await fetch({
-                    text: `
-                        query SpeciesInfo {
-                            species(id: 1) {
-                                name
-                                flavor_text
-                                sprites {
-                                    front
+                props: {
+                    _data: await fetch(API_URL, {
+                        text: `
+                            query SpeciesInfo {
+                                species(id: 1) {
+                                    name
+                                    flavor_text
+                                    sprites {
+                                        front
+                                    }
                                 }
                             }
-                        }
-                    `
-                }),
+                        `
+                    })
+                },
             }
     }
 </script>

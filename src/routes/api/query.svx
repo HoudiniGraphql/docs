@@ -81,7 +81,7 @@ modified example [from the source repository](./https://github.com/HoudiniGraphq
 
 ## Paginated Queries
 
-Paginated must use the `paginatedQuery` function exported from your runtime and contain the `@paginate` directive on the appropriate field. For more information Houdini's support for pagination, please visit the [Pagination guide](/guides/pagination).
+Paginated queries must use the `paginatedQuery` function exported from your runtime and contain the `@paginate` directive on the appropriate field. For more information Houdini's support for pagination, please visit the [Pagination guide](/guides/pagination).
 
 ```svelte
 <script>

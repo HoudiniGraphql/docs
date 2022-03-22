@@ -33,7 +33,6 @@
 		display: flex;
 		flex-direction: row;
 		align-items: center;
-		width: 80%;
 		font-size: 16px;
 		align-self: center;
 		justify-content: space-between;

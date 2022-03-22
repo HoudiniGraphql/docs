@@ -423,11 +423,11 @@
 	}
 
 	.blur {
-		filter: blur(10px);
-		-o-filter: blur(10px);
-		-ms-filter: blur(10px);
-		-moz-filter: blur(10px);
-		-webkit-filter: blur(10px);
+		filter: blur(4px);
+		-o-filter: blur(4px);
+		-ms-filter: blur(4px);
+		-moz-filter: blur(4px);
+		-webkit-filter: blur(4px);
 	}
 
 	:global(#nav-search-input) {
@@ -437,6 +437,7 @@
 
 	:global(#left-nav-search-input) {
 		margin-bottom: 1rem;
+		width: 80%;
 	}
 
 	@media (max-width: 1000px) {

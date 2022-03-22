@@ -9,9 +9,9 @@
 	<div class="container" on:click={() => setOpen(() => false)} id="search-dialog">
 		<div class="body" on:click={(e) => e.stopPropagation()}>
 			<input autofocus />
-			<Icon name="search" class="search-input-search-icon" />
+			<Icon name="search" class="search-input-search-icon" stroke="#475365" />
 			<button on:click={() => setOpen(() => false)} class="close-button">
-				<Icon name="x" class="search-input-close-icon" />
+				<Icon name="x" class="search-input-close-icon" stroke="#475365" />
 			</button>
 		</div>
 	</div>
@@ -22,11 +22,7 @@
 		// if the user pressed ctrl+k, open the search dialog
 		if (e.key === 'k' && (navigator.platform === 'MacIntel' ? e.metaKey : e.ctrlKey)) {
 			e.preventDefault()
-			if (document.getElementById('search-dialog')) {
-				setOpen(() => false)
-			} else {
-				setOpen(() => true)
-			}
+			setOpen((val) => !val)
 		}
 
 		if (e.code === 'Escape') {
@@ -76,7 +72,7 @@
 		outline: none;
 		font-size: 1rem;
 		line-height: 3.25rem;
-		color: #161b22;
+		color: #475365;
 	}
 
 	:global(.search-input-search-icon) {

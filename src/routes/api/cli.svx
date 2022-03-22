@@ -28,7 +28,7 @@ Generates the runtime and the artifacts for every document in your project
 houdini init
 ```
 
-Generates the runtime and the artifacts for every document in your project
+Bootstraps a new project with the necessary files to start using houdini
 
 ### Flags:
 
