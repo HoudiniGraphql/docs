@@ -34,6 +34,20 @@
 	function update() {
 		const searchResult = (index ? index.search(query) : []).map((href) => lookup.get(href))
 
+		// sort the search results so that api references come before guides
+		searchResult.sort((a, b) => {
+			// flip the order if we are comparing one guide and one api
+			if (a.breadcrumbs[0] === 'Api' && b.breadcrumbs[0] === 'Guides') {
+				return -1
+			}
+			if (a.breadcrumbs[0] === 'Guides' && b.breadcrumbs[0] === 'Api') {
+				return 1
+			}
+
+			// otherwise, keep the order the same
+			return 0
+		})
+
 		// update the component state
 		results = searchResult
 	}
