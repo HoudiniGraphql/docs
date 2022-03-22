@@ -107,7 +107,7 @@
 										{/each}
 									</small>
 									<strong>{@html excerpt(result.title, query)}</strong>
-									<span>{@html excerpt(result.content, query)}</span>
+									<span>{@html excerpt(result.content, query)}...</span>
 								</a>
 							</li>
 						{/each}
