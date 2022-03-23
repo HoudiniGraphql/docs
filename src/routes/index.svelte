@@ -172,7 +172,6 @@
 		background: #161b22;
 		border-radius: 32px;
 		color: white;
-		margin-left: 4rem;
 	}
 
 	:global(.shadow) {
@@ -269,6 +268,7 @@
 		margin-top: 24px;
 		display: flex;
 		flex-direction: column;
+		margin-left: 4rem;
 	}
 
 	#hero h1 {
@@ -329,18 +329,24 @@
 		font-family: 'Hind', sans-serif;
 		font-size: 1.5rem;
 		line-height: 1.25;
+		position: relative;
 	}
 
 	li::before {
-		content: '•';
-		width: 20px;
-		height: 20px;
+		content: ' ';
+		width: 12px;
+		height: 12px;
 		font-size: 32px;
 		line-height: 20px;
-		color: #ff3e00;
+		background: #ff3e00;
 		border-radius: 50%;
 		margin-left: -30px;
 		margin-right: 10px;
+		display: inline-block;
+		margin-top: -3px;
+		position: absolute;
+		right: calc(100%);
+		top: 9px;
 	}
 
 	#hero-buttons {
