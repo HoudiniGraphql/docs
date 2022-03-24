@@ -105,3 +105,4 @@ Fragments may also contain a paginated field, similar to queries. A paginated fr
 - `loadPreviousPage` is an async function that loads the previous page. It takes one optional argument: the page size to load for the next request.
 - `loading` is a store containing a boolean value that tracks the loading state of the pagination requests
 - `pageInfo` is a store that contains the page info (`hasPreviousPage`, `hasNextPage`, etc.) Only valid for cursor-based pagination.
+- `partial` is a store containing a boolean that indicates if the result has a partial match

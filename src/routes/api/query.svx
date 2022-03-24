@@ -31,6 +31,7 @@ Load data from the server and subscribe to any changes of fields we detect from 
 - `refetch` is a function that will refetch the query with a new set of arguments.
 - `loading` is a store containing the loading state (`true` or `false`) for a query found outside of a route component (ie, not defined in `src/routes`)
 - `error` is a store containing any error values that occur for a query found outside of a route component (ie, not defined in `src/routes`)
+- `partial` is a store containing a boolean that indicates if the result has a partial match
 
 ## Query Variables
 
@@ -108,6 +109,7 @@ Paginated queries must use the `paginatedQuery` function exported from your runt
 - `loadPreviousPage` is an async function that loads the previous page. It takes one optional argument: the page size to load for the next request.
 - `loading` is a store containing a boolean value that tracks the loading state of the pagination requests
 - `pageInfo` is a store that contains the page info (`hasPreviousPage`, `hasNextPage`, etc.) Only valid for cursor-based pagination.
+- `partial` is a store containing a boolean that indicates if the result has a partial match
 
 ## Caching Data
 
@@ -125,9 +127,10 @@ query AllItems @cache(policy: CacheOrNetwork) {
 
 There are 3 different policies that can be specified:
 
-- `CacheOrNetwork` will first check if a query can be resolved from the cache. If it can, it will return the cached value and only send a network request if data was missing.
-- `CacheAndNetwork` will use cached data if it exists and always send a network request after the component has mounted to retrieve the latest data from the server
+- `CacheOrNetwork` will first check if a query can be resolved from the cache. If it can, it will return the cached value and only send a network request if data was missing. If the result contains partial data (some but not all of the data is available in the cache), you will get the partial data first and then a network request will trigger. Almost like it behaves like `CacheAndNetwork`.
+- `CacheAndNetwork` will use cached data if it exists and always send a network request after the component has mounted to retrieve the latest data from the server. The `CacheOnly` portion of this might contain partial data.
 - `NetworkOnly` will never check if the data exists in the cache and always send a network request
+- `CacheOnly` will only ever return cache data which can be a partial response
 
 The default cache policy as well as other parameters can be changed in your [config file](/api/config).
 
