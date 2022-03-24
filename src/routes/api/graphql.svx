@@ -18,9 +18,12 @@ A field marked with `@list` or by passing a name to `@paginate` can use the foll
 - `[ListName]_remove`: remove the reference from the list
 - `[ListName]_toggle`: if the reference is already in the list, remove it; otherwise, add it to the list
 
-Insert location can be specified using the `prepend` or `append` directives specified below (for `insert` or `toggle` fragments).
+Some things worth mentioning:
 
-Conditions for the operations can be specified with `@when` or `@when_not` shown below.
+- Insert locations for for the `insert` and `toggle` fragments can be specified using the `prepend` or `append` directives specified below
+- Conditions for the operations can be specified with `@when` or `@when_not` shown below.
+- These fragments can be applied to lists and single values.
+- Sometimes the runtime needs a little help to hunt down the list you want to mutate. For more information on how to use `@parentID` to help, [see below](#parentidvalue-string).
 
 For more information on using these fragments, head over to the [mutation docs](/api/mutation#lists).
 
@@ -77,7 +80,7 @@ A field marked with `@paginate` is updated with calls to the page loaders return
 
 ### `@[TypeName]_delete`
 
-For example, `@User_delete` is used to delete the user with an id found in the body of a subscription or mutation. For more information see the [mutation docs](/api/mutation#lists).
+`@[TypeName]_delete` (ie, something like `@User_delete`) is used to delete the user with an id found in the body of a subscription or mutation. Like the operation fragments, this directive can be applied to lists or singular values. For more information see the [mutation docs](/api/mutation#lists).
 
 ```graphql
 mutation DeleteItem($input: DeleteItemInput!) {
@@ -85,6 +88,19 @@ mutation DeleteItem($input: DeleteItemInput!) {
 		# this will delete the item with the matching id from the cache
 		# and remove it from all lists
 		deletedID @Item_delete
+	}
+}
+```
+
+### `@parentID(value: String!)`
+
+`@parentID` is used to identify the root ID for the document containing a list marked with `@list` or `@paginate` when it cannot be inferred. For example, imagine a situation where there are multiple users rendered on a view that shows their top 5 bands. That listing is represented with a fragment containing `@list(name: "FavoriteBands")`. If we wanted add a band to just our own list, we need to specify that we want to add something to the list that starts from a fragment on a User with the correct ID:
+
+```graphql
+mutation FavoriteBand($input: FavoriteBandInput!) {
+	setFavorite(input: $input) {
+		# only add the item to the list if we can see uncompleted items
+		...All_Items_insert @parentID(value: "abcdef")
 	}
 }
 ```
