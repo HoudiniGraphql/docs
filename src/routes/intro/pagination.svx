@@ -179,11 +179,7 @@ Interacting with a paginated query is pretty similar to everything we've been do
 				moves(first: 1) @paginate {
 					edges {
 						node {
-							edges {
-								node {
-									...MoveDisplay
-								}
-							}
+							...MoveDisplay
 						}
 					}
 				}
@@ -196,7 +192,7 @@ Interacting with a paginated query is pretty similar to everything we've been do
 
 Don't forget to generate your runtime.
 
-At the surface, `paginatedQuery` is basically the same thing as `query` except for a few extra utilities you can pull from the return value. They're pretty self-explanatory but just in case there's any confusion: `pageInfo` is a store pointing to an object boolean values to indicate wether there is more information to look up and `loadNextPage` is an async function that will load the next page and append the result of the field tagged with `@paginate` to the existing value in our cache. For a more in-depth summary of what you can do with `paginatedQuery` and `@paginate`, you can check out the [Pagination Guide](/guides/pagination).
+At the surface, `paginatedQuery` is basically the same thing as `query` except for a few extra utilities you can pull from the return value. They're pretty self-explanatory but just in case there's any confusion: `pageInfo` is a store pointing to an object boolean values to indicate whether there is more information to look up and `loadNextPage` is an async function that will load the next page and append the result of the field tagged with `@paginate` to the existing value in our cache. For a more in-depth summary of what you can do with `paginatedQuery` and `@paginate`, you can check out the [Pagination Guide](/guides/pagination).
 
 It's time to add some visuals. Add an import for the `MoveDisplay` component and copy the following block as the second child in the right panel (between `div#species-evolution-chain` and the `nav`):
 
@@ -208,6 +204,7 @@ In most situations houdini's automatic appending is great since it covers popula
 
 ```svelte
 <script>
+	import { navigating } from '$app/stores'
 	import { UpButton, DownButton } from '~/components'
 
 	let moveIndex = 0
@@ -237,7 +234,7 @@ In most situations houdini's automatic appending is great since it covers popula
 
 <!-- Use this instead of the move display we added earlier -->
 <div id="move-summary">
-	<MoveDisplay move={currentMove} />
+	<MoveDisplay move={$data.species.moves.edges[moveIndex].node} />
 	<div id="move-controls">
 		<UpButton disabled={!hasPrevMove} on:click={loadPrevMove} />
 		<DownButton disabled={!hasNextMove} on:click={loadNextMove} />
