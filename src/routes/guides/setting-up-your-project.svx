@@ -73,7 +73,7 @@ export default {
 ```
 
 And finally, we need to configure our application to use the generated network layer. To do
-this, add the following block of code to `src/routes/__layout.svelte`:
+this, add the following block of code to `src/routes/__layout.svelte` and any `__layout.reset.svelte` files:
 
 ```html
 <script context="module">
