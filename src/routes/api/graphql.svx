@@ -70,9 +70,9 @@ mutation NewItem($input: AddItemInput!) {
 }
 ```
 
-### `@cache(policy: CachePolicy)`
+### `@cache(policy: CachePolicy, partial: Boolean)`
 
-`@cache` is used on a query document to indicate what [cache policy](/api/query#caching-data) should be used by the runtime. For a full list of cache policies, check out the [query docs](/api/query#caching-data).
+`@cache` is used on a query document to customize the cache behavior. This includes informaton like what [cache policy](/api/query#caching-data) should be used by the runtime or if you are okay with partial results from the cache. For a full list of cache policies, check out the [query docs](/api/query#caching-data) and for more information on partial responses, see the [partial data guide](/guies/partial-data).
 
 ### `@paginate(name: String)`
 

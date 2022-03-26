@@ -23,6 +23,7 @@ It can contain the following values:
 - `scalars` (optional): An object describing custom scalars for your project (see below).
 - `cacheBufferSize` (optional): The number of queries that must occur before a value is removed from the cache. For more information, see the [caching data docs](/api/query#caching-data).
 - `defaultCachePolicy` (optional): The default cache policy to use for queries. For a list of the policies or other information see the [caching data docs](/api/query#caching-data).
+- `defaultPartial` (optional): specifies wether or not the cache should always use partial data. For more information, check out the [Partial Data guide](/guides/partial-data).
 
 ## Custom Scalars
 
