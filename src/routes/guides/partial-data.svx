@@ -1,5 +1,0 @@
----
-title: Partial Data
-index: 5
-description: An overview of Houdini's treatment of partial data
----

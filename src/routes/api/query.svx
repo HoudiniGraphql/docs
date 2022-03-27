@@ -127,8 +127,8 @@ query AllItems @cache(policy: CacheOrNetwork) {
 
 There are 3 different policies that can be specified:
 
-- `CacheOrNetwork` will first check if a query can be resolved from the cache. If it can, it will return the cached value and only send a network request if data was missing. If the result contains partial data (some but not all of the data is available in the cache), you will get the partial data first and then a network request will trigger. Almost like it behaves like `CacheAndNetwork`.
-- `CacheAndNetwork` will use cached data if it exists and always send a network request after the component has mounted to retrieve the latest data from the server. The `CacheOnly` portion of this might contain partial data.
+- `CacheOrNetwork` will first check if a query can be resolved from the cache. If it can, it will return the cached value and only send a network request if data was missing. If you have opted into partial data with `@cache(partial: true)` and the result contains partial data (some but not all of the data is available in the cache), you will get the partial data first and then a network request will trigger - almost like it behaves like `CacheAndNetwork`.
+- `CacheAndNetwork` will use cached data if it exists and always send a network request after the component has mounted to retrieve the latest data from the server. The cached portion of this might contain partial data if you opt-in.
 - `NetworkOnly` will never check if the data exists in the cache and always send a network request
 - `CacheOnly` will only ever return cache data which can be a partial response
 
@@ -150,6 +150,32 @@ route, a network request will be sent. This number is configurable with the
 export default {
 	// ...
 	cacheBufferSize: 5
+}
+```
+
+### Partial Data
+
+As your users navigate through your application, their cache will build up with the data that they encounter. This means that a lot of the times, they will have already seen the data that a new view wants. Houdini's cache can be told to render a view if only some of the necessary data is present using the `@cache` directive:
+
+```graphql
+query AllItems @cache(partial: true) {
+	items {
+		id
+		text
+	}
+}
+```
+
+This means that you will have to deal with a lot of `null` states in order to accommodate the missing data but it can result in a much snappier interface for your users. Keep in mind that houdini tries its hardest to keep your data "correct". This means that if a value is missing that isn't allowed to be null according to your project's schema it will turn an entire object `null`. This behavior is described by the [GraphQL spec](http://spec.graphql.org/June2018/#sec-Errors-and-Non-Nullability).
+
+Keep in mind that marking a query with `@cache(partial: true)` has in impact on the policy used. For more information on this, check out the [caching data](#caching-data) section. Also, the default partial state can be configured with the `defaultPartial` value in your config file:
+
+```js
+// houdini.config.js
+
+export default {
+	// ...
+	defaultPartial: true
 }
 ```
 
