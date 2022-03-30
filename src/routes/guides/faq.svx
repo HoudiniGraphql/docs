@@ -10,7 +10,7 @@ Here are some answers to common questions you might have while working with Houd
 
 ### My IDE is complaining that the internal directives and fragments don't exist.
 
-Every plugin and editor is different so we can't give you an exact answer but Houdini will write a file inside of the `$houdini` directory that contains all of the custom definitions that it relies on. Be default this file is located at `$houdini/documents.gql`. You can configure this value in your [config file](/api/config) under the `documentsPath` value:
+Every plugin and editor is different so we can't give you an exact answer but Houdini will write a file inside of the `$houdini` directory that contains all of the custom definitions that it relies on. Be default this file is located at `$houdini/documents.gql`. You can configure this value in your [config file](/api/config) under the `definitionsPath` value.
 
 ### What happened to Load?
 
