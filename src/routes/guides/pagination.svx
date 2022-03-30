@@ -1,6 +1,6 @@
 ---
 title: Pagination
-index: 1
+index: 2
 description: A guide to pagination in Houdini
 ---
 

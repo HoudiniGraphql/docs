@@ -16,6 +16,7 @@ It can contain the following values:
 - `framework`: One of `"kit"`, `"sapper"`, or `"svelte"`. Used to tell the preprocessor what kind of loading paradigm to generate for you.
 - `module`: One of `"esm"` or `"commonjs"`. Used to tell the artifact generator what kind of modules to create.
 - `schemaPath` (optional): the path to the static representation of your schema. One of `schema` or `schemaPath` is required
+- `documentsPath` (optional): a filepath that the generator will use when writing a `.gql` file containing all of the internal fragment and directive definitions used in the project.
 - `schema` (optional): a string containing your entire schema (mostly useful for testing). One of `schema` or `schemaPath` is required
 - `quiet` (optional): A boolean silencing the the output from the runtime generator
 - `apiUrl` (optional): A url to use to pull the schema. For more information see the [generate command docs](/api/cli#generate)

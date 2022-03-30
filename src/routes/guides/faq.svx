@@ -1,0 +1,78 @@
+---
+title: Frequently Asked Questions
+index: 0
+description: A list of frequently asked questions when working with Houdini
+---
+
+# F.A.Q.
+
+Here are some answers to common questions you might have while working with Houdini
+
+### My IDE is complaining that the internal directives and fragments don't exist.
+
+Every plugin and editor is different so we can't give you an exact answer but Houdini will write a file inside of the `$houdini` directory that contains all of the custom definitions that it relies on. Be default this file is located at `$houdini/documents.gql`. You can configure this value in your [config file](/api/config) under the `documentsPath` value:
+
+### What happened to Load?
+
+If you are familiar with the SvelteKit API, you probablyed noticed that you don't need to define a `load` function as described in the [SvelteKit docs](https://kit.svelte.dev/docs/loading). Don't worry, your routes are still rendered on the server thanks to the preprocessor. One of its responsibilities is moving the actual fetch into a `load`.
+
+For example, consider this query from the [Introduction](/intro/welcome):
+
+```svelte
+<script>
+    import { query, graphql } from '$houdini'
+    import { Container, Display, Sprite, Panel } from '~/components'
+
+    const { data } = query(graphql`
+        query SpeciesInfo {
+            species(id: 1) {
+                name
+                flavor_text
+                sprites {
+                    front
+                }
+            }
+        }
+    `)
+</script>
+
+<div>
+    {$data.species.name}
+</div>
+```
+
+You can think of it as equivalent to:
+
+```svelte
+<script context="module">
+    export async function load({ fetch }) {
+            return {
+                props: {
+                    _data: await fetch(API_URL, {
+                        text: `
+                            query SpeciesInfo {
+                                species(id: 1) {
+                                    name
+                                    flavor_text
+                                    sprites {
+                                        front
+                                    }
+                                }
+                            }
+                        `
+                    })
+                },
+            }
+    }
+</script>
+
+<script>
+    export let _data
+
+    const data = readable(_data, ...)
+</script>
+```
+
+### Why is the query variable API so weird?
+
+To understand why things are designed the way they are, you should consider the output of the preprocessor (shown above). Any logic that's used to compute the query variables needs to be hoisted up to the module context block so that the value could be passed onto the server. Since the user would naturally want to execute arbitrary logic when computing this value, we have to make sure that any imports or function definitions are available to the module context so that they can run.
