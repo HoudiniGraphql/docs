@@ -223,6 +223,6 @@ A lot of the time we know the value that a mutation will trigger assuming everyt
 </button>
 ```
 
-When the mutation resolved, the old values will be erased entirely and the new values will be committed to the cache. If instead the mutation fails, the optimistic changes will be reverted and the handler's promise will reject with the error message as usual.
+When the mutation resolves, the old values will be erased entirely and the new values will be committed to the cache. If instead the mutation fails, the optimistic changes will be reverted and the handler's promise will reject with the error message as usual.
 
 Remember to always request and specify an `id` when dealing with optimistic responses so that the cache can make sure to update the correct records. Also, it's worth mentioning that you don't have to provide a complete response for an optimistic value, the cache will write whatever information you give it (as long as its found in the mutation body).
