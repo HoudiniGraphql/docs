@@ -37,10 +37,14 @@ Send a mutation to the server and updating your client-side cache with any chang
 
 ### Return Values
 
-`mutation` returns an asynchronous function that invokes the specified mutation with the provided arguments.
+`mutation` returns an asynchronous function that invokes the specified mutation with the inputs specified by the first argument to the handler. The second argument to the result of `mutation` can be used to configure its behavior. The following values can be provided:
 
-Note: mutations usually do best when combined with at least one fragment grabbing
-the information needed for the mutation (for an example of this pattern, see below.)
+- `optimisticResponse` specifies a value to use instead of waiting for the server to return a value. For more information, see the [optimistic responses](#optimistic-responses) section.
+
+### Notes
+
+- mutations usually do best when combined with at least one fragment grabbing
+  the information needed for the mutation (for an example of this pattern, see below.)
 
 ## Updating fields
 
@@ -179,3 +183,44 @@ mutation NewItem($input: AddItemInput!) {
 	}
 }
 ```
+
+## Optimistic Responses
+
+A lot of the time we know the value that a mutation will trigger assuming everything goes right. For example, a `toggleItem` mutation in a todo list will invert the value of the `checked` field of a particular item. In these situations, we don't have to wait for a mutation to resolve in order to apply the update to the cache. Instead, we can assume that it will succeed and provide an "optimistic response" for the mutation with the second argument to a mutation handler:
+
+```svelte
+<script>
+    import { mutation, graphql } from '$houdini'
+
+    export let itemID
+
+    const toggleItem = mutation(graphql`
+        mutation ToggleItem($id: ID!) {
+            toggleItem {
+                item {
+                    id
+                    checked
+                }
+            }
+        }
+    `)
+</script>
+
+
+<button on:click={() => {
+    toggleItem({ id: itemID }, {
+        optimisticResponse: {
+            toggleItem: {
+                item: {
+                    id: '1',
+                    checked: true
+                }
+            }
+        }
+    }
+)}}>
+    toggle item
+</button>
+```
+
+When the mutation resolved, the old values will be erased entirely and the new values will be committed to the cache. If instead the mutation fails, the optimistic changes will be reverted and the handler's promise will reject with the error message as usual.
