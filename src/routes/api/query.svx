@@ -111,74 +111,6 @@ Paginated queries must use the `paginatedQuery` function exported from your runt
 - `pageInfo` is a store that contains the page info (`hasPreviousPage`, `hasNextPage`, etc.) Only valid for cursor-based pagination.
 - `partial` is a store containing a boolean that indicates if the result has a partial match
 
-## Caching Data
-
-By default, houdini will only try to load queries against its local cache when you indicate it is safe to do so.
-This can be done with the `@cache` directive:
-
-```graphql
-query AllItems @cache(policy: CacheOrNetwork) {
-	items {
-		id
-		text
-	}
-}
-```
-
-There are 3 different policies that can be specified:
-
-- `CacheOrNetwork` will first check if a query can be resolved from the cache. If it can, it will return the cached value and only send a network request if data was missing. If you have opted into partial data with `@cache(partial: true)` and the result contains partial data (some but not all of the data is available in the cache), you will get the partial data first and then a network request will trigger - almost like it behaves like `CacheAndNetwork`.
-- `CacheAndNetwork` will use cached data if it exists and always send a network request after the component has mounted to retrieve the latest data from the server. The cached portion of this might contain partial data if you opt-in.
-- `NetworkOnly` will never check if the data exists in the cache and always send a network request
-- `CacheOnly` will only ever return cache data which can be a partial response
-
-The default cache policy as well as other parameters can be changed in your [config file](/api/config).
-
-### Data Retention
-
-Houdini will retain a query's data for a configurable number of queries (default 10).
-For a concrete example, consider an example app that has 3 routes. If you load one of the
-routes and then click between the other two 5 times, the first route's data will still be
-resolvable (and the counter will reset if you visit it).
-If you then toggle between the other routes 10 times and then try to load the first
-route, a network request will be sent. This number is configurable with the
-`cacheBufferSize` value in your config file:
-
-```js
-// houdini.config.js
-
-export default {
-	// ...
-	cacheBufferSize: 5
-}
-```
-
-### Partial Data
-
-As your users navigate through your application, their cache will build up with the data that they encounter. This means that a lot of the times, they will have already seen the data that a new view wants. Houdini's cache can be told to render a view if only some of the necessary data is present using the `@cache` directive:
-
-```graphql
-query AllItems @cache(partial: true) {
-	items {
-		id
-		text
-	}
-}
-```
-
-This means that you will have to deal with a lot of `null` states in order to accommodate the missing data but it can result in a much snappier interface for your users. Keep in mind that houdini tries its hardest to keep your data "correct". This means that if a value is missing that isn't allowed to be null according to your project's schema it will turn an entire object `null`. This behavior is described by the [GraphQL spec](http://spec.graphql.org/June2018/#sec-Errors-and-Non-Nullability). Keep in mind that marking a query with `@cache(partial: true)` has in impact on the policy used. For more information on this, check out the [caching data](#caching-data) section.
-
-The default partial state can be configured with the `defaultPartial` value in your config file:
-
-```js
-// houdini.config.js
-
-export default {
-	// ...
-	defaultPartial: true
-}
-```
-
 ## Loading State
 
 The methods used for tracking the loading state of your queries changes depending
@@ -255,7 +187,7 @@ Refetching data is done with the `refetch` function provided from the result of 
 
 Sometimes you will need to add additional logic to a component's query. For example, you might want to
 check if the current session is valid before a query is sent to the server. In order to support this,
-houdini will look for hook functions defined in the module context which can be used to perform
+Houdini will look for hook functions defined in the module context which can be used to perform
 any logic you need.
 
 Hooks can be used to pass data to components as well as populate your SvelteKit route's `stuff` by returning an

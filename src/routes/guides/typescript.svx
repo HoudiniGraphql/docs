@@ -1,6 +1,6 @@
 ---
 title: Typescript
-index: 3
+index: 4
 description: An overview of Houdini's support for Typescript
 ---
 
