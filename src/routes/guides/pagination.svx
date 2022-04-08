@@ -110,6 +110,8 @@ In short, this means that any paginated fragment must be of a type that implemen
 This is only a requirement for paginated fragments. If your application only uses paginated queries,
 you do not need to implement the Node interface and resolver.
 
+For information about how to customize this behavior, check out the [Caching Data guide](/guides/caching-data#custom-ids).
+
 ## Mutation Operations
 
 A paginated field can be marked as a potential target for a mutation operation by passing
