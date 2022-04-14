@@ -19,9 +19,9 @@ What we'll cover:
 houdini is available on npm:
 
 ```bash
-yarn add -D houdini houdini-preprocess
+yarn add -D houdini
 # or
-npm install --save-dev houdini houdini-preprocess
+npm install --save-dev houdini
 ```
 
 ## Configuration
@@ -50,7 +50,7 @@ We need to define an alias so that your codebase can import the generated runtim
 values to `svelte.config.js`:
 
 ```javascript
-import houdini from 'houdini-preprocess'
+import houdini from 'houdini/preprocess'
 
 export default {
 	preprocess: [houdini()],
@@ -93,7 +93,7 @@ your application into a static site), you will need to set the `static` value in
 You'll need to add the preprocessor to both your client and your server configuration:
 
 ```javascript
-import houdini from 'houdini-preprocess'
+import houdini from 'houdini/preprocess'
 
 // add to both server and client configurations
 export default {
