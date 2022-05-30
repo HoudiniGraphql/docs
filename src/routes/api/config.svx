@@ -18,7 +18,6 @@ It can contain the following values:
 - `schemaPath` (optional): the path to the static representation of your schema. One of `schema` or `schemaPath` is required
 - `definitionsPath` (optional): a filepath that the generator will use when writing a `.gql` file containing all of the internal fragment and directive definitions used in the project.
 - `schema` (optional): a string containing your entire schema (mostly useful for testing). One of `schema` or `schemaPath` is required
-- `quiet` (optional): A boolean silencing the the output from the runtime generator
 - `apiUrl` (optional): A url to use to pull the schema. For more information see the [generate command docs](/api/cli#generate)
 - `static` (optional): A boolean that tells the preprocessor to treat every component as a non-route. This is useful for projects built with the static-adapter
 - `scalars` (optional): An object describing custom scalars for your project (see below).
@@ -27,6 +26,7 @@ It can contain the following values:
 - `defaultPartial` (optional): specifies wether or not the cache should always use partial data. For more information, check out the [Partial Data guide](/guides/caching-data#partial-data).
 - `defaultKeys` (optional): A list of fields to use when computing a record's id. The default value is `['id']`. For more information see the [Caching Guide](/guides/caching-data#custom-ids).
 - `types` (optional): an object that customizes the resolution behavior for a specific type. For more information see the [Caching Guide](/guides/caching-data#custom-ids).
+- `logLevel` (optional): Specifies the style of logging houdini will use when generating your file. One of "quiet", "full", "summary", or "short-summary".
 
 ## Custom Scalars
 
