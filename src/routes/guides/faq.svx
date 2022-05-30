@@ -76,3 +76,7 @@ You can think of it as equivalent to:
 ### Why is the query variable API so weird?
 
 To understand why things are designed the way they are, you should consider the output of the preprocessor (shown above). Any logic that's used to compute the query variables needs to be hoisted up to the module context block so that the value could be passed onto the server. Since the user would naturally want to execute arbitrary logic when computing this value, we have to make sure that any imports or function definitions are available to the module context so that they can run.
+
+### When will version `1.0` be released?
+
+Quick answer is when svelekit gets to `1.0`. Until then, we want to be able to break the API in order to create the most conivnient experience for the majority of users.
