@@ -78,9 +78,8 @@ this, add the following block of code to `src/routes/__layout.svelte` and any `_
 ```html
 <script context="module">
 	import env from '../environment'
-	import { setEnvironment } from '$houdini'
 
-	setEnvironment(env)
+	env.init()
 </script>
 ```
 

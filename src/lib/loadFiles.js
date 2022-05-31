@@ -51,7 +51,7 @@ export async function loadFiles() {
 							}))
 							.filter((subcat) => !subcat.text.toLowerCase().endsWith('s next?'))
 
-						const fileName = file.split('.')[0]
+						const fileName = file.split('.').slice(0, -1).join('.')
 
 						list[metadata.index] = {
 							title: metadata.title,

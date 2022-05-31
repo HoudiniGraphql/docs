@@ -56,7 +56,7 @@ export async function loadContent() {
 									...breadcrumb.map((element) => element.text)
 								],
 								content: content.replace(/\n/g, ' '),
-								href: `/${category}/${path.basename(file).split('.')[0]}`
+								href: `/${category}/${path.basename(file).split('.').slice(0, -1).join('.')}`
 							}
 
 							// if the content is nested under a header

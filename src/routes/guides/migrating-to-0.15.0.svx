@@ -1,0 +1,87 @@
+---
+title: Migrating to 0.15.0
+index: 8
+description: A guide to migrating your application to Houdini v0.15.0
+---
+
+# Migrating to 0.15.0
+
+Lot's changed in `v0.15.0`. Hopefully this guide should help you understand those changes as well as show you what you should
+update to work with the new features. If you just want to skip straight to the deprecation warnings you might be seeing in your terminal,
+here are a few links:
+
+- [Query Hooks](#query-hooks)
+- [Config Values](#config-values)
+- [Environment](#environment)
+
+## What Changed
+
+The biggest feature introduced with `0.15.0` is a new way of interacting with graphql documents
+in your houdini projects. Instead of only being able to specify your documents directly in your
+component files, you can now specify them in external files and houdini will generate a store for you
+to interact with. For more information about the new store-based API, please check out the
+[api docs](). Not only did this address a _number_ of issues we've received but it also improved a few
+not-so-great parts of Houdini's API. No, unforunately the variable API for inline documents hasn't been
+cleaned up but at least query hooks are gone! By the way, if you have any ideas of a better way to support
+query variables for inline documents, let us know (but please, read
+[this](/guides/faq#why-is-the-query-variable-api-so-weird) first).
+Anyway, the rest of this document explains how to fix the APIs that got deprecated as part of this effort.
+
+## Query Hooks
+
+With the new [store API](), we now have a much more ergonomic way of performing the same kinds of tasks that query hooks previously
+satisfied. The official recommendation is to avoid the magically named functions and instead write your own load function that calls
+the appropriate store's `fetchLoad` function:
+
+```svelte
+<script context="module">
+    import MyQueryStore from '$houdini/stores/GQL_MyQueryStore'
+
+    export async function load(input) {
+        // any beforeLoad logic goes here (before the load)
+        if(!input.session.authenticated){
+            return this.redirect(302, '/login')
+        }
+
+        // perform the fetch and give the store a value
+        const { data } = await MyQueryStore.fetchLoad({ context: input })
+
+        // any afterLoad logic can now be here
+        if(!data.myProfile){
+            return {
+                error: {
+                    code: 404,
+                    message: "missing user"
+                }
+            }
+        }
+    }
+</script>
+```
+
+## Config Values
+
+The `quiet` configuration value has been changed in favor of the [new logging parameters](/api/config). In order to replicate the
+previous behavior, you should use the `quiet` log level:
+
+```javascript
+// houdini.config.js
+
+export default {
+	// ...
+    logLevel: 'quiet',
+}
+```
+
+## Environment
+
+In an effort to make Houdini's names work better with other libraries you might have in your application (for example, as part of
+[KitQL](https://github.com/jycouet/kitql)), Houdini's `Environment` is now called `HoudiniClient`. All you need to do to use this is to
+import `HoudiniClient` from your runtime and instantiate it as you used to do with `Environment`.
+
+Beyond just the name there was also a change in the way you configure your runtime to use your environment. Now,
+instead of `setEnvironment(client)` you should just use `client.init()`.
+
+
+
+
