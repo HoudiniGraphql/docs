@@ -37,14 +37,14 @@ the appropriate store's `fetchLoad` function:
 <script context="module">
     import MyQueryStore from '$houdini/stores/GQL_MyQueryStore'
 
-    export async function load(input) {
+    export async function load(event) {
         // any beforeLoad logic goes here (before the load)
         if(!input.session.authenticated){
             return this.redirect(302, '/login')
         }
 
-        // perform the fetch and give the store a value
-        const { data } = await MyQueryStore.fetchLoad({ context: input })
+        // perform the fetch and wait for a response
+        const { data } = await MyQueryStore.fetch({ event, blocking: true })
 
         // any afterLoad logic can now be here
         if(!data.myProfile){
@@ -69,7 +69,7 @@ previous behavior, you should use the `quiet` log level:
 
 export default {
 	// ...
-    logLevel: 'quiet',
+	logLevel: 'quiet'
 }
 ```
 
@@ -81,7 +81,3 @@ import `HoudiniClient` from your runtime and instantiate it as you used to do wi
 
 Beyond just the name there was also a change in the way you configure your runtime to use your environment. Now,
 instead of `setEnvironment(client)` you should just use `client.init()`.
-
-
-
-
