@@ -31,31 +31,41 @@ Anyway, the rest of this document explains how to fix the APIs that got deprecat
 
 With the new [store API](), we now have a much more ergonomic way of performing the same kinds of tasks that query hooks previously
 satisfied. The official recommendation is to avoid the magically named functions and instead write your own load function that calls
-the appropriate store's `fetchLoad` function:
+the appropriate store's `fetch` function:
 
 ```svelte
 <script context="module">
-    import MyQueryStore from '$houdini/stores/GQL_MyQueryStore'
+	import MyQueryStore from '$houdini/stores/MyQuery'
 
-    export async function load(event) {
-        // any beforeLoad logic goes here (before the load)
-        if(!input.session.authenticated){
-            return this.redirect(302, '/login')
-        }
+	export async function load(event) {
+		// any beforeLoad logic goes here (before the load)
+		if (!input.session.authenticated) {
+			return this.redirect(302, '/login')
+		}
 
-        // perform the fetch and wait for a response
-        const { data } = await MyQueryStore.fetch({ event, blocking: true })
+		// perform the fetch and wait for a response
+		const { data } = await MyQueryStore.fetch({ event, blocking: true })
 
-        // any afterLoad logic can now be here
-        if(!data.myProfile){
-            return {
-                error: {
-                    code: 404,
-                    message: "missing user"
-                }
-            }
-        }
-    }
+		// any afterLoad logic can now be here
+		if (!data.myProfile) {
+			return {
+				error: {
+					code: 404,
+					message: 'missing user'
+				}
+			}
+		}
+	}
+</script>
+
+<script>
+	const { data } = query(graphql`
+		query MyQuery {
+			myProfile {
+				firstName
+			}
+		}
+	`)
 </script>
 ```
 

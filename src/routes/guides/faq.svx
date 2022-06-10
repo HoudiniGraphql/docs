@@ -17,6 +17,10 @@ Every plugin and editor is different so we can't give you an exact answer but Ho
 Yes! You'll just have to rely on the store apis for your documents and write your route's loads manually.
 For more information on using your document's stores check out the [api docs]().
 
+### Can I use queries in endpoints?
+
+Yep! You can use queries or any document anywhere you can use a svelte store. Just define your query in an external file and use the store api as described in the [api docs]().
+
 ### What happened to Load?
 
 If you are familiar with the SvelteKit API, you probablyed noticed that you don't need to define a `load` function as described in the [SvelteKit docs](https://kit.svelte.dev/docs/loading). Don't worry, your routes are still rendered on the server thanks to the preprocessor. One of its responsibilities is moving the actual fetch into a `load`.
