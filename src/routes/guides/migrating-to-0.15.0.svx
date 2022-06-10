@@ -95,18 +95,16 @@ instead of `setEnvironment(client)` you should just use `client.init()`.
 
 ## @parentID
 
-This one is kind of subtle, if you never used `@parentID` before, you can ignore this but if you are using it in your
-application then you need to know that the value you need to pass is different. Instead of passing the target of the
-fragment, you now need to pass the ID of the object with the field marked with `@list` or `@paginate`. For example, in this query:
+This one is kind of subtle. If you never used `@parentID` before, you can ignore this. However, if you
+_are_ using it in your application then you will need need to pass a different value than what you previous used.
+Instead of passing the target of the fragment, you now need to pass the ID of the object with the field
+marked with `@list` or `@paginate`. For example, in this query:
 
 ```graphql
 query MyFriendsBandList {
 	viewer {
-		# <- User
 		friends {
-			# <- User
 			favoriteBands @list(name: "User_Favorites") {
-				# <- Band
 				name
 			}
 		}
