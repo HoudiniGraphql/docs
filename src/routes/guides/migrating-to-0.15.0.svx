@@ -40,7 +40,7 @@ the appropriate store's `fetch` function:
 
 	export async function load(event) {
 		// any beforeLoad logic goes here (before the load)
-		if (!input.session.authenticated) {
+		if (!event.session.authenticated) {
 			return this.redirect(302, '/login')
 		}
 
