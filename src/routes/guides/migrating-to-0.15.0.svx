@@ -13,7 +13,7 @@ here are a few links:
 - [Query Hooks](#query-hooks)
 - [Config Values](#config-values)
 - [Environment](#environment)
-- [@parentID](#parent-id)
+- [@parentID](#parentid)
 
 ## What Changed
 
