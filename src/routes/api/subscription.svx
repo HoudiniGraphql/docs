@@ -4,31 +4,37 @@ index: 4
 description: Subscriptions in Houdini
 ---
 
-# Subscription
+<script>
+    import HeaderWithMode from './_HeaderWithMode.svelte'
+
+     let mode
+</script>
+
+<HeaderWithMode title="Subscription" bind:mode  />
 
 Listen for real-time updates from your server using GraphQL Subscriptions.
 
 ```svelte
 <script>
-    import { graphql, subscription } from '$houdini'
+	import { graphql, subscription } from '$houdini'
 
-    // this information should usually come from a fragment
-    export let itemID
+	// this information should usually come from a fragment
+	export let itemID
 
-    subscription(
-        graphql`
-            subscription ItemUpdate($id: ID!) {
-                itemUpdate(id: $id) {
-                    item {
-                        id
-                        completed
-                        text
-                    }
-                }
-            }
-        `,
-        { id: itemID }
-    )
+	subscription(
+		graphql`
+			subscription ItemUpdate($id: ID!) {
+				itemUpdate(id: $id) {
+					item {
+						id
+						completed
+						text
+					}
+				}
+			}
+		`,
+		{ id: itemID }
+	)
 </script>
 ```
 

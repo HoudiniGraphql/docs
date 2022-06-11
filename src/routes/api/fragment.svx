@@ -4,22 +4,31 @@ index: 2
 description: Fragments in Houdini
 ---
 
-# Fragment
+<script>
+    import HeaderWithMode from './_HeaderWithMode.svelte'
+
+     let mode
+</script>
+
+<HeaderWithMode title="Fragment" bind:mode  />
 
 Specify the data requirements for a Svelte component.
 
 ```svelte
 <script>
-    import { fragment, graphql } from '$houdini'
+	import { fragment, graphql } from '$houdini'
 
-    // the reference will get passed as a prop
-    export let user
+	// the reference will get passed as a prop
+	export let user
 
-    const data = fragment(graphql`
-        fragment UserAvatar on User {
-            profilePicture
-        }
-    `, user)
+	const data = fragment(
+		graphql`
+			fragment UserAvatar on User {
+				profilePicture
+			}
+		`,
+		user
+	)
 </script>
 
 <img src={$data.profilePicture} />
@@ -77,22 +86,25 @@ Fragments may also contain a paginated field, similar to queries. A paginated fr
 
 ```svelte
 <script>
-    import { paginatedFragment, graphql } from '$houdini'
+	import { paginatedFragment, graphql } from '$houdini'
 
-    // the reference will get passed as a prop
-    export let user
+	// the reference will get passed as a prop
+	export let user
 
-    const { loadNextPage, data } = paginatedFragment(graphql`
-        fragment UserWithFriends on User {
-            friends(first: 10) @paginate {
-                edges {
-                    node {
-                        id
-                    }
-                }
-            }
-        }
-    `, user)
+	const { loadNextPage, data } = paginatedFragment(
+		graphql`
+			fragment UserWithFriends on User {
+				friends(first: 10) @paginate {
+					edges {
+						node {
+							id
+						}
+					}
+				}
+			}
+		`,
+		user
+	)
 </script>
 ```
 

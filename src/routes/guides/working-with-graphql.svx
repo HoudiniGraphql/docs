@@ -65,7 +65,7 @@ a component that wants to use a query defined in an external file would look lik
 {$ViewerProfileStore.data.viewerProfile.firstName}
 ```
 
-And using a mutation store would look something like
+And using a mutation store looks something like
 
 ```svelte
 <script>

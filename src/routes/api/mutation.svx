@@ -4,31 +4,35 @@ index: 3
 description: Mutations in Houdini
 ---
 
-# Mutation
+<script>
+    import HeaderWithMode from './_HeaderWithMode.svelte'
+
+     let mode
+</script>
+
+<HeaderWithMode title="Mutation" bind:mode  />
 
 Send a mutation to the server and updating your client-side cache with any changes.
 
 ```svelte
 <script>
-    import { mutation, graphql } from '$houdini'
+	import { mutation, graphql } from '$houdini'
 
-    let itemID
+	let itemID
 
-    const uncheckItem = mutation(graphql`
-        mutation UncheckItem($id: ID!) {
-            uncheckItem(item: $id) {
-                item {
-                    id
-                    completed
-                }
-            }
-        }
-    `)
+	const uncheckItem = mutation(graphql`
+		mutation UncheckItem($id: ID!) {
+			uncheckItem(item: $id) {
+				item {
+					id
+					completed
+				}
+			}
+		}
+	`)
 </script>
 
-<button on:click={() => uncheckItem({ id: itemID })}>
-    Uncheck Item
-</button>
+<button on:click={() => uncheckItem({ id: itemID })}> Uncheck Item </button>
 ```
 
 ### Inputs
@@ -54,45 +58,45 @@ record's id. Take for example, an `TodoItemRow` component:
 
 ```svelte
 <script lang="ts">
-    import { fragment, mutation, graphql, TodoItemRow } from '$houdini'
+	import { fragment, mutation, graphql, TodoItemRow } from '$houdini'
 
-    export let item: TodoItemRow
+	export let item: TodoItemRow
 
-    // the resulting store will stay up to date whenever `checkItem`
-    // is triggered
-    const data = fragment(
-        graphql`
-            fragment TodoItemRow on TodoItem {
-                id
-                text
-                completed
-            }
-        `,
-        item
-    )
+	// the resulting store will stay up to date whenever `checkItem`
+	// is triggered
+	const data = fragment(
+		graphql`
+			fragment TodoItemRow on TodoItem {
+				id
+				text
+				completed
+			}
+		`,
+		item
+	)
 
-    const checkItem = mutation<CompleteItem>(graphql`
-        mutation CompleteItem($id: ID!) {
-            checkItem(item: $id) {
-                item {
-                    id
-                    completed
-                }
-            }
-        }
-    `)
+	const checkItem = mutation<CompleteItem>(graphql`
+		mutation CompleteItem($id: ID!) {
+			checkItem(item: $id) {
+				item {
+					id
+					completed
+				}
+			}
+		}
+	`)
 </script>
 
 <li class:completed={$data.completed}>
-    <input
-        name={$data.text}
-        class="toggle"
-        type="checkbox"
-        checked={$data.completed}
-        on:click={handleClick}
-    />
-    <label for={$data.text}>{$data.text}</label>
-    <button class="destroy" on:click={() => deleteItem({ id: $data.id })} />
+	<input
+		name={$data.text}
+		class="toggle"
+		type="checkbox"
+		checked={$data.completed}
+		on:click={handleClick}
+	/>
+	<label for={$data.text}>{$data.text}</label>
+	<button class="destroy" on:click={() => deleteItem({ id: $data.id })} />
 </li>
 ```
 
@@ -193,36 +197,40 @@ A lot of the time we know the value that a mutation will trigger assuming everyt
 
 ```svelte
 <script>
-    import { mutation, graphql } from '$houdini'
+	import { mutation, graphql } from '$houdini'
 
-    export let itemID
+	export let itemID
 
-    const toggleItem = mutation(graphql`
-        mutation ToggleItem($id: ID!) {
-            toggleItem {
-                item {
-                    id
-                    checked
-                }
-            }
-        }
-    `)
+	const toggleItem = mutation(graphql`
+		mutation ToggleItem($id: ID!) {
+			toggleItem {
+				item {
+					id
+					checked
+				}
+			}
+		}
+	`)
 </script>
 
-
-<button on:click={() => {
-    toggleItem({ id: itemID }, {
-        optimisticResponse: {
-            toggleItem: {
-                item: {
-                    id: '1',
-                    checked: true
-                }
-            }
-        }
-    }
-)}}>
-    toggle item
+<button
+	on:click={() => {
+		toggleItem(
+			{ id: itemID },
+			{
+				optimisticResponse: {
+					toggleItem: {
+						item: {
+							id: '1',
+							checked: true
+						}
+					}
+				}
+			}
+		)
+	}}
+>
+	toggle item
 </button>
 ```
 
