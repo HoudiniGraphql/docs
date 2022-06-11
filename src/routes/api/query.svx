@@ -4,7 +4,11 @@ index: 1
 description: Queries in Houdini
 ---
 
-# Query
+<script>
+    import HeaderWithMode from './_HeaderWithMode.svelte'
+</script>
+
+<HeaderWithMode title="Query" />
 
 Load data from the server and subscribe to any changes of fields we detect from mutations, subscriptions, and other queries.
 

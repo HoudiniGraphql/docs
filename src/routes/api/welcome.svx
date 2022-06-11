@@ -75,8 +75,16 @@ import { graphql, query } from '$houdini'
 
 If you are unable to resolve the import, please head over to the [Setting Up Your Project guide](/guides/setting-up-your-project) for framework-specific instructions.
 
+## Document APIs
 
-## Runtime
+Every GraphQL document in your Houdini application has two different ways of interacting with it. You can either define
+your document inside of your svelte components or in an external file. While the approaches are equivalent, their APIs
+do vary slightly to accomodate the situation. To accomodate this, each document's section will have a toggle to show
+examples in two modes: "inline" and "store". For more information about the differences in the APIs, checkout out the
+[Working With GraphQL](http://localhost:3000/guides/working-with-graphql) guide.
+
+
+## GraphQL Documents
 
 <APIShowcase
 title="query"
@@ -107,8 +115,8 @@ example={subscriptionExample}
 />
 
 <APIShowcase
-title="GraphQL"
-description="A summary of the things you can do in your graphql documents"
+title="Extra Bits"
+description="A summary of the custom things houdini lets you do in your graphql documents"
 href="/api/graphql"
 example={graphqlExample}
 />

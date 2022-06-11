@@ -69,25 +69,20 @@ export async function loadContent() {
 							content = ''
 						}
 
-						if (tag.tagName === 'H1') {
-							headerLevel = 1
-							breadcrumb = [tag]
-						}
-
 						if (tag.tagName === 'H2') {
 							// there are only two entries in the breadcrumb
-							breadcrumb = [breadcrumb[0], tag]
+							breadcrumb = [tag]
 							headerLevel = 2
 						}
 
 						if (tag.tagName === 'H3') {
 							// if an h3 is inside of an h1, just use that as the breadcrumb
 							if (headerLevel === 1) {
-								breadcrumb = [breadcrumb[0], tag]
+								breadcrumb = [tag]
 							}
 
 							if (headerLevel === 2) {
-								breadcrumb = [breadcrumb[0], breadcrumb[1], tag]
+								breadcrumb = [breadcrumb[0], tag]
 							}
 						}
 

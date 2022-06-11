@@ -30,6 +30,9 @@ export async function loadFiles() {
 					for (const file of await fs.readdir(categoryDir)) {
 						// the file's path
 						const filepath = path.join(categoryDir, file)
+						if (file.startsWith('_')) {
+							continue
+						}
 
 						// open the contents of the file so we can extract the frontmatter
 						const contents = await fs.readFile(filepath, 'utf-8')
