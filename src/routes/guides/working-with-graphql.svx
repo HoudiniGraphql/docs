@@ -146,7 +146,7 @@ and the inline document API, check out [this section of the docs](/api/welcome).
 
 So does that mean you should just always use the preprocessor and ignore the document stores? Well.... no. Not always.
 
-## Inline Documents vs External files
+## Inline Documents vs Stores? Why not both?
 
 
 What you gain in simplicity of the preprocessor, you lose in flexibility.
