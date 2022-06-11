@@ -38,7 +38,6 @@ When you run the `generate` command, Houdini creates a dedicated store for every
 For example, a graphql document containing a query will have a corresponding store generated that is not only responsible for
 querying your API but also subscribing to changes in Houdini's cache so everything is kept in sync when mutations and subscriptions fire.
 
-
 <div style="display: flex; flex-direction: row; align-items: center; overflow-x: auto;">
     <Highlight language={graphql} code={storeSource}/>
     <p style="margin-left: 10px; margin-right: 10px">
@@ -92,7 +91,6 @@ Every time you invoke `.mutate` you have to pass in the component context. For a
 must pass different arguments to `store.fetch` if you are fetching in the `load` function or in your
 component. This can feel like a lot to remember, but don't worry - that's where the preprocessor comes in.
 
-
 ## Inline Documents
 
 Houdini's preprocessor is a powerful tool that enables a more declarative API and hides a lot of the
@@ -101,15 +99,15 @@ svelte components. For example, a route that depends on the result of a query lo
 
 ```svelte
 <script>
-    import { graphql, query } from '$houdini'
+	import { graphql, query } from '$houdini'
 
-    const { data } = query(graphql`
-        query ViewerProfile {
-            viewer {
-                firstName
-            }
-        }
-    `)
+	const { data } = query(graphql`
+		query ViewerProfile {
+			viewer {
+				firstName
+			}
+		}
+	`)
 </script>
 
 {$ViewerProfileStore.data.viewerProfile.firstName}
@@ -146,14 +144,13 @@ and the inline document API, check out [this section of the docs](/api/welcome).
 
 So does that mean you should just always use the preprocessor and ignore the document stores? Well.... no. Not always.
 
-## Inline Documents vs Stores? Why not both?
-
-
 What you gain in simplicity of the preprocessor, you lose in flexibility.
 The preprocessor can only run on `.svelte` files so if you want to do things inside of an endpoint or
 any random file, you'll need to use the store api. If you want to send custom headers for just a single
-request, you'll need the store api. You should think of a document's store api as the low level mechanism for
+request, you'll need the store api. You should think of a document store's api as the low level mechanism for
 interacting with your graphql documents.
+
+## Inline Documents vs Stores? Why not both?
 
 It's also worth mentioning that the two styles are not mutually exclusive. For example, if you wanted to define
 some custom logic for a route, You'll want to use the store api for your query inside of a custom load. That
@@ -184,15 +181,15 @@ defining you're own load, you have to make sure to call the appropriate method o
 </script>
 
 <script>
-    import { graphql, query } from '$houdini'
+	import { graphql, query } from '$houdini'
 
-    const { data } = query(graphql`
-        query ViewerProfile {
-            viewer {
-                firstName
-            }
-        }
-    `)
+	const { data } = query(graphql`
+		query ViewerProfile {
+			viewer {
+				firstName
+			}
+		}
+	`)
 </script>
 
 {$ViewerProfileStore.data.viewerProfile.firstName}
