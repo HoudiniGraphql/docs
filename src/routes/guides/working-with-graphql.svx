@@ -95,7 +95,7 @@ component. This can feel like a lot to remember, but don't worry - that's where 
 
 ## Inline Documents
 
-Houdini's preprocessor is a powerful tool that enables a more declarative API and hides a lot of the imperative
+Houdini's preprocessor is a powerful tool that enables a more declarative API and hides a lot of the
 complexity we saw in the previous section. To use the preprocessor, you must define your queries directly inside of your
 svelte components. For example, a route that depends on the result of a query looks something like this:
 
