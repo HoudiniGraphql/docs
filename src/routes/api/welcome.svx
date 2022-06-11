@@ -19,7 +19,7 @@ description: A listing of every top-level export from the Houdini runtime
 const mutationExample = `const addFriend = mutation(graphql\`
     mutation FollowFriend {
         followFriend(id: 1) {
-            friend { 
+            friend {
                 followed_by_viewer
             }
         }
@@ -29,7 +29,7 @@ const mutationExample = `const addFriend = mutation(graphql\`
 const graphqlExample = `const addFriend = mutation(graphql\`
     mutation SetFavorite {
         setFavoriteRecipe(id: 1) {
-            recipe { 
+            recipe {
                 ...Favorites_insert
             }
         }
@@ -37,7 +37,7 @@ const graphqlExample = `const addFriend = mutation(graphql\`
 \`)`
 
 const fragmentExample = `const data = fragment(graphql\`
-    fragment UserAvatar on User { 
+    fragment UserAvatar on User {
         firstName
         lastName
         email
@@ -53,12 +53,12 @@ const configExample = `export default {
 }`
 
 const subscriptionExample = `subscription(graphql\`
-    subscription PostLiked { 
+    subscription PostLiked {
         postLiked {
-            post { 
+            post {
                 like_count
             }
-        }        
+        }
     }
 \`)`
 
@@ -74,6 +74,7 @@ import { graphql, query } from '$houdini'
 ```
 
 If you are unable to resolve the import, please head over to the [Setting Up Your Project guide](/guides/setting-up-your-project) for framework-specific instructions.
+
 
 ## Runtime
 

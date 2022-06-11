@@ -1,6 +1,6 @@
 ---
 title: Caching Data
-index: 3
+index: 4
 description: A guide to all things caching in Houdini
 ---
 

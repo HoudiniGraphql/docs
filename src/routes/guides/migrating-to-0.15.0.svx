@@ -1,6 +1,6 @@
 ---
 title: Migrating to 0.15.0
-index: 8
+index: 9
 description: A guide to migrating your application to Houdini v0.15.0
 ---
 
