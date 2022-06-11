@@ -68,6 +68,6 @@
 
 	input:checked ~ .mode-value {
 		background-color: #ff3e00;
-		color: #511400;
+		color: #ffe7df;
 	}
 </style>

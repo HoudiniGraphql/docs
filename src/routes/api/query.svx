@@ -205,12 +205,105 @@ Refetching data is done with the `refetch` function provided from the result of 
 {$ViewerProfileStore.data.viewerProfile.firstName}
 ```
 
-## Methods and Fields
+## Store Value
 
-### Fetch
+A query store holds onto an object containing a variety of metadata
+about the last query that was sent:
 
+- `data`: holds the result of the query
+- `errors`: a list of objects with a `message` field
+- `isFetching`: a boolean that tracks the fetchingState (always false after a request)
+- `partial`: a boolean indicating of the query has partial results. For more information see the [caching guide](/guides/caching-data#partial-data)
+- `source`: one of `"network"` or `"cache"`. Indicates wether the result was read from the cache or the network
+- `variables`: the variables used for the request
+
+## `fetch(params): Promise<StoreValue>`
+
+A query store's primary goal is to fetch data from the server. This is achieved using the `fetch` method on the store.
+
+### Fetching in `load`
+
+When used inside of a route's `load` function, `fetch` must be passed
+the [LoadEvent](https://kit.svelte.dev/docs/types#sveltejs-kit-loadevent) as the `event` key.
+
+```javascript
+export async function load(event) {
+	await MyStore.fetch({ event })
+
+	return {}
+}
 ```
 
+In SvelteKit, the above code will cause every route transition to
+block while the store waits for the server. While this sounds great
+for server-side rendered views, this is usually not what we want for
+client-side transitions. In order to accommodate this, awaiting
+`fetch` does not actually wait for the promise to resolve when
+the request happens on the browser. This means that if you want to
+do something with the response, you have to pass `blocking: true`
+which will make the `await` behave like normal:
+
+```javascript
+export async function load(event) {
+	// blocking:true makes this await "real"
+	const { data } = await MyStore.fetch({ event, blocking: true })
+
+	// check the response of the query and redirect when appropriate
+	if (!data.fieldName) {
+		return {
+			redirect: '/not-field-name'
+		}
+	}
+
+	return {}
+}
 ```
+
+### Fetching on the client
+
+Fetching on the client, say in an handler like `on:click` requires a slightly
+different set of values than the server-side equivalent. Most importantly, `event` is not required:
+
+```svelte
+<script>
+    import MyQueryStore from '$houdini/stores/MyQuery'
+</script>
+
+$: browser && MyQueryStore.fetch();
+```
+
+However, if you require `session` or `page` in your in
+your client's fetch function, you must retrieve that information
+from your component's context and pass that to the call to `fetch`:
+
+```svelte
+<script>
+    import MyQueryStore from '$houdini/stores/MyQuery'
+    import { getHoudiniContext } from '$houdini/runtime'
+
+    const houdiniContext = getHoudiniContext()
+</script>
+
+$: browser && MyQueryStore.fetch({ context: houdiniContext });
+```
+
+### Specifying Variables
+
+`fetch` can take an optional `variables` key in its arguments:
+
+```javascript
+MyStore.fetch({ variables: { some: 'value' } })
+```
+
+You only need to specify the variables that you want changed. The store will reuse any variables it's been given in past calls to
+`fetch`.
+
+### Return Value
+
+`fetch` returns a Promise that usually resolves with an object
+described in [Store Value](#store-value). Keep in mind that when
+`params.blocking` is not set to true, `fetch`'s promise does not
+resolve with anything. This is to avoid unintended pauses when
+navigating between routes.
 
 {/if}
