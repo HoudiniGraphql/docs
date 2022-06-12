@@ -26,9 +26,7 @@ query MyFriends {
 }
 `
 	const forwardPaginationStoreAfter = `
-{
-  // ... rest of StoreValue above,
-
+type MyFriendsStore = QueryStore & {
   loadNextPage(
     houdiniContext: HoudiniContext,
     pageCount?: number,
@@ -51,9 +49,7 @@ query MyFriends {
 }
 `
 	const backwardsPaginationStoreAfter = `
-{
-  // ... rest of StoreValue above,
-
+type MyFriendsStore = QueryStore & {
   loadPreviousPage(
     houdiniContext: HoudiniContext,
     pageCount?: number,
@@ -73,9 +69,7 @@ query MyFriends {
 }
 `
 	const offsetPaginationStoreAfter = `
-{
-  // ... rest of StoreValue above,
-
+type MyFriendsStore = QueryStore & {
   loadNextPage(
     houdiniContext: HoudiniContext,
     limit?: number,
@@ -388,9 +382,9 @@ out [this guide](/guides/pagination).
 
 ### Forward cursor pagination
 
-If the decorated field implements cursor-based pagination and provides a `first` argument, the query store will be generated with extra
-fields and methods that lets it load more pages after the one the current one as well as the current `pageInfo` object
-which can be used to track if there are more pages to load:
+If the decorated field implements cursor-based pagination and provides a `first` argument, the query store will be
+generated with an extra method that loads more data and a field pointing to a store with the current `pageInfo`
+object. This extra field can be used to track if there are more pages to load:
 
 <Transformation>
 	<Highlight slot="from" code={forwardPaginationStoreBefore} language={graphql} />
@@ -399,9 +393,9 @@ which can be used to track if there are more pages to load:
 
 ### Backwards cursor pagination
 
-If the decorated field implements cursor-based pagination and provides a `last` argument, the query store will be generated with extra
-fields and methods that lets it load more pages before the one the current one as well as the current `pageInfo` object
-which can be used to track if there are more pages to load:
+If the decorated field implements cursor-based pagination and provides a `last` argument, the query store will be
+generated with an extra method that loads more data and a field pointing to a store with the current `pageInfo`
+object. This extra field can be used to track if there are more pages to load:
 
 <Transformation>
 	<Highlight slot="from" code={backwardsPaginationStoreBefore} language={graphql} />
