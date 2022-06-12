@@ -116,7 +116,8 @@ svelte components. For example, a route that depends on the result of a query lo
 Notice that you didn't have to define a loader for your route? That the magic of the preprocessor.
 It generates all of that for you!
 
-It gets even better in the context of a mutation:
+Mutations also have a much cleaner API with the preprocessor.
+Notice how there's no more of that `context` boilerplate:
 
 ```svelte
 <script>
@@ -139,7 +140,7 @@ It gets even better in the context of a mutation:
 <button on:click={() => addUser({ ... })} />
 ```
 
-No more need to grab the current `context`! For more information about Houdini's preprocessor
+For more information about Houdini's preprocessor
 and the inline document API, check out [this section of the docs](/api/welcome).
 
 So does that mean you should just always use the preprocessor and ignore the document stores? Well.... no. Not always.

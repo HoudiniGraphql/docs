@@ -38,7 +38,7 @@ Load data from the server and subscribe to any changes of fields we detect from 
 - `data` is a store containing the result of the query. It's value will update as mutations, subscriptions, and other queries provide more recent information.
 - `refetch` is a function that will refetch the query with a new set of arguments.
 - `loading` is a store containing the loading state (`true` or `false`) for a query found outside of a route component (ie, not defined in `src/routes`)
-- `error` is a store containing any error values that occur for a query found outside of a route component (ie, not defined in `src/routes`)
+- `errors` is a store containing any error values that occur for a query found outside of a route component (ie, not defined in `src/routes`)
 - `partial` is a store containing a boolean that indicates if the result has a partial match
 
 ## Query Variables
@@ -261,7 +261,7 @@ export async function load(event) {
 
 ### Fetching on the client
 
-Fetching on the client, say in an handler like `on:click` requires a slightly
+Fetching on the client, say in an handler like `on:click`, requires a slightly
 different set of values than the server-side equivalent. Most importantly, `event` is not required:
 
 ```svelte
@@ -305,5 +305,7 @@ described in [Store Value](#store-value). Keep in mind that when
 `params.blocking` is not set to true, `fetch`'s promise does not
 resolve with anything. This is to avoid unintended pauses when
 navigating between routes.
+
+## Paginated Queries
 
 {/if}
