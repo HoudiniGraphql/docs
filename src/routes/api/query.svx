@@ -13,10 +13,10 @@ description: Queries in Houdini
     const graphql = { name: 'graphql', register: graphqlLangDef }
      let mode
 
-	 const paginationStoreBefore = `
+	 const forwardPaginationStoreBefore = `
 query MyFriends {
   viewer {
-    friends @paginate(first: 10, name: "My_Friends") {
+    friends(first: 10) @paginate( name: "My_Friends") {
       edges {
         node {
           id
@@ -25,7 +25,7 @@ query MyFriends {
   }
 }
 `
-	const paginationStoreAfter = `
+	const forwardPaginationStoreAfter = `
 {
   // ... rest of StoreValue above,
 
@@ -37,7 +37,51 @@ query MyFriends {
 
   pageInfo: Readable<PageInfo>
 }
+`
+	 const backwardsPaginationStoreBefore = `
+query MyFriends {
+  viewer {
+    friends(last: 10) @paginate(name: "My_Friends") {
+      edges {
+        node {
+          id
+        }
+      }
+  }
+}
+`
+	const backwardsPaginationStoreAfter = `
+{
+  // ... rest of StoreValue above,
 
+  loadPreviousPage(
+    houdiniContext: HoudiniContext,
+    pageCount?: number,
+    before?: string | number
+  ): Promise<void>,
+
+  pageInfo: Readable<PageInfo>
+}
+`
+	 const offsetPaginationStoreBefore = `
+query MyFriends {
+  viewer {
+    friends(limit: 10) @paginate(name: "My_Friends") {
+      id
+    }
+  }
+}
+`
+	const offsetPaginationStoreAfter = `
+{
+  // ... rest of StoreValue above,
+
+  loadNextPage(
+    houdiniContext: HoudiniContext,
+    limit?: number,
+    offset?: number
+  ): Promise<void>,
+}
 `
 </script>
 
@@ -338,19 +382,39 @@ for the request from the server in order to avoid unintended pauses when navigat
 
 ## Paginated Queries
 
-If the query contains the [pagination directive](/guides/pagination) then the generated store will have extra fields/methods
-according to the pagination strategy and direction.
+If the query contains the pagination directive then the generated store will have extra fields/methods
+according to the pagination strategy and direction. For more information about pagination in general, check
+out [this guide](/guides/pagination).
 
 ### Forward cursor pagination
 
-If a field implements cursor-based pagination and provides a `first` argument, the query store will be generated with extra
-fields and methods that let it load more pages after the one the current one:
+If the decorated field implements cursor-based pagination and provides a `first` argument, the query store will be generated with extra
+fields and methods that lets it load more pages after the one the current one as well as the current `pageInfo` object
+which can be used to track if there are more pages to load:
 
 <Transformation>
-	<Highlight code={paginationStoreBefore} language={graphql} slot="from" />
-	<HighlightAuto code={paginationStoreAfter} slot="to" />
+	<Highlight slot="from" code={forwardPaginationStoreBefore} language={graphql} />
+	<HighlightAuto slot="to" code={forwardPaginationStoreAfter} />
 </Transformation>
 
+### Backwards cursor pagination
 
+If the decorated field implements cursor-based pagination and provides a `last` argument, the query store will be generated with extra
+fields and methods that lets it load more pages before the one the current one as well as the current `pageInfo` object
+which can be used to track if there are more pages to load:
+
+<Transformation>
+	<Highlight slot="from" code={backwardsPaginationStoreBefore} language={graphql} />
+	<HighlightAuto slot="to" code={backwardsPaginationStoreAfter} />
+</Transformation>
+
+### Offset/limit Pagination
+
+If the decorated field implements offset/limit pagination and provides a `limit` argument, the query store will be generated with an extra methods that lets it load more pages after the one the current one:
+
+<Transformation>
+	<Highlight slot="from" code={offsetPaginationStoreBefore} language={graphql} />
+	<HighlightAuto slot="to" code={offsetPaginationStoreAfter} />
+</Transformation>
 
 {/if}

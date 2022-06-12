@@ -40,7 +40,7 @@ querying your API but also subscribing to changes in Houdini's cache so everythi
 
 <Transformation>
     <Highlight language={graphql} code={storeSource} slot="from"/>
-    <HighlightAuto code={storeTypeDef} style="height: 125px;" slot="to" />
+    <HighlightAuto code={storeTypeDef} slot="to" />
 </Transformation>
 
 These stores can be imported and used directly anywhere in your project (components, endpoints, hooks, etc.) For example,
@@ -79,7 +79,6 @@ And using a mutation store looks something like
 
 <button on:click={addUser} />
 ```
-
 
 While the stores are incredibly flexible, we're already starting to see the biggest downside:
 there is a lot of boilerplate required to connect your component and store.
@@ -144,7 +143,6 @@ The preprocessor can only run on `.svelte` files so if you want to do things ins
 any random file, you'll need to use the store api. If you want to send custom headers for just a single
 request, you'll need the store api. You should think of a document store's api as a lower level mechanism for
 interacting with your graphql documents when you need to do something special with a query.
-
 
 It's also worth mentioning that the two styles are not mutually exclusive. There are time when you need to do
 something special in a component load function. That doesn't mean that you can't use the preprocesser in that
