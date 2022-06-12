@@ -7,7 +7,7 @@ description: An overview of the store-based API provided by Houdini and how it r
 <script>
     import { Highlight, HighlightAuto } from 'svelte-highlight'
     import graphqlLangDef from '~/lib/graphql-language'
-    import { Icon } from '~/components'
+    import { Transformation } from '~/components'
 
     const graphql = { name: 'graphql', register: graphqlLangDef }
 
@@ -38,13 +38,10 @@ When you run the `generate` command, Houdini creates a dedicated store for every
 For example, a graphql document containing a query will have a corresponding store generated that is not only responsible for
 querying your API but also subscribing to changes in Houdini's cache so everything is kept in sync when mutations and subscriptions fire.
 
-<div style="display: flex; flex-direction: row; align-items: center; overflow-x: auto;">
-    <Highlight language={graphql} code={storeSource}/>
-    <p style="margin-left: 10px; margin-right: 10px">
-        <Icon name="arrow-right" height="30px" width="30px"/>
-    </p>
-    <HighlightAuto code={storeTypeDef} style="height: 125px;" />
-</div>
+<Transformation>
+    <Highlight language={graphql} code={storeSource} slot="from"/>
+    <HighlightAuto code={storeTypeDef} style="height: 125px;" slot="to" />
+</Transformation>
 
 These stores can be imported and used directly anywhere in your project (components, endpoints, hooks, etc.) For example,
 a component that wants to use a query defined in an external file would look like:
@@ -83,7 +80,6 @@ And using a mutation store looks something like
 <button on:click={addUser} />
 ```
 
-For more information about each document store's API, please check the [API docs](/api/welcome).
 
 While the stores are incredibly flexible, we're already starting to see the biggest downside:
 there is a lot of boilerplate required to connect your component and store.
@@ -116,8 +112,7 @@ svelte components. For example, a route that depends on the result of a query lo
 Notice that you didn't have to define a loader for your route? That the magic of the preprocessor.
 It generates all of that for you!
 
-Mutations also have a much cleaner API with the preprocessor.
-Notice how there's no more of that `context` boilerplate:
+Mutations also have a simpler API with the preprocessor. Notice how there's no more need to pass `context`:
 
 ```svelte
 <script>
@@ -140,23 +135,21 @@ Notice how there's no more of that `context` boilerplate:
 <button on:click={() => addUser({ ... })} />
 ```
 
-For more information about Houdini's preprocessor
-and the inline document API, check out [this section of the docs](/api/welcome).
+## Inline Documents vs Stores? Why not both?
 
 So does that mean you should just always use the preprocessor and ignore the document stores? Well.... no. Not always.
 
-What you gain in simplicity of the preprocessor, you lose in flexibility.
+What you gain in simplicity with the preprocessor, you lose in flexibility.
 The preprocessor can only run on `.svelte` files so if you want to do things inside of an endpoint or
 any random file, you'll need to use the store api. If you want to send custom headers for just a single
-request, you'll need the store api. You should think of a document store's api as the low level mechanism for
-interacting with your graphql documents.
+request, you'll need the store api. You should think of a document store's api as a lower level mechanism for
+interacting with your graphql documents when you need to do something special with a query.
 
-## Inline Documents vs Stores? Why not both?
 
-It's also worth mentioning that the two styles are not mutually exclusive. For example, if you wanted to define
-some custom logic for a route, You'll want to use the store api for your query inside of a custom load. That
-doesn't mean that you can't have the preprocessor handle the context boilerplate for you but if you are
-defining you're own load, you have to make sure to call the appropriate method of the correct store:
+It's also worth mentioning that the two styles are not mutually exclusive. There are time when you need to do
+something special in a component load function. That doesn't mean that you can't use the preprocesser in that
+component. You're free to define your own load function and do anything you want, just make sure to call the
+appropriate method of the correct store:
 
 ```svelte
 <script context="module">

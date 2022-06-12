@@ -6,8 +6,39 @@ description: Queries in Houdini
 
 <script>
     import HeaderWithMode from './_HeaderWithMode.svelte'
+    import { Highlight, HighlightAuto } from 'svelte-highlight'
+    import graphqlLangDef from '~/lib/graphql-language'
+    import { Transformation } from '~/components'
 
-     let mode 
+    const graphql = { name: 'graphql', register: graphqlLangDef }
+     let mode
+
+	 const paginationStoreBefore = `
+query MyFriends {
+  viewer {
+    friends @paginate(first: 10, name: "My_Friends") {
+      edges {
+        node {
+          id
+        }
+      }
+  }
+}
+`
+	const paginationStoreAfter = `
+{
+  // ... rest of StoreValue above,
+
+  loadNextPage(
+    houdiniContext: HoudiniContext,
+    pageCount?: number,
+    after?: string | number
+  ): Promise<void>,
+
+  pageInfo: Readable<PageInfo>
+}
+
+`
 </script>
 
 <HeaderWithMode title="Query" bind:mode  />
@@ -217,7 +248,7 @@ about the last query that was sent:
 - `source`: one of `"network"` or `"cache"`. Indicates wether the result was read from the cache or the network
 - `variables`: the variables used for the request
 
-## `fetch(params): Promise<StoreValue>`
+## fetch
 
 A query store's primary goal is to fetch data from the server. This is achieved using the `fetch` method on the store.
 
@@ -300,12 +331,26 @@ You only need to specify the variables that you want changed. The store will reu
 
 ### Return Value
 
-`fetch` returns a Promise that usually resolves with an object
-described in [Store Value](#store-value). Keep in mind that when
-`params.blocking` is not set to true, `fetch`'s promise does not
-resolve with anything. This is to avoid unintended pauses when
-navigating between routes.
+`fetch` returns a Promise that usually resolves with an object described in [Store Value](#store-value).
+Keep in mind that when the `blocking` parameter is not set to true, `fetch`'s promise does not
+always resolve with something. When it is called on the client-side, the function does not actually wait
+for the request from the server in order to avoid unintended pauses when navigating between routes.
 
 ## Paginated Queries
+
+If the query contains the [pagination directive](/guides/pagination) then the generated store will have extra fields/methods
+according to the pagination strategy and direction.
+
+### Forward cursor pagination
+
+If a field implements cursor-based pagination and provides a `first` argument, the query store will be generated with extra
+fields and methods that let it load more pages after the one the current one:
+
+<Transformation>
+	<Highlight code={paginationStoreBefore} language={graphql} slot="from" />
+	<HighlightAuto code={paginationStoreAfter} slot="to" />
+</Transformation>
+
+
 
 {/if}
