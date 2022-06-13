@@ -70,7 +70,7 @@ const cliExample = `houdini generate --pull-schema`
 All functions shown here should be imported from your local runtime. This is usually aliased as `$houdini`, eg:
 
 ```js
-import { graphql, query } from '$houdini'
+import { graphql, query } from '$houdini/runtime'
 ```
 
 If you are unable to resolve the import, please head over to the [Setting Up Your Project guide](/guides/setting-up-your-project) for framework-specific instructions.
@@ -82,7 +82,6 @@ your document inside of your svelte components or in an external file. While the
 do vary slightly to accomodate the situation. To accomodate this, each document's section will have a toggle to show
 examples in two modes: "inline" and "store". For more information about the differences in the APIs, checkout out the
 [Working With GraphQL](http://localhost:3000/guides/working-with-graphql) guide.
-
 
 ## GraphQL Documents
 
