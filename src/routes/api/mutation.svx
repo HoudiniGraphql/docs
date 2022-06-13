@@ -12,6 +12,8 @@ description: Mutations in Houdini
 
 <HeaderWithMode title="Mutation" bind:mode  />
 
+{#if mode === 'inline'}
+
 Send a mutation to the server and updating your client-side cache with any changes.
 
 ```svelte
@@ -50,11 +52,56 @@ Send a mutation to the server and updating your client-side cache with any chang
 - mutations usually do best when combined with at least one fragment grabbing
   the information needed for the mutation (for an example of this pattern, see below.)
 
+{:else}
+
+A mutation store provides a `mutate` method that triggers the mutation and provides the latest
+mutation response as the store value:
+
+```svelte
+<script>
+	import UncheckItemStore from '$houdini/stores/UncheckItem'
+    import { getHoudiniContext } from '$houdini/runtime'
+
+	let itemID
+
+    const context = getHoudiniContext()
+</script>
+
+<button on:click={() => UncheckItemStore.mutate({ context, variables: { id: itemID } })}>
+    Uncheck Item
+</button>
+```
+
+### Store Value
+
+The store's value is an object with the following keys:
+
+- `data`: the latest response of the mutation
+- `errors`: a nullable list of errors from the mutation
+- `isFetching`: a boolean to track the fetching state of the mutation
+- `isOptimisticResponse` a boolean indicating if the response is optimistic
+- `variables`: the last set of variables used to trigger the mutation
+
+### Triggering a Mutation
+
+Triggering a mutation is done with the `mutate` method on the store as seen above. `mutate` returns a promise that resolves with an object matching the store's value
+(described above) and takes the following inputs:
+
+- `context`: optional. An opaque object of information necessary for the mutation. Only required if your environment needs `session` in its fetch function
+- `variables`: an object with the variables to use for the mutation
+- `optimisticResponse`: an object containing the optimistic response for the mutation. [See below](/api/mutation#optimistic-responses).
+
+{/if}
+
 ## Updating fields
 
 When a mutation is responsible for updating fields of entities, houdini
 should take care of the details for you as long as you request the updated data alongside the
-record's id. Take for example, an `TodoItemRow` component:
+record's id.
+
+{#if mode === 'inline' }
+
+Take for example, an `TodoItemRow` component:
 
 ```svelte
 <script lang="ts">
@@ -99,6 +146,10 @@ record's id. Take for example, an `TodoItemRow` component:
 	<button class="destroy" on:click={() => deleteItem({ id: $data.id })} />
 </li>
 ```
+
+{:else}
+
+{/if}
 
 ## Lists
 
@@ -195,6 +246,8 @@ mutation NewItem($input: AddItemInput!) {
 
 A lot of the time we know the value that a mutation will trigger assuming everything goes right. For example, a `toggleItem` mutation in a todo list will invert the value of the `checked` field of a particular item. In these situations, we don't have to wait for a mutation to resolve in order to apply the update to the cache. Instead, we can assume that it will succeed and provide an "optimistic response" for the mutation with the second argument to a mutation handler:
 
+{#if mode === 'inline'}
+
 ```svelte
 <script>
 	import { mutation, graphql } from '$houdini'
@@ -233,6 +286,36 @@ A lot of the time we know the value that a mutation will trigger assuming everyt
 	toggle item
 </button>
 ```
+
+{:else}
+
+```svelte
+<script>
+	import ToggleItem  from '$houdini/stores/ToggleItem'
+
+	export let itemID
+</script>
+
+<button
+	on:click={() => {
+		ToggleItemStore.mutate({
+            variables: { id: itemID },
+            optimisticResponse: {
+                toggleItem: {
+                    item: {
+                        id: '1',
+                        checked: true
+                    }
+                }
+            }
+        })
+	}}
+>
+	toggle item
+</button>
+```
+
+{/if}
 
 When the mutation resolves, the old values will be erased entirely and the new values will be committed to the cache. If instead the mutation fails, the optimistic changes will be reverted and the handler's promise will reject with the error message as usual.
 
