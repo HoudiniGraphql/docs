@@ -14,7 +14,7 @@ Every plugin and editor is different so we can't give you an exact answer but Ho
 
 ### When will version `1.0` be released?
 
-Quick answer is when svelekit gets to `1.0`. Until then, we want to be able to break the API in order to create the most conivnient experience for the majority of users.
+Quick answer is when svelekit gets to `1.0`. Until then, we want to be able to break the API in order to create the most convenient experience for the majority of users.
 
 ### Can I define graphql documents in external files?
 
