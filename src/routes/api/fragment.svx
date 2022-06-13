@@ -168,9 +168,9 @@ query AllUsers {
 > Keep in mind, if you are using fragment variables inside of a field flagged for
 > list operations, you'll have to pass a value for the variable when performing the operation
 
-{#if mode === 'inline'}
-
 ## Paginated Fragments
+
+{#if mode === 'inline'}
 
 Fragments may also contain a paginated field, similar to queries. A paginated fragment must use the `paginatedFragment` function and have a field tagged with the `@paginate` directive. For more information Houdini's support for pagination, please visit the [Pagination guide](/guides/pagination).
 
@@ -210,8 +210,6 @@ Fragments may also contain a paginated field, similar to queries. A paginated fr
 - `partial` is a store containing a boolean that indicates if the result has a partial match
 
 {:else}
-
-## Paginated Fragments
 
 If the fragment contains the pagination directive then the generated store will have extra fields/methods
 according to the pagination strategy and direction. For more information about pagination in general, check

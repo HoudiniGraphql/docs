@@ -67,7 +67,12 @@ mutation response as the store value:
     const context = getHoudiniContext()
 </script>
 
-<button on:click={() => UncheckItemStore.mutate({ context, variables: { id: itemID } })}>
+<button
+    on:click={() => UncheckItemStore.mutate({
+        context,
+        variables: { id: itemID }
+    })}
+>
     Uncheck Item
 </button>
 ```
