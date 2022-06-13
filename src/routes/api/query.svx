@@ -110,7 +110,43 @@ Load data from the server and subscribe to any changes of fields we detect from 
 - `errors` is a store containing any error values that occur for a query found outside of a route component (ie, not defined in `src/routes`)
 - `partial` is a store containing a boolean that indicates if the result has a partial match
 
-## Query Variables
+{:else}
+
+```svelte
+<script context="module">
+    import ViewerProfileStore from '$houdini/stores/ViewerProfile'
+
+    export async load(event) {
+        // make sure the store has the latest data
+        await ViewerProfileStore.fetch({ event })
+
+        // have to return _something_ to make SvelteKit happy
+        return {}
+    }
+</script>
+
+{$ViewerProfileStore.data.viewerProfile.firstName}
+```
+
+### Store Value
+
+A query store holds onto an object containing a variety of metadata
+about the last query that was sent:
+
+- `data`: holds the result of the query
+- `errors`: a list of objects with a `message` field
+- `isFetching`: a boolean that tracks the fetchingState (always false after a request)
+- `partial`: a boolean indicating of the query has partial results. For more information see the [caching guide](/guides/caching-data#partial-data)
+- `source`: one of `"network"` or `"cache"`. Indicates wether the result was read from the cache or the network
+- `variables`: the variables used for the request
+
+{/if}
+
+## Fetching Data
+
+{#if mode === 'inline'}
+
+### Query Variables
 
 At the moment, query variables are declared as a function in the module context of your component.
 This function must be named after your query and in a sapper application, it takes the same arguments
@@ -156,38 +192,7 @@ modified example [from the source repository](./https://github.com/HoudiniGraphq
 {/each}
 ```
 
-## Paginated Queries
-
-Paginated queries must use the `paginatedQuery` function exported from your runtime and contain the `@paginate` directive on the appropriate field. For more information Houdini's support for pagination, please visit the [Pagination guide](/guides/pagination).
-
-```svelte
-<script>
-	import { paginatedQuery, graphql } from '$houdini'
-	const { data, loadNextPage } = paginatedQuery(graphql`
-		query UserList {
-			friends(last: 10) @paginate {
-				edges {
-					node {
-						id
-					}
-				}
-			}
-		}
-	`)
-</script>
-```
-
-### Return Values
-
-`paginatedQuery` returns the same values as `query` with a few additions:
-
-- `loadNextPage` is an async function that loads the next page. It takes one optional argument: the page size to load for the next request.
-- `loadPreviousPage` is an async function that loads the previous page. It takes one optional argument: the page size to load for the next request.
-- `loading` is a store containing a boolean value that tracks the loading state of the pagination requests
-- `pageInfo` is a store that contains the page info (`hasPreviousPage`, `hasNextPage`, etc.) Only valid for cursor-based pagination.
-- `partial` is a store containing a boolean that indicates if the result has a partial match
-
-## Loading State
+### Loading State
 
 The methods used for tracking the loading state of your queries changes depending
 on the context of your component. For queries that live in routes (ie, in
@@ -230,7 +235,7 @@ the result of query:
 {/if}
 ```
 
-## Refetching Data
+### Refetching Data
 
 Refetching data is done with the `refetch` function provided from the result of a query:
 
@@ -257,36 +262,6 @@ Refetching data is done with the `refetch` function provided from the result of 
 ```
 
 {:else}
-
-```svelte
-<script context="module">
-    import ViewerProfileStore from '$houdini/stores/ViewerProfile'
-
-    export async load(event) {
-        // make sure the store has the latest data
-        await ViewerProfileStore.fetch({ event })
-
-        // have to return _something_ to make SvelteKit happy
-        return {}
-    }
-</script>
-
-{$ViewerProfileStore.data.viewerProfile.firstName}
-```
-
-## Store Value
-
-A query store holds onto an object containing a variety of metadata
-about the last query that was sent:
-
-- `data`: holds the result of the query
-- `errors`: a list of objects with a `message` field
-- `isFetching`: a boolean that tracks the fetchingState (always false after a request)
-- `partial`: a boolean indicating of the query has partial results. For more information see the [caching guide](/guides/caching-data#partial-data)
-- `source`: one of `"network"` or `"cache"`. Indicates wether the result was read from the cache or the network
-- `variables`: the variables used for the request
-
-## fetch
 
 A query store's primary goal is to fetch data from the server. This is achieved using the `fetch` method on the store.
 
@@ -374,7 +349,42 @@ Keep in mind that when the `blocking` parameter is not set to true, `fetch`'s pr
 always resolve with something. When it is called on the client-side, the function does not actually wait
 for the request from the server in order to avoid unintended pauses when navigating between routes.
 
+{/if}
+
 ## Paginated Queries
+
+{#if mode === 'inline'}
+
+Paginated queries must use the `paginatedQuery` function exported from your runtime and contain the `@paginate` directive on the appropriate field. For more information Houdini's support for pagination, please visit the [Pagination guide](/guides/pagination).
+
+```svelte
+<script>
+	import { paginatedQuery, graphql } from '$houdini'
+	const { data, loadNextPage } = paginatedQuery(graphql`
+		query UserList {
+			friends(last: 10) @paginate {
+				edges {
+					node {
+						id
+					}
+				}
+			}
+		}
+	`)
+</script>
+```
+
+### Return Values
+
+`paginatedQuery` returns the same values as `query` with a few additions:
+
+- `loadNextPage` is an async function that loads the next page. It takes one optional argument: the page size to load for the next request.
+- `loadPreviousPage` is an async function that loads the previous page. It takes one optional argument: the page size to load for the next request.
+- `loading` is a store containing a boolean value that tracks the loading state of the pagination requests
+- `pageInfo` is a store that contains the page info (`hasPreviousPage`, `hasNextPage`, etc.) Only valid for cursor-based pagination.
+- `partial` is a store containing a boolean that indicates if the result has a partial match
+
+{:else}
 
 If the query contains the pagination directive then the generated store will have extra fields/methods
 according to the pagination strategy and direction. For more information about pagination in general, check
