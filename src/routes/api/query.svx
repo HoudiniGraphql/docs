@@ -146,6 +146,10 @@ about the last query that was sent:
 
 {#if mode === 'inline'}
 
+The initial fetch for data happens at different times depending on what [framework](/api/config) you are using with houdini. For a
+SvelteKit application, the preprocessor generates a [load function](https://kit.svelte.dev/docs/loading) for you
+that uses the appropriate [document store](/guides/working-with-graphql).
+
 ### Query Variables
 
 At the moment, query variables are declared as a function in the module context of your component.
@@ -160,14 +164,14 @@ modified example [from the source repository](./https://github.com/HoudiniGraphq
 <script context="module" lang="ts">
 	// This is the function for the AllItems query.
 	// Query variable functions must be named <QueryName>Variables.
-	export function AllItemsVariables(page): AllItems$input {
+	export function AllItemsVariables(event): AllItems$input {
 		// make sure we recognize the value
-		if (!['active', 'completed'].includes(page.params.filter)) {
+		if (!['active', 'completed'].includes(event.params.filter)) {
 			return this.error(400, 'invalid filter')
 		}
 
 		return {
-			completed: page.params.filter === 'completed'
+			completed: event.params.filter === 'completed'
 		}
 	}
 </script>
@@ -235,30 +239,37 @@ the result of query:
 {/if}
 ```
 
-### Refetching Data
+### Customizing the Loader
 
-Refetching data is done with the `refetch` function provided from the result of a query:
+Sometimes you will need to add additional logic to a component’s query. For example, you might want to check if the current
+session is valid before a query is sent to the server. In these scenarios, you are encouraged to define your own `load` function
+with any logic you want (the preprocessor will leave it alone). Just make sure you call the `fetch` function from the query's
+document store:
 
 ```svelte
-<script lang="ts">
-	import { query, graphql, AllItems } from '$houdini'
+<script context="module">
+	import MyQueryStore from '$houdini/stores/MyQuery'
 
-	// load the items
-	const { refetch } = query<AllItems>(graphql`
-		query AllItems($completed: Boolean) {
-			items(completed: $completed) {
-				id
-				text
+	export async function load(event) {
+		// any beforeLoad logic goes here (before the load)
+		if (!event.session.authenticated) {
+			return this.redirect(302, '/login')
+		}
+
+		// perform the fetch
+		await MyQueryStore.fetch({ event })
+	}
+</script>
+
+<script>
+	const { data } = query(graphql`
+		query MyQuery {
+			myProfile {
+				firstName
 			}
 		}
 	`)
-
-	let completed = true
-
-	$: refetch({ completed })
 </script>
-
-<input type="checkbox" bind:checked={completed} />
 ```
 
 {:else}
