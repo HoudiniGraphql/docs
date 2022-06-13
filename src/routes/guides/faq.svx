@@ -12,25 +12,28 @@ Here are some answers to common questions you might have while working with Houd
 
 Every plugin and editor is different so we can't give you an exact answer but Houdini will write a file inside of the `$houdini` directory that contains all of the custom definitions that it relies on. Be default this file is located at `$houdini/definitions.gql`. You can configure this value in your [config file](/api/config) under the `definitionsPath` value.
 
+### When will version `1.0` be released?
+
+Quick answer is when svelekit gets to `1.0`. Until then, we want to be able to break the API in order to create the most conivnient experience for the majority of users.
+
 ### Can I define graphql documents in external files?
 
 Yes! You'll just have to rely on the store apis for your documents and write your route's loads manually.
-For more information on using your document's stores check out the [api docs]().
+For more information on using your document's stores check out [Working with GraphQL](/guides/working-with-graphql) guide.
 
 ### Can I use queries in endpoints?
 
-Yep! You can use queries or any document anywhere you can use a svelte store. Just define your query in an external file and use the store api as described in the [api docs]().
+Yep! You can use queries or any document anywhere you can use a svelte store. Just define your query in an external file and use the store api as described in [Query Store](/api/query) api docs.
 
-### What happened to Load?
+### How does the preprocessor work?
 
-If you are familiar with the SvelteKit API, you probablyed noticed that you don't need to define a `load` function as described in the [SvelteKit docs](https://kit.svelte.dev/docs/loading). Don't worry, your routes are still rendered on the server thanks to the preprocessor. One of its responsibilities is moving the actual fetch into a `load`.
+If you are familiar with the SvelteKit API, you probablyed noticed that you don't need to define a `load` function as described in the [SvelteKit docs](https://kit.svelte.dev/docs/loading) when using inline documents. Don't worry, your routes are still rendered on the server thanks to the preprocessor. One of its responsibilities is moving the actual fetch into a `load`.
 
 For example, consider this query from the [Introduction](/intro/welcome):
 
 ```svelte
 <script>
     import { query, graphql } from '$houdini'
-    import { Container, Display, Sprite, Panel } from '~/components'
 
     const { data } = query(graphql`
         query SpeciesInfo {
@@ -54,38 +57,20 @@ You can think of it as equivalent to:
 
 ```svelte
 <script context="module">
-    export async function load({ fetch }) {
-            return {
-                props: {
-                    _data: await fetch(API_URL, {
-                        text: `
-                            query SpeciesInfo {
-                                species(id: 1) {
-                                    name
-                                    flavor_text
-                                    sprites {
-                                        front
-                                    }
-                                }
-                            }
-                        `
-                    })
-                },
-            }
+    import { SpeciesInfo } from '$houdini/stores/SpeciesInfo'
+
+    export async function load({ event }) {
+        await SpeciesInfo.fetch({ event } )
     }
 </script>
 
 <script>
-    export let _data
-
-    const data = readable(_data, ...)
+    let { data } = $SpeciesInfo
 </script>
 ```
 
-### Why is the query variable API so weird?
+If this store part was confusing, please check out the [Working with GraphQL](/guides/working-with-graphql) guide.
+
+### Why is the inline query variable API so weird?
 
 To understand why things are designed the way they are, you should consider the output of the preprocessor (shown above). Any logic that's used to compute the query variables needs to be hoisted up to the module context block so that the value could be passed onto the server. Since the user would naturally want to execute arbitrary logic when computing this value, we have to make sure that any imports or function definitions are available to the module context so that they can run.
-
-### When will version `1.0` be released?
-
-Quick answer is when svelekit gets to `1.0`. Until then, we want to be able to break the API in order to create the most conivnient experience for the majority of users.

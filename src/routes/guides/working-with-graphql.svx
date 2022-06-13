@@ -43,8 +43,9 @@ querying your API but also subscribing to changes in Houdini's cache so everythi
     <HighlightAuto code={storeTypeDef} slot="to" />
 </Transformation>
 
-These stores can be imported and used directly anywhere in your project (components, endpoints, hooks, etc.) For example,
-a component that wants to use a query defined in an external file would look like:
+A component that wants to use a query defined in an external file would look like the following. Note that These stores can be imported and used directly
+anywhere in your project (components, endpoints, hooks, etc.) However, for reasons that don't really matter right now, a single store cannot be mounted/used in
+multiple components simultaneously.
 
 ```svelte
 <script context="module">
