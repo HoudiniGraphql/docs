@@ -345,7 +345,7 @@
 
 	a.nav.subcategory::before {
 		content: '•';
-		margin-left: -10px;
+		margin-left: 10px;
 		margin-right: 10px;
 	}
 
