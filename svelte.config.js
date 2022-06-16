@@ -64,8 +64,10 @@ const config = {
 			plugins: [
 				replaceCodePlugin({
 					replacements: [
-						{ from: 'REPLACE_WITH_FILES', to: JSON.stringify(await loadFiles()) },
-						{ from: 'REPLACE_WITH_CONTENT', to: JSON.stringify(await loadContent()) }
+						// { from: 'REPLACE_WITH_FILES', to: JSON.stringify(await loadFiles()) },
+						// { from: 'REPLACE_WITH_CONTENT', to: JSON.stringify(await loadContent()) }
+						{ from: 'REPLACE_WITH_FILES', to: '' },
+						{ from: 'REPLACE_WITH_CONTENT', to: '' }
 					]
 				})
 			]

@@ -5,7 +5,7 @@ description: Fragments in Houdini
 ---
 
 <script>
-    import HeaderWithMode from './_HeaderWithMode.svelte'
+    import HeaderWithMode from '../_HeaderWithMode.svelte'
     import { Highlight, HighlightAuto } from 'svelte-highlight'
     import graphqlLangDef from '~/lib/graphql-language'
     import { Transformation } from '~/components'
@@ -13,7 +13,7 @@ description: Fragments in Houdini
     const graphql = { name: 'graphql', register: graphqlLangDef }
      let mode
 
-     
+
 	 const forwardPaginationStoreBefore = `
 fragment UserInfo on User {
     friends(first: 10) @paginate( name: "My_Friends") {
@@ -76,42 +76,7 @@ type UserInfoStore = FragmentStore & {
 `
 </script>
 
-<HeaderWithMode title="Fragment" bind:mode  />
-
-{#if mode === 'inline'}
-
-Specify the data requirements for a Svelte component.
-
-```svelte
-<script>
-	import { fragment, graphql } from '$houdini'
-
-	// the reference will get passed as a prop
-	export let user
-
-	const data = fragment(
-		graphql`
-			fragment UserAvatar on User {
-				profilePicture
-			}
-		`,
-		user
-	)
-</script>
-
-<img src={$data.profilePicture} />
-```
-
-### Inputs
-
-1. A string tagged with `graphql` containing a single document with fragment
-2. The prop containing the fragment reference (to be passed by another component that mixed in the fragment)
-
-### Return Values
-
-`fragment` returns a store containing the fragment values. These values will be updated as query, mutations, and subscriptions get new values.
-
-{:else}
+<HeaderWithMode title="Fragment"  />
 
 Load a snapshot of data for a particular object that has had the fragment applied.
 
@@ -129,7 +94,6 @@ Load a snapshot of data for a particular object that has had the fragment applie
 <img src={$data.profilePicture} />
 ```
 
-{/if}
 
 ## Fragment Arguments
 
@@ -170,47 +134,6 @@ query AllUsers {
 
 ## Paginated Fragments
 
-{#if mode === 'inline'}
-
-Fragments may also contain a paginated field, similar to queries. A paginated fragment must use the `paginatedFragment` function and have a field tagged with the `@paginate` directive. For more information Houdini's support for pagination, please visit the [Pagination guide](/guides/pagination).
-
-```svelte
-<script>
-	import { paginatedFragment, graphql } from '$houdini'
-
-	// the reference will get passed as a prop
-	export let user
-
-	const { loadNextPage, data } = paginatedFragment(
-		graphql`
-			fragment UserWithFriends on User {
-				friends(first: 10) @paginate {
-					edges {
-						node {
-							id
-						}
-					}
-				}
-			}
-		`,
-		user
-	)
-</script>
-```
-
-### Return Values
-
-`paginatedQuery` returns a single object with the following keys:
-
-- `data` is a store containing the fragment's data
-- `loadNextPage` is an async function that loads the next page. It takes one optional argument: the page size to load for the next request.
-- `loadPreviousPage` is an async function that loads the previous page. It takes one optional argument: the page size to load for the next request.
-- `loading` is a store containing a boolean value that tracks the loading state of the pagination requests
-- `pageInfo` is a store that contains the page info (`hasPreviousPage`, `hasNextPage`, etc.) Only valid for cursor-based pagination.
-- `partial` is a store containing a boolean that indicates if the result has a partial match
-
-{:else}
-
 If the fragment contains the pagination directive then the generated store will have extra fields/methods
 according to the pagination strategy and direction. For more information about pagination in general, check
 out [this guide](/guides/pagination).
@@ -245,5 +168,3 @@ If the decorated field implements offset/limit pagination and provides a `limit`
 	<Highlight slot="from" code={offsetPaginationStoreBefore} language={graphql} />
 	<HighlightAuto slot="to" code={offsetPaginationStoreAfter} />
 </Transformation>
-
-{/if}

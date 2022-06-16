@@ -1,8 +1,10 @@
 <script lang="ts">
-	import { session } from '$app/stores'
+	import { page } from '$app/stores'
 
-	export let mode: 'inline' | 'store' = $session?.mode || 'inline'
 	export let title: string
+	export let mode: 'inline' | 'store' = $page.url.pathname.split('/').slice(-1)[0] as
+		| 'inline'
+		| 'store'
 
 	function setMode(val: typeof mode) {
 		fetch('/setMode', {
@@ -21,29 +23,10 @@
 		Inline {title}
 	{/if}
 
-	<fieldset>
-		<legend style="display: none;">Your favourite fruit?</legend>
-		<label>
-			<input
-				type="radio"
-				name="mode"
-				value="inline"
-				bind:group={mode}
-				on:click={() => setMode('inline')}
-			/>
-			<span class="mode-value">Inline</span>
-		</label>
-		<label>
-			<input
-				type="radio"
-				name="mode"
-				value="store"
-				bind:group={mode}
-				on:click={() => setMode('store')}
-			/>
-			<span class="mode-value">Store</span>
-		</label>
-	</fieldset>
+	<nav id="document-api-links">
+		<a on:click={() => setMode('inline')} class:current={mode === 'inline'} href="inline">Inline</a>
+		<a on:click={() => setMode('inline')} class:current={mode === 'store'} href="store">Store</a>
+	</nav>
 </h1>
 
 <style>
@@ -53,18 +36,15 @@
 		justify-content: space-between;
 	}
 
-	input {
-		display: none;
-	}
-
-	.mode-value {
+	#document-api-links a {
 		cursor: pointer;
 		font-size: 24px;
 		border-radius: 12px;
 		padding: 3px 20px;
+		color: white;
 	}
 
-	input:checked ~ .mode-value {
+	#document-api-links a.current {
 		background-color: #ff3e00;
 		color: #ffe7df;
 	}

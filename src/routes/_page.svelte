@@ -12,7 +12,7 @@
 
 	// the list of files we can render
 	// @ts-ignore
-	let categories = REPLACE_WITH_FILES
+	let categories = '' || Boolean(REPLACE_WITH_FILES)
 	let categoryNames = Object.keys(categories)
 
 	// some state to control the menu

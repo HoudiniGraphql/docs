@@ -5,16 +5,12 @@ description: Subscriptions in Houdini
 ---
 
 <script>
-    import HeaderWithMode from './_HeaderWithMode.svelte'
-
-     let mode
+    import HeaderWithMode from '../_HeaderWithMode.svelte'
 </script>
 
-<HeaderWithMode title="Subscription" bind:mode  />
+<HeaderWithMode title="Subscription" />
 
 Listen for real-time updates from your server using GraphQL Subscriptions.
-
-{#if mode === 'inline'}
 
 ```svelte
 <script>
@@ -51,27 +47,6 @@ Listen for real-time updates from your server using GraphQL Subscriptions.
 
 Note: mutations usually do best when combined with at least one fragment grabbing
 the information needed for the mutation (for an example of this pattern, see below.)
-
-{:else}
-
-```svelte
-<script>
-	import ItemUpdate from '$houdini/stores/ItemUpdate'
-
-	ItemUpdate.subscribe({ id: itemID })
-</script>
-
-latestValue: {$ItemUpdate.item.text}
-```
-
-### Store Methods
-
-A subscription store holds onto the latest value from the subscription and has the following methods:
-
-- `subscribe`: takes an optional object to use as variables and causes the store to start listening for events
-- `unsubscribe`: causes the store to stop listening. This gets called automatically when using the `$` syntax to retrieve the value
-
-{/if}
 
 ## List Operations
 
