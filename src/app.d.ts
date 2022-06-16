@@ -2,7 +2,7 @@
 
 interface SessionData {
 	// Your session data
-	views: number
+	mode: 'inline' | 'store'
 }
 
 // See https://kit.svelte.dev/docs#typescript
@@ -18,8 +18,4 @@ declare namespace App {
 	interface Session extends SessionData {}
 
 	interface Stuff {}
-
-	interface Session {
-		mode: 'inline' | 'store'
-	}
 }

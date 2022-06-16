@@ -11,8 +11,6 @@
 				mode: val
 			})
 		})
-
-		$session.mode = val
 	}
 </script>
 
