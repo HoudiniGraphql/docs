@@ -239,37 +239,96 @@ the result of query:
 {/if}
 ```
 
-### Customizing the Loader
+### Hooks
 
-Sometimes you will need to add additional logic to a component’s query. For example, you might want to check if the current
-session is valid before a query is sent to the server. In these scenarios, you are encouraged to define your own `load` function
-with any logic you want (the preprocessor will leave it alone). Just make sure you call the `fetch` function from the query's
-document store:
+Sometimes you will need to add additional logic to a component's query. For example, you might want to
+check if the current session is valid before a query is sent to the server. In order to support this,
+Houdini will look for hook functions defined in the module context which can be used to perform
+any logic you need.
+
+Hooks can be used to pass data to components as well as populate your SvelteKit route's `stuff` by returning an
+object with `props` or `stuff` keys.
+
+#### `beforeLoad`
+
+Called before Houdini executes load queries against the server. You can expect the same
+arguments as SvelteKit's [`load`](https://kit.svelte.dev/docs#loading) hook.
 
 ```svelte
 <script context="module">
-	import MyQueryStore from '$houdini/stores/MyQuery'
+    // It has access to the same arguments,
+    // this.error, and this.redirect as the variable functions
+    export function beforeLoad({page, session}){
+        if(!session.authenticated){
+            return this.redirect(302, '/login')
+        }
 
-	export async function load(event) {
-		// any beforeLoad logic goes here (before the load)
-		if (!event.session.authenticated) {
-			return this.redirect(302, '/login')
-		}
-
-		// perform the fetch
-		await MyQueryStore.fetch({ event })
-	}
+    	return {
+            props: {
+                message: "Number of items:"
+            }
+        }
+    }
 </script>
 
 <script>
-	const { data } = query(graphql`
-		query MyQuery {
-			myProfile {
-				firstName
-			}
-		}
-	`)
+    import { query, graphql } from '$houdini'
+
+    export let message
+
+    // load the items
+    const { data } = query(graphql`
+        query AllItems {
+            items {
+                id
+            }
+        }
+    `)
 </script>
+
+{message}: {$data.items.length}
+```
+
+#### `afterLoad`
+
+Called after Houdini executes load queries against the server. You can expect the same
+arguments as SvelteKit's [`load`](https://kit.svelte.dev/docs#loading) hook, plus an additional
+`data` property referencing query result data.
+
+```svelte
+<script context="module">
+    export function MyProfileVariables({ page: { params: { id } } }) {
+        return { id }
+    }
+    export function afterLoad({ data }){
+        if(!data.MyProfile){
+            return this.error(404)
+        }
+
+        return {
+            props: {
+                message: "Hello I'm"
+            }
+        }
+    }
+</script>
+
+<script>
+    import { query, graphql } from '$houdini'
+
+    export let message
+
+    // load the items
+    const { data } = query(graphql`
+        query MyProfile {
+            profile(id) {
+                name
+            }
+        }
+    `)
+</script>
+
+{message} {$data.profile.name}
 ```
 
 {:else}

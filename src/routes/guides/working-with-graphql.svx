@@ -62,7 +62,9 @@ anywhere in your project (components, endpoints, hooks, etc.).
 
 {$ViewerProfileStore.data.viewerProfile.firstName}
 
+<!-- make sure that the latest value is always fetched -->
 $: browser && ViewerProfileStore.fetch()
+
 ```
 
 And using a mutation store looks something like

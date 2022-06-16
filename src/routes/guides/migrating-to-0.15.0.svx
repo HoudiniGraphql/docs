@@ -10,7 +10,6 @@ Lot's changed in `v0.15.0`. Hopefully this guide should help you understand thos
 update to work with the new features. If you just want to skip straight to the deprecation warnings you might be seeing in your terminal,
 here are a few links:
 
-- [Query Hooks](#query-hooks)
 - [Config Values](#config-values)
 - [Environment](#environment)
 - [@parentID](#parentid)
@@ -27,48 +26,6 @@ cleaned up but at least query hooks are gone! By the way, if you have any ideas 
 query variables for inline documents, let us know (but please, read
 [this](/guides/faq#why-is-the-query-variable-api-so-weird) first).
 Anyway, the rest of this document explains how to fix the APIs that got deprecated as part of this effort.
-
-## Query Hooks
-
-With the new [store API](), we now have a much more ergonomic way of performing the same kinds of tasks that query hooks previously
-satisfied. The official recommendation is to avoid the magically named functions and instead write your own load function that calls
-the appropriate store's `fetch` function:
-
-```svelte
-<script context="module">
-	import MyQueryStore from '$houdini/stores/MyQuery'
-
-	export async function load(event) {
-		// any beforeLoad logic goes here (before the load)
-		if (!event.session.authenticated) {
-			return this.redirect(302, '/login')
-		}
-
-		// perform the fetch and wait for a response
-		const { data } = await MyQueryStore.fetch({ event, blocking: true })
-
-		// any afterLoad logic can now be here
-		if (!data.myProfile) {
-			return {
-				error: {
-					code: 404,
-					message: 'missing user'
-				}
-			}
-		}
-	}
-</script>
-
-<script>
-	const { data } = query(graphql`
-		query MyQuery {
-			myProfile {
-				firstName
-			}
-		}
-	`)
-</script>
-```
 
 ## Config Values
 

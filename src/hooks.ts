@@ -7,5 +7,5 @@ export async function getSession({ locals }) {
 
 // You can do it like this, without passing a own handle function
 export const handle = handleSession({
-	secret: process.env.VITE_SESSION_SECRET
+	secret: import.meta.env.VITE_SESSION_SECRET
 })
