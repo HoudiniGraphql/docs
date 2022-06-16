@@ -27,7 +27,7 @@ description: An overview of the store-based API provided by Houdini and how it r
 
 There are two different ways you can define graphql documents in a Houdini application. You can either take advantage of the preprocessor to define your
 documents inside of `.svelte` files or you can define them in external graphql files and interact the document's dedicated store. While the two approaches are totally equivalent, they have
-different strengths and weaknesses so you'll often find yourself mixing and matching the techniques (sometime in the same component!).
+different strengths and weaknesses so you'll often find yourself mixing and matching the techniques in a given project.
 
 Before we get to the actual differences we should first go over the core abstraction powering Houdini's data fetching: document stores.
 
@@ -143,7 +143,7 @@ Mutations also have a simpler API with the preprocessor. Notice how there's no m
 <button on:click={() => addUser({ firstName: "Houdini" })} />
 ```
 
-## Inline Documents vs Stores? Why not both?
+## Inline Documents vs Stores
 
 So does that mean you should just always use the preprocessor and ignore the document stores? Well.... no. Not always.
 
