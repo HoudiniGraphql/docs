@@ -43,17 +43,17 @@ querying your API but also subscribing to changes in Houdini's cache so everythi
     <HighlightAuto code={storeTypeDef} slot="to" />
 </Transformation>
 
-A component that wants to use a query defined in an external file would look like the following. Note that These stores can be imported and used directly
-anywhere in your project (components, endpoints, hooks, etc.) However, for reasons that don't really matter right now, a single store cannot be mounted/used in
-multiple components simultaneously.
+A component that wants to use a query defined in an external file would look like the following. Note that these stores can be imported and used directly
+anywhere in your project (components, endpoints, hooks, etc.).
 
 ```svelte
 <script context="module">
     import ViewerProfileStore from '$houdini/stores/ViewerProfile'
+    import { browser } from '$app/env'
 
     export async load(event) {
         // make sure the store has the latest data
-        await ViewerProfileStore.fetch({ event })
+        await ViewerProfileStore.prefetch({ event })
 
         // have to return _something_ to make sveltekit happy
         return {}
@@ -61,6 +61,8 @@ multiple components simultaneously.
 </script>
 
 {$ViewerProfileStore.data.viewerProfile.firstName}
+
+$: browser && ViewerProfileStore.fetch()
 ```
 
 And using a mutation store looks something like
@@ -75,7 +77,10 @@ And using a mutation store looks something like
     const context = getHoudiniContext()
 
     // a function to invoke the mutation
-    const addUser = () => AddUser.mutate({ context, variables: { ... }})
+    const addUser = () => AddUser.mutate({
+        context,
+        variables: { firstName: "Houdini" }
+    })
 </script>
 
 <button on:click={addUser} />
@@ -84,8 +89,9 @@ And using a mutation store looks something like
 While the stores are incredibly flexible, we're already starting to see the biggest downside:
 there is a lot of boilerplate required to connect your component and store.
 Every time you invoke `.mutate` you have to pass in the component context. For a query store, you
-must pass different arguments to `store.fetch` if you are fetching in the `load` function or in your
-component. This can feel like a lot to remember, but don't worry - that's where the preprocessor comes in.
+must remember to use `store.prefetch` in `load` and `store.fetch` in the component. You also have to thread
+the query variables from your `load` function into the call to `store.fetch`. If this seems like a lot
+to remember, don't worry - that's where the preprocessor comes in.
 
 ## Inline Documents
 
@@ -122,8 +128,8 @@ Mutations also have a simpler API with the preprocessor. Notice how there's no m
 
     // a function to invoke the mutation
     const addUser = mutation(graphql`
-        mutation AddUser {
-            addUser(input: { ... }) {
+        mutation AddUser($firstName: String!) {
+            addUser(firstName: $firstName) {
                 newUser {
                     id
                 }
@@ -132,7 +138,7 @@ Mutations also have a simpler API with the preprocessor. Notice how there's no m
     `)
 </script>
 
-<button on:click={() => addUser({ ... })} />
+<button on:click={() => addUser({ firstName: "Houdini" })} />
 ```
 
 ## Inline Documents vs Stores? Why not both?
@@ -143,52 +149,5 @@ What you gain in simplicity with the preprocessor, you lose in flexibility.
 The preprocessor can only run on `.svelte` files so if you want to do things inside of an endpoint or
 any random file, you'll need to use the store api. If you want to send custom headers for just a single
 request, you'll need the store api. You should think of a document store's api as a lower level mechanism for
-interacting with your graphql documents when you need to do something special with a query.
-
-It's also worth mentioning that the two styles are not mutually exclusive. There are time when you need to do
-something special in a component load function. That doesn't mean that you can't use the preprocesser in that
-component. You're free to define your own load function and do anything you want, just make sure to call the
-appropriate method of the correct store:
-
-```svelte
-<script context="module">
-	import ViewerProfileStore from '$houdini/stores/ViewerProfile'
-
-	export async function load(event) {
-		if (!event.session.authenticated) {
-			return this.redirect(302, '/login')
-		}
-
-		// perform the fetch and wait for a response
-		const { data } = await ViewerProfileStore.fetch({ event, blocking: true })
-
-		if (!data.viewer) {
-			return {
-				error: {
-					code: 404,
-					message: 'missing user'
-				}
-			}
-		}
-	}
-</script>
-
-<script>
-	import { graphql, query } from '$houdini'
-
-	const { data } = query(graphql`
-		query ViewerProfile {
-			viewer {
-				firstName
-			}
-		}
-	`)
-</script>
-
-{$ViewerProfileStore.data.viewerProfile.firstName}
-```
-
-Notice that we defined our document inside of our component but still defined a custom `load` where we could
-perform abitrary logic. This is definitely an advanced situation so don't worry if this is too abstract.
-It's one of those things that will make more sense when you need it. Just remember: if you define your own
-load function when you have an inline document, you **must** call the store's `fetch` method yourself.
+interacting with your graphql documents when you need to do something special with a query but you will be responsible
+for the details.
