@@ -50,10 +50,11 @@ multiple components simultaneously.
 ```svelte
 <script context="module">
     import ViewerProfileStore from '$houdini/stores/ViewerProfile'
+    import { browser } from '$app/stores'
 
     export async load(event) {
         // make sure the store has the latest data
-        await ViewerProfileStore.fetch({ event })
+        await ViewerProfileStore.prefetch({ event })
 
         // have to return _something_ to make sveltekit happy
         return {}
@@ -61,6 +62,10 @@ multiple components simultaneously.
 </script>
 
 {$ViewerProfileStore.data.viewerProfile.firstName}
+
+<!-- make sure that the latest value is always fetched -->
+$: browser && ViewerProfileStore.fetch()
+
 ```
 
 And using a mutation store looks something like
