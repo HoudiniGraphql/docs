@@ -113,7 +113,9 @@ npm run generate
 
 Keep in mind, you will have to do this every time you change any graphql string in a houdini project. I know this sounds like a big burden but bear with us. We are actively working on a way to avoid this altogether, its just not ready yet.
 
-Now that you've generated the necessary files, you should see a description of the first species in the generation 1 Pokédex - the ever popular Bulbasaur. If you are still running into issues, please reach out to us on the svelte discord and we'd be happy to help.
+By the way, if you ever change your schema and you need to update the local version, you can pass `-p` to `generate` and it will pull the latest version from your API before generating everything.
+
+Anyway, now that you have the necessary files, you should see a description of the first species in the generation 1 Pokédex - the ever popular Bulbasaur. If you are still running into issues, please reach out to us on the svelte discord and we'd be happy to help.
 
 <DeepDive title="What happened to load?">
 

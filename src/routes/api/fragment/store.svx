@@ -88,7 +88,7 @@ Load a snapshot of data for a particular object that has had the fragment applie
     export let user
 
     // load the necessary data to the UserAvatar for the specified object
-    const data = UserAvatar.load(user)
+    const data = UserAvatar.get(user)
 </script>
 
 <img src={$data.profilePicture} />
