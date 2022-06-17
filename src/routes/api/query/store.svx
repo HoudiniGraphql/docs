@@ -97,10 +97,13 @@ Load data from the server and subscribe to any changes of fields we detect from 
     }
 </script>
 
+<script>
+  // retrieve the latest value from the cache
+  $: browser && ViewerProfileStore.fetch()
+</script>
+
 {$ViewerProfileStore.data.viewerProfile.firstName}
 
-<!-- retrieve the latest value from the cache -->
-$: browser && ViewerProfileStore.fetch()
 ```
 
 ### Store Value
