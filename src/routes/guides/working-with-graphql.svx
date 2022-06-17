@@ -143,7 +143,7 @@ Mutations also have a simpler API with the preprocessor. Notice how there's no m
 <button on:click={() => addUser({ firstName: "Houdini" })} />
 ```
 
-## Inline Documents vs Stores
+## Which is Better?
 
 So does that mean you should just always use the preprocessor and ignore the document stores? Well.... no. Not always.
 
