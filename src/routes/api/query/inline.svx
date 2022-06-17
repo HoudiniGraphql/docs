@@ -148,7 +148,10 @@ arguments as SvelteKit's [`load`](https://kit.svelte.dev/docs#loading) hook.
 
 Called after Houdini executes load queries against the server. You can expect the same
 arguments as SvelteKit's [`load`](https://kit.svelte.dev/docs#loading) hook, plus an additional
-`data` property referencing query result data.
+`data` property referencing query result data. Keep in mind that if you define this hook, Houdini
+will have to block requests to the route in order to wait for the result. For more information about
+blocking during navigation, check out [this section](/api/query/store#server-side-blocking) of the query store
+docs.
 
 ```svelte
 <script context="module">
@@ -188,7 +191,7 @@ arguments as SvelteKit's [`load`](https://kit.svelte.dev/docs#loading) hook, plu
 
 ## Paginated Queries
 
-Paginated queries must use the `paginatedQuery` function exported from your runtime and contain the `@paginate` directive on the appropriate field. For more information Houdini's support for pagination, please visit the [Pagination guide](/guides/pagination).
+Paginated queries must use the `paginatedQuery` function exported from your runtime and contain the `@paginate` directive on the appropriate field. For more information on Houdini's support for pagination, please visit the [Pagination guide](/guides/pagination).
 
 ```svelte
 <script>
