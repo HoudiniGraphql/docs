@@ -4,6 +4,7 @@
 	import { onMount } from 'svelte'
 	import throttle from 'lodash/throttle.js'
 	import { browser } from '$app/env'
+	import { getMode } from '~/lib/mode'
 
 	export let title = ''
 	export let link = ''
@@ -14,7 +15,9 @@
 	// @ts-ignore
 	const outline = REPLACE_WITH_OUTLINE
 
-	let categories = outline[$session?.mode || 'inline']
+	const mode = getMode()
+
+	let categories = outline[$mode]
 	// @ts-ignore
 	let categoryNames = Object.keys(categories)
 
