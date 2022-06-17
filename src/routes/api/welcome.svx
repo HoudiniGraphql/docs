@@ -67,21 +67,28 @@ const cliExample = `houdini generate --pull-schema`
 
 # Houdini API Reference
 
-All functions shown here should be imported from your local runtime. This is usually aliased as `$houdini`, eg:
-
-```js
-import { graphql, query } from '$houdini/runtime'
-```
-
-If you are unable to resolve the import, please head over to the [Setting Up Your Project guide](/guides/setting-up-your-project) for framework-specific instructions.
-
-## Document APIs
-
 Every GraphQL document in your Houdini application has two different ways of interacting with it. You can either define
 your document inside of your svelte components or in an external file. While the approaches are equivalent, their APIs
-do vary slightly to accomodate the situation. To accomodate this, each document's section will have a toggle to show
-examples in two modes: "inline" and "store". For more information about the differences in the APIs, checkout out the
-[Working With GraphQL](http://localhost:3000/guides/working-with-graphql) guide.
+do vary slightly for the situation. In order to accommodate this, each document page has a toggle in the top right to flip between the store
+and inline APIs. For more information about the differences in the APIs, checkout out the
+[Working With GraphQL](/guides/working-with-graphql) guide.
+
+### Importing Document Stores
+
+All document stores can be imported in two different ways. You can either import the default export of the path which will provide an
+instance of the store you can work with easily:
+
+```javascript
+import store from '$houdini/stores/MyQuery'
+```
+
+Or, you can import a factory from the module that will let you instantiate multiple copies of the same store if you need to:
+
+```javascript
+import { MyQueryStore } from '$houdini/stores/MyQuery'
+
+const store = MyQueryStore()
+```
 
 ## GraphQL Documents
 
