@@ -20,12 +20,7 @@ The biggest feature introduced with `0.15.0` is a new way of interacting with gr
 in your houdini projects. Instead of only being able to specify your documents directly in your
 component files, you can now specify them in external files and houdini will generate a store for you
 to interact with. For more information about the new store-based API, please check out the
-[Working with GraphQL](/guides/working-with-graphql) guide. Not only did this address a _number_ of issues we've received but it also improved a few
-not-so-great parts of Houdini's API. No, unforunately the variable API for inline documents hasn't been
-cleaned up but at least query hooks are gone! By the way, if you have any ideas of a better way to support
-query variables for inline documents, let us know (but please, read
-[this](/guides/faq#why-is-the-query-variable-api-so-weird) first).
-Anyway, the rest of this document explains how to fix the APIs that got deprecated as part of this effort.
+[Working with GraphQL](/guides/working-with-graphql) guide.
 
 ## Config Values
 
