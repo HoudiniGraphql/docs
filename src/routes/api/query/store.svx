@@ -5,7 +5,7 @@ description: Queries in Houdini
 ---
 
 <script>
-    import HeaderWithMode from '../_HeaderWithMode.svelte'
+    import { HeaderWithMode } from '~/components'
     import { Highlight, HighlightAuto } from 'svelte-highlight'
     import graphqlLangDef from '~/lib/graphql-language'
     import { Transformation } from '~/components'

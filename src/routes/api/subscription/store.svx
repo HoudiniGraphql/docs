@@ -5,7 +5,7 @@ description: Subscriptions in Houdini
 ---
 
 <script>
-    import HeaderWithMode from '../_HeaderWithMode.svelte'
+    import { HeaderWithMode } from '~/components'
 </script>
 
 <HeaderWithMode title="Subscription" />
@@ -28,7 +28,6 @@ A subscription store holds onto the latest value from the subscription and has t
 
 - `subscribe`: takes an optional object to use as variables and causes the store to start listening for events
 - `unsubscribe`: causes the store to stop listening. This gets called automatically when using the `$` syntax to retrieve the value
-
 
 ## List Operations
 

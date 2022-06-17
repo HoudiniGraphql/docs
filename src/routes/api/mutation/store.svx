@@ -5,7 +5,7 @@ description: Mutations in Houdini
 ---
 
 <script>
-    import HeaderWithMode from '../_HeaderWithMode.svelte'
+    import { HeaderWithMode } from '~/components'
 
 </script>
 
@@ -53,13 +53,11 @@ Triggering a mutation is done with the `mutate` method on the store as seen abov
 - `variables`: an object with the variables to use for the mutation
 - `optimisticResponse`: an object containing the optimistic response for the mutation. [See below](/api/mutation#optimistic-responses).
 
-
 ## Updating fields
 
 When a mutation is responsible for updating fields of entities, houdini
 should take care of the details for you as long as you request the updated data alongside the
 record's id.
-
 
 ## Lists
 
@@ -68,7 +66,6 @@ For an overview of how to work with lists, please check out the [List Operations
 ## Optimistic Responses
 
 A lot of the time we know the value that a mutation will trigger assuming everything goes right. For example, a `toggleItem` mutation in a todo list will invert the value of the `checked` field of a particular item. In these situations, we don't have to wait for a mutation to resolve in order to apply the update to the cache. Instead, we can assume that it will succeed and provide an "optimistic response" for the mutation with the second argument to a mutation handler:
-
 
 ```svelte
 <script>

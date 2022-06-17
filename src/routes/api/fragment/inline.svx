@@ -5,7 +5,7 @@ description: Fragments in Houdini
 ---
 
 <script>
-    import HeaderWithMode from '../_HeaderWithMode.svelte'
+    import { HeaderWithMode } from '~/components'
 </script>
 
 <HeaderWithMode title="Fragment"  />

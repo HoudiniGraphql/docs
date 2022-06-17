@@ -1,5 +1,5 @@
 <script lang="ts">
-	import { page } from '$app/stores'
+	import { page, session } from '$app/stores'
 
 	export let title: string
 	export let mode: 'inline' | 'store' = $page.url.pathname.split('/').slice(-1)[0] as
@@ -13,6 +13,8 @@
 				mode: val
 			})
 		})
+
+		$session.mode = val
 	}
 </script>
 
@@ -32,7 +34,7 @@
 		>
 		<a
 			sveltekit:prefetch
-			on:click={() => setMode('inline')}
+			on:click={() => setMode('store')}
 			class:current={mode === 'store'}
 			href="store">Store</a
 		>

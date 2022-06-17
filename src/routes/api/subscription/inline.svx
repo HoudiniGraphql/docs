@@ -5,7 +5,7 @@ description: Subscriptions in Houdini
 ---
 
 <script>
-    import HeaderWithMode from '../_HeaderWithMode.svelte'
+    import { HeaderWithMode } from '~/components'
 </script>
 
 <HeaderWithMode title="Subscription" />

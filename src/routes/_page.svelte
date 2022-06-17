@@ -1,5 +1,5 @@
 <script>
-	import { page, navigating } from '$app/stores'
+	import { page, navigating, session } from '$app/stores'
 	import { Icon, SEO, SearchInput, SearchDialog, searching } from '~/components'
 	import { onMount } from 'svelte'
 	import throttle from 'lodash/throttle.js'
@@ -12,7 +12,10 @@
 
 	// the list of files we can render
 	// @ts-ignore
-	let categories = '' || Boolean(REPLACE_WITH_FILES)
+	const outline = REPLACE_WITH_OUTLINE
+
+	let categories = outline[$session?.mode || 'inline']
+	// @ts-ignore
 	let categoryNames = Object.keys(categories)
 
 	// some state to control the menu
