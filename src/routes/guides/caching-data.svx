@@ -27,24 +27,39 @@ There are 3 different policies that can be specified:
 
 The default cache policy as well as other parameters can be changed in your [config file](/api/config).
 
-## Data Retention
+## Optimistic Responses
 
-Houdini will retain a query's data for a configurable number of queries (default 10).
-For a concrete example, consider an example app that has 3 routes. If you load one of the
-routes and then click between the other two 5 times, the first route's data will still be
-resolvable (and the counter will reset if you visit it).
-If you then toggle between the other routes 10 times and then try to load the first
-route, a network request will be sent. This number is configurable with the
-`cacheBufferSize` value in your config file:
+A lot of the time we know the value that a mutation will trigger assuming everything goes right. For example, a `toggleItem` mutation in a todo list will invert the value of the `checked` field of a particular item. In these situations, we don't have to wait for a mutation to resolve in order to apply the update to the cache. Instead, we can assume that it will succeed and provide an "optimistic response" for the mutation with the second argument to a mutation handler:
 
-```js
-// houdini.config.js
+```svelte
+<script>
+	import ToggleItem  from '$houdini/stores/ToggleItem'
 
-export default {
-	// ...
-	cacheBufferSize: 5
-}
+	export let itemID
+</script>
+
+<button
+	on:click={() => {
+		ToggleItemStore.mutate({
+            variables: { id: itemID },
+            optimisticResponse: {
+                toggleItem: {
+                    item: {
+                        id: '1',
+                        checked: true
+                    }
+                }
+            }
+        })
+	}}
+>
+	toggle item
+</button>
 ```
+
+When the mutation resolves, the old values will be erased entirely and the new values will be committed to the cache. If instead the mutation fails, the optimistic changes will be reverted and the handler's promise will reject with the error message as usual.
+
+Remember to always request and specify an `id` when dealing with optimistic responses so that the cache can make sure to update the correct records. Also, it's worth mentioning that you don't have to provide a complete response for an optimistic value, the cache will write whatever information you give it (as long as its found in the mutation body).
 
 ## Partial Data
 
@@ -69,6 +84,25 @@ The default partial state can be configured with the `defaultPartial` value in y
 export default {
 	// ...
 	defaultPartial: true
+}
+```
+
+## Data Retention
+
+Houdini will retain a query's data for a configurable number of queries (default 10).
+For a concrete example, consider an example app that has 3 routes. If you load one of the
+routes and then click between the other two 5 times, the first route's data will still be
+resolvable (and the counter will reset if you visit it).
+If you then toggle between the other routes 10 times and then try to load the first
+route, a network request will be sent. This number is configurable with the
+`cacheBufferSize` value in your config file:
+
+```js
+// houdini.config.js
+
+export default {
+	// ...
+	cacheBufferSize: 5
 }
 ```
 
