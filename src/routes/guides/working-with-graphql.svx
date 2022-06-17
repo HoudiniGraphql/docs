@@ -19,7 +19,8 @@ description: An overview of the store-based API provided by Houdini and how it r
 
     const storeTypeDef = `type ViewerProfileStore = {
     subscribe: Readable<ViewerProfile>
-    fetch(...): Promise<ViewerProfile>
+    prefetch(...): Promise<ViewerProfile>
+    fetch(...): Promise<void>
 }`
 </script>
 
