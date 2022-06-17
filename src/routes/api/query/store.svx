@@ -192,7 +192,7 @@ MyStore.fetch({ variables: { some: 'value' } })
 You only need to specify the variables that you want changed. The store will reuse any variables it's been given in past calls to
 `fetch`.
 
-### Return Value
+### Fetch Return Value
 
 `fetch` returns a Promise that usually resolves with an object described in [Store Value](#store-value).
 Keep in mind that when the `blocking` parameter is not set to true, `fetch`'s promise does not

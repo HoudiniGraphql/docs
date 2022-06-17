@@ -10,6 +10,43 @@ export async function loadFiles() {
 	// the root directory
 	const routeDir = path.resolve('src', 'routes')
 
+	// we need to build up an outline of all of the documents
+	// the api sections for documents are directories with an inline or store file
+
+	// the final representation is something like
+	// {
+	// 	store: {
+	// 		intro: [
+	// 			{
+	// 				title: title,
+	// 				slug: `/${category}/${fileName}`,
+	// 				filepath,
+	// 				subcategories: [
+	// 					{
+	// 						text,
+	// 						id,
+	// 					}
+	// 				]
+	// 			}
+	// 		]
+	// 	},
+	// 	inline: {
+	// 		intro: [
+	// 			{
+	// 				title: title,
+	// 				slug: `/${category}/${fileName}`,
+	// 				filepath,
+	// 				subcategories: [
+	// 					{
+	// 						text,
+	// 						id,
+	// 					}
+	// 				]
+	// 			}
+	// 		]
+	// },
+	// }
+
 	// build up an object from every directory in the routeDir
 	const categories = Object.fromEntries(
 		(

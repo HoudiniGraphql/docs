@@ -24,8 +24,18 @@
 	{/if}
 
 	<nav id="document-api-links">
-		<a on:click={() => setMode('inline')} class:current={mode === 'inline'} href="inline">Inline</a>
-		<a on:click={() => setMode('inline')} class:current={mode === 'store'} href="store">Store</a>
+		<a
+			sveltekit:prefetch
+			on:click={() => setMode('inline')}
+			class:current={mode === 'inline'}
+			href="inline">Inline</a
+		>
+		<a
+			sveltekit:prefetch
+			on:click={() => setMode('inline')}
+			class:current={mode === 'store'}
+			href="store">Store</a
+		>
 	</nav>
 </h1>
 
