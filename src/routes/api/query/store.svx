@@ -86,6 +86,7 @@ Load data from the server and subscribe to any changes of fields we detect from 
 ```svelte
 <script context="module">
     import ViewerProfileStore from '$houdini/stores/ViewerProfile'
+    import { browser } from '$app/env'
 
     export async load(event) {
         // make sure the store has the latest data
