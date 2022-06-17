@@ -89,7 +89,7 @@ Load data from the server and subscribe to any changes of fields we detect from 
 
     export async load(event) {
         // make sure the store has the latest data
-        await ViewerProfileStore.fetch({ event })
+        await ViewerProfileStore.prefetch({ event })
 
         // have to return _something_ to make SvelteKit happy
         return {}
@@ -97,6 +97,9 @@ Load data from the server and subscribe to any changes of fields we detect from 
 </script>
 
 {$ViewerProfileStore.data.viewerProfile.firstName}
+
+<!-- retrieve the latest value from the cache -->
+$: browser && ViewerProfileStore.fetch()
 ```
 
 ### Store Value
@@ -113,22 +116,28 @@ about the last query that was sent:
 
 ## Fetching Data
 
-A query store's primary goal is to fetch data from the server. This is achieved using the `fetch` method on the store.
+A query store's primary goal is to fetch data from the server. This is achieved in two parts:
 
-### Fetching in `load`
+1. Prefetching the data and loading it into the cache as early as possible
+1. Fetching the data from the cache and rendering the component
 
-When used inside of a route's `load` function, `fetch` must be passed
-the [LoadEvent](https://kit.svelte.dev/docs/types#sveltejs-kit-loadevent) as the `event` key.
+### Prefetching
+
+A lot of the times you will try to load data into the cache before the user needs it on their screen. For example,
+in a SvelteKit application, you will likely make heavy use of the `sveltekit:prefetch` attribute to cause data to
+load before your user clicks on a link. In SvelteKit, this happens in a function called `load` which looks something like:
 
 ```javascript
+import MyQueryStore from '$houdini/stores/MyQuery'
+
 export async function load(event) {
-	await MyStore.fetch({ event })
+	await MyQueryStore.prefetch({ event })
 
 	return {}
 }
 ```
 
-In SvelteKit, the above code will cause every route transition to
+If we're not careful, the above code will cause every route transition to
 block while the store waits for the server. While this sounds great
 for server-side rendered views, this is usually not what we want for
 client-side transitions. In order to accommodate this, awaiting
@@ -140,7 +149,7 @@ which will make the `await` behave like normal:
 ```javascript
 export async function load(event) {
 	// blocking:true makes this await "real"
-	const { data } = await MyStore.fetch({ event, blocking: true })
+	const { data } = await MyStore.prefetch({ event, blocking: true })
 
 	// check the response of the query and redirect when appropriate
 	if (!data.fieldName) {
@@ -153,44 +162,64 @@ export async function load(event) {
 }
 ```
 
-### Fetching on the client
+### Fetching Data on the Browser
 
-Fetching on the client, say in an handler like `on:click`, requires a slightly
-different set of values than the server-side equivalent. Most importantly, `event` is not required:
-
-```svelte
-<script>
-    import MyQueryStore from '$houdini/stores/MyQuery'
-</script>
-
-$: browser && MyQueryStore.fetch();
-```
-
-However, if you require `session` or `page` in your in
-your client's fetch function, you must retrieve that information
-from your component's context and pass that to the call to `fetch`:
+Once the view has been rendered on the server, we need our client to start listening for updates
+in the cache and propagating those changes to our store. When our variables change, we need to
+make sure that data is present and potentially subscribe to new changes. All of this is done with
+the `fetch` method. The simplest situation looks something like:
 
 ```svelte
-<script>
-    import MyQueryStore from '$houdini/stores/MyQuery'
-    import { getHoudiniContext } from '$houdini/runtime'
+<script context="module">
+  import { browser } from '$app/env'
+  import MyQueryStore from '$houdini/stores/MyQuery'
 
-    const houdiniContext = getHoudiniContext()
+  export async function load(event) {
+    await MyQueryStore.prefetch({ event })
+
+    return {}
+  }
 </script>
 
-$: browser && MyQueryStore.fetch({ context: houdiniContext });
+<script>
+  $: browser && MyQueryStore.fetch()
+</script>
+
+{$MyQueryStore.data.value}
 ```
 
-### Specifying Variables
+Things are slightly more complicated when you want to pass variables to your query.
 
-`fetch` can take an optional `variables` key in its arguments:
+```svelte
+<script context="module">
+  import { browser } from '$app/env'
+  import MyQueryStore from '$houdini/stores/MyQuery'
 
-```javascript
-MyStore.fetch({ variables: { some: 'value' } })
+  export async function load(event) {
+    const variables = { ... }
+
+    await MyQueryStore.prefetch({ event })
+
+    return {
+      props: {
+        variables
+      }
+    }
+  }
+</script>
+
+<script>
+  export let variables
+
+  $: browser && MyQueryStore.fetch({ variables })
+</script>
+
+
+{$MyQueryStore.data.value}
 ```
 
-You only need to specify the variables that you want changed. The store will reuse any variables it's been given in past calls to
-`fetch`.
+We know this API isn't ideal but we couldn't come up with anything better after many days of exploration. If you
+have any ideas, please open a discussion and let's chat!
 
 ### Fetch Return Value
 
