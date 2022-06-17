@@ -188,7 +188,7 @@ the `fetch` method. The simplest situation looks something like:
 {$MyQueryStore.data.value}
 ```
 
-Things are slightly more complicated when you want to pass variables to your query.
+Things are slightly more complicated when you want to pass variables to your query:
 
 ```svelte
 <script context="module">
