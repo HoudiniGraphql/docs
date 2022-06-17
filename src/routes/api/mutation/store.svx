@@ -6,7 +6,7 @@ description: Mutations in Houdini
 
 <script>
     import { HeaderWithMode } from '~/components'
-
+    import mode from '~/lib/mode'
 </script>
 
 <HeaderWithMode title="Mutation" />
@@ -51,7 +51,7 @@ Triggering a mutation is done with the `mutate` method on the store as seen abov
 
 - `context`: optional. An opaque object of information necessary for the mutation. Only required if your environment needs `session` in its fetch function
 - `variables`: an object with the variables to use for the mutation
-- `optimisticResponse`: an object containing the optimistic response for the mutation. [See below](/api/mutation#optimistic-responses).
+- `optimisticResponse`: an object containing the optimistic response for the mutation. [See below](/api/mutation/store#optimistic-responses).
 
 ## Updating fields
 

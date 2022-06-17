@@ -7,9 +7,7 @@ description: A listing of every top-level export from the Houdini runtime
 <script>
     import { APIShowcase } from '~/components'
     import bash from "svelte-highlight/src/languages/bash";
-    import { getMode } from '~/lib/mode'
-
-    const mode = getMode()
+    import mode from '~/lib/mode'
 
     const queryExample = `const { data } = query(graphql\`
     query AllTodoItems {

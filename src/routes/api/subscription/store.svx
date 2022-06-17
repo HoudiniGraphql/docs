@@ -31,7 +31,7 @@ A subscription store holds onto the latest value from the subscription and has t
 
 ## List Operations
 
-Subscription bodies can contain all of the list operations described in the [mutation docs](/api/mutation#lists).
+Subscription bodies can contain all of the list operations described in [this document](/api/list-operations).
 
 ## Configuring the client
 

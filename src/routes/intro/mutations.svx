@@ -151,7 +151,7 @@ Go head, regenerate your runtime and try clicking on the star. You should see th
 
 If you look closely at the mutation you'll notice that we are using a fragment in the payload that you never defined. That fragment name follows a very specific form and acts a special instruction to the Houdini runtime to toggle the object referenced by the `species` field in the mutation in or out of the list named `FavoriteSpecies`. We didn't even have to worry about asking for all of the right fields, once we told Houdini which list we wanted to add it to, it was able to take care of the rest. This was the reason for the `@list` decorator in the query above: we needed a way to identify the field as a target for a list operation. If we had named that list `AllFavorites` instead, the query would reference `AllFavorites_toggle`.
 
-`toggle` is not the only operation you can perform on a list. Houdini also supports `insert` and `remove` as well as more advanced features such as specifying conditions for these operations. For more information, check out the [mutation api reference](/api/mutation).
+`toggle` is not the only operation you can perform on a list. Houdini also supports `insert` and `remove` as well as more advanced features such as specifying conditions for these operations. For more information, check out the [list operations reference](/api/list-operations).
 
 ## What's Next?
 

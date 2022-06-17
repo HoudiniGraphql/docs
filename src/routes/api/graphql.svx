@@ -5,8 +5,7 @@ description: The GraphQL API provided by Houdini
 ---
 
 <script>
-	import { getMode } from '~/lib/mode'
-	const mode = getMode()
+	import mode from '~/lib/mode'
 </script>
 
 # GraphQL API
@@ -77,7 +76,7 @@ mutation NewItem($input: AddItemInput!) {
 
 ### `@cache(policy: CachePolicy, partial: Boolean)`
 
-`@cache` is used on a query document to customize the cache behavior. This includes informaton like what [cache policy](/guides/caching-data) should be used by the runtime or if you are okay with partial results from the cache. For a full list of cache policies, check out the [query docs](/guides/caching-data) and for more information on partial responses, see the [partial data guide](/api/query#partial-data).
+`@cache` is used on a query document to customize the cache behavior. This includes informaton like what [cache policy](/guides/caching-data) should be used by the runtime or if you are okay with partial results from the cache. For a full list of cache policies, check out the [caching guide](/guides/caching-data) and for more information on partial responses, see the [section on partial data](/guides/caching-data#partial-data).
 
 ### `@paginate(name: String)`
 

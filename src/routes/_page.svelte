@@ -4,7 +4,7 @@
 	import { onMount } from 'svelte'
 	import throttle from 'lodash/throttle.js'
 	import { browser } from '$app/env'
-	import { getMode } from '~/lib/mode'
+	import mode from '~/lib/mode'
 
 	export let title = ''
 	export let link = ''
@@ -14,8 +14,6 @@
 	// the list of files we can render
 	// @ts-ignore
 	const outline = REPLACE_WITH_OUTLINE
-
-	const mode = getMode()
 
 	let categories = outline[$mode]
 	// @ts-ignore
