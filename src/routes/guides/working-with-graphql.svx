@@ -7,7 +7,7 @@ description: An overview of the store-based API provided by Houdini and how it r
 <script>
     import { Highlight, HighlightAuto } from 'svelte-highlight'
     import graphqlLangDef from '~/lib/graphql-language'
-    import { Transformation } from '~/components'
+    import { Transformation, DeepDive } from '~/components'
 
     const graphql = { name: 'graphql', register: graphqlLangDef }
 
@@ -89,6 +89,25 @@ And using a mutation store looks something like
 
 <button on:click={addUser} />
 ```
+
+<DeepDive title="Importing Document Stores">
+
+All document stores can be imported in two different ways. You can either import the default export of the path which will provide an
+instance of the store you can work with easily:
+
+```javascript
+import store from '$houdini/stores/MyQuery'
+```
+
+Or, you can import a factory from the module that will let you instantiate multiple copies of the same store if you need to:
+
+```javascript
+import { MyQueryStore } from '$houdini/stores/MyQuery'
+
+const store = MyQueryStore()
+```
+
+</DeepDive>
 
 While the stores are incredibly flexible, we're already starting to see the biggest downside:
 there is a lot of boilerplate required to connect your component and store.

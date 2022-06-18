@@ -74,23 +74,6 @@ do vary slightly for the situation. In order to accommodate this, each document 
 and inline APIs. For more information about the differences in the APIs, checkout out the
 [Working With GraphQL](/guides/working-with-graphql) guide.
 
-### Importing Document Stores
-
-All document stores can be imported in two different ways. You can either import the default export of the path which will provide an
-instance of the store you can work with easily:
-
-```javascript
-import store from '$houdini/stores/MyQuery'
-```
-
-Or, you can import a factory from the module that will let you instantiate multiple copies of the same store if you need to:
-
-```javascript
-import { MyQueryStore } from '$houdini/stores/MyQuery'
-
-const store = MyQueryStore()
-```
-
 ## GraphQL Documents
 
 <APIShowcase
