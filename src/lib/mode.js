@@ -1,4 +1,20 @@
 import { session } from '$app/stores'
-import { derived } from 'svelte/store'
+import { derived, writable } from 'svelte/store'
 
-export default derived([session], ([$session]) => $session?.mode || 'inline')
+const local = writable(null)
+
+export default derived(
+	[local, session],
+	([$local, $session]) => $local || $session?.mode || 'inline'
+)
+
+export function setMode(mode) {
+	fetch('/setMode', {
+		method: 'POST',
+		body: JSON.stringify({
+			mode: mode
+		})
+	})
+
+	local.set(mode)
+}

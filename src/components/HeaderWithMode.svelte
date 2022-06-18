@@ -1,21 +1,11 @@
 <script lang="ts">
 	import { page, session } from '$app/stores'
+	import { setMode } from '~/lib/mode'
 
 	export let title: string
 	export let mode: 'inline' | 'store' = $page.url.pathname.split('/').slice(-1)[0] as
 		| 'inline'
 		| 'store'
-
-	function setMode(val: typeof mode) {
-		fetch('/setMode', {
-			method: 'POST',
-			body: JSON.stringify({
-				mode: val
-			})
-		})
-
-		$session.mode = val
-	}
 </script>
 
 <h1 id={title.toLowerCase()}>
