@@ -8,7 +8,7 @@ description: Queries in Houdini
     import { HeaderWithMode } from '~/components'
     import { Highlight, HighlightAuto } from 'svelte-highlight'
     import { Transformation } from '~/components'
-    import { graphql } from '~/lib/higlight'  
+    import { graphql } from '~/lib/highlight'  
 
   const forwardPaginationStoreBefore = `
 query MyFriends {
