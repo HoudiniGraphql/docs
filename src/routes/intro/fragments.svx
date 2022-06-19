@@ -6,10 +6,8 @@ description: The second part of the Houdini intro focusing how to reuse parts of
 
 <script>
     import { Highlight } from 'svelte-highlight'
-    import graphqlLangDef from '~/lib/graphql-language'
     import { GraphQLExplained, Icon, DeepDive } from '~/components'
-
-    const graphql = { name: 'graphql', register: graphqlLangDef }
+    import { graphql } from '~/lib/higlight'  
 </script>
 
 # Reusing Parts of a Query

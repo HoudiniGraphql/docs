@@ -7,13 +7,10 @@ description: Queries in Houdini
 <script>
     import { HeaderWithMode } from '~/components'
     import { Highlight, HighlightAuto } from 'svelte-highlight'
-    import graphqlLangDef from '~/lib/graphql-language'
     import { Transformation } from '~/components'
+    import { graphql } from '~/lib/higlight'  
 
-    const graphql = { name: 'graphql', register: graphqlLangDef }
-     let mode
-
-	 const forwardPaginationStoreBefore = `
+  const forwardPaginationStoreBefore = `
 query MyFriends {
   viewer {
     friends(first: 10) @paginate( name: "My_Friends") {

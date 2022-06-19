@@ -5,19 +5,21 @@ description: An overview of the store-based API provided by Houdini and how it r
 ---
 
 <script>
-    import { Highlight, HighlightAuto } from 'svelte-highlight'
-    import graphqlLangDef from '~/lib/graphql-language'
+    import { Highlight } from 'svelte-highlight'
     import { Transformation, DeepDive } from '~/components'
+    import { graphql, typescript } from '~/lib/highlight'
 
-    const graphql = { name: 'graphql', register: graphqlLangDef }
-
-    const storeSource = `query ViewerProfile {
+    const storeSource = `
+    # Operation defined in a .gql or .graphql file
+    query ViewerProfile {
         viewer {
             firstName
         }
     }`
 
-    const storeTypeDef = `type ViewerProfileStore = {
+    const storeTypeDef = `
+// Generated Store 
+type ViewerProfileStore = {
     subscribe: Readable<ViewerProfile>
     prefetch(...): Promise<ViewerProfile>
     fetch(...): Promise<void>
@@ -42,7 +44,7 @@ querying your API but also subscribing to changes in Houdini's cache so everythi
 
 <Transformation>
     <Highlight language={graphql} code={storeSource} slot="from"/>
-    <HighlightAuto code={storeTypeDef} slot="to" />
+    <Highlight language={typescript} code={storeTypeDef} slot="to" />
 </Transformation>
 
 A component that wants to use a query defined in an external file would look like the following. Note that these stores can be imported and used
