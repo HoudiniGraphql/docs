@@ -1,6 +1,6 @@
 <script>
 	import { HighlightSvelte } from 'svelte-highlight'
-	import { SEO } from '~/components'
+	import { SEO, Icon } from '~/components'
 
 	const heroExample = `<script>
     import { query, graphql } from '$houdini'
@@ -142,6 +142,9 @@
 			<HighlightSvelte code={heroExample} class="shadow" />
 		</div>
 	</section>
+	<div class="tease">
+		<Icon name="chevron-down" width="3rem" height="3rem" />
+	</div>
 	<section id="info">
 		<div id="angle" />
 		<article>
@@ -206,6 +209,11 @@
 		width: auto;
 		height: auto;
 		clip: auto;
+	}
+
+	.tease {
+		align-self: center;
+		margin-top: 150px;
 	}
 
 	header {
@@ -301,7 +309,7 @@
 	#info {
 		display: flex;
 		flex-direction: column;
-		margin-top: 12rem;
+		margin-top: 3rem;
 		flex-grow: 1;
 	}
 
