@@ -28,16 +28,18 @@ type ViewerProfileStore = {
 
 # Working with GraphQL
 
-There are two different ways you can define graphql documents in a Houdini application. You can either take advantage of the preprocessor to define your
-documents inside of `.svelte` files or you can define them in external in external graphql files (.gql or .graphql for example) and interact the document's
-dedicated store. While the two approaches are totally equivalent, they have different strengths and weaknesses so you'll often find yourself mixing and matching
-the techniques in a given project.
+There are two different ways you can define graphql documents in a Houdini application.
 
-Before we get to the actual differences we should first go over the core abstraction powering Houdini's data fetching: document stores.
+- **External documents**: you write your graphql operations in dedicated graphql files (`.gql` or `.graphql` for example) and you will need to interact with the store API.
+- **Inline documents**: you write your graphql operations inside your `.svelte` files directly. The preprocessor will take care of all the boilerplate code for you to interact with the store API.
 
-## Document Stores
+While the two approaches are totally equivalent in functionality, they have different strengths and weaknesses so you'll often find yourself mixing and matching the techniques in a given project. That's a real power to use the right technique for the right place!
 
-When you run the `generate` command, Houdini creates a dedicated store for every document it runs into (either inside of a `.svelte` or graphql file).
+Before we get to the actual differences we should first go over the core abstraction powering Houdini's data fetching: Stores.
+
+## Stores
+
+When you run the `generate` command, Houdini creates a dedicated store for every document it runs into either inside of a `.svelte` or in external graphql files (`.gql` or `.graphql`)
 
 For example, a graphql document containing a query will have a corresponding store generated that is not only responsible for
 querying your API but also subscribing to changes in Houdini's cache so everything is kept in sync when mutations and subscriptions fire.
@@ -47,9 +49,15 @@ querying your API but also subscribing to changes in Houdini's cache so everythi
     <Highlight language={typescript} code={storeTypeDef} slot="to" />
 </Transformation>
 
-A component that wants to use a query defined in an external file would look like the following. Note that these stores can be imported and used
-anywhere in your project including components, endpoints, hooks, etc. Also, when importing a store, we recommend importing directly from the
-store to avoid bundling any unnecessary dependencies:
+This is the core abstraction powering Houdini's. And it's used in **Inline documents** AND **External documents**.
+
+## External documents
+
+When you work with external documents, you will need to interact directly with the store API. It would look like the following.
+
+Note that these stores can be imported and used anywhere in your project including components, endpoints, hooks, etc. Also, when importing a store.
+
+We recommend importing directly from the store to avoid bundling any unnecessary dependencies.
 
 ```svelte
 <script context="module">
@@ -65,13 +73,12 @@ store to avoid bundling any unnecessary dependencies:
     }
 </script>
 
-{$ViewerProfileStore.data.viewerProfile.firstName}
-
 <script>
     <!-- make sure that the latest value is always fetched -->
     $: browser && ViewerProfileStore.fetch()
 </script>
 
+{$ViewerProfileStore.data.viewerProfile.firstName}
 ```
 
 And using a mutation store looks something like

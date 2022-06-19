@@ -39,7 +39,7 @@ export default {
 ## Environment
 
 In an effort to make Houdini's names work better with other libraries you might have in your application (for example, as part of
-[KitQL](https://github.com/jycouet/kitql)), Houdini's `Environment` is now called `HoudiniClient`. All you need to do to use this is to
+[KitQL](https://www.kitql.dev)), Houdini's `Environment` is now called `HoudiniClient`. All you need to do to use this is to
 import `HoudiniClient` from your runtime and instantiate it as you used to do with `Environment`.
 
 Beyond just the name there was also a change in the way you configure your runtime to use your environment. Now,

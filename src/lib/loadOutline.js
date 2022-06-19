@@ -108,7 +108,7 @@ export async function loadOutline() {
 							// pretty print the category name
 							name:
 								{
-									intro: 'Introduction',
+									intro: 'Get started',
 									guides: 'Guides',
 									api: 'API'
 								}[category] || category,

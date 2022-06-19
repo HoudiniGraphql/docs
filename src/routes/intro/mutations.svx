@@ -6,7 +6,7 @@ description: The third part of the Houdini intro focusing on how to update the c
 
 # Handling Updates
 
-Thanks for making it this far in the introduction! We really appreciate the time you are spending to learn Houdini.
+Thanks for making it this far in the Getting started! We really appreciate the time you are spending to learn Houdini.
 
 So far we've only covered how to read data from our server. Clearly this is only part of the picture since most projects need to be able to update the server's state. In GraphQL, these requests are defined by a different document type than `query` and are knowns as "mutations". They look something like this:
 
