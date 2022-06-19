@@ -76,7 +76,7 @@ type MyFriendsStore = QueryStore & {
 `
 </script>
 
-<HeaderWithMode title="Query" bind:mode  />
+<HeaderWithMode title="Query" />
 
 Load data from the server and subscribe to any changes of fields we detect from mutations, subscriptions, and other queries.
 
