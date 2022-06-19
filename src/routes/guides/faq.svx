@@ -8,22 +8,14 @@ description: A list of frequently asked questions when working with Houdini
 
 Here are some answers to common questions you might have while working with Houdini
 
-### My IDE is complaining that the internal directives and fragments don't exist.
+### Can I use queries in endpoints?
 
-Every plugin and editor is different so we can't give you an exact answer but Houdini will write a file inside of the `$houdini` directory that contains all of the custom definitions that it relies on. Be default this file is located at `$houdini/definitions.gql`. You can configure this value in your [config file](/api/config) under the `definitionsPath` value.
-
-### When will version `1.0` be released?
-
-Quick answer is when svelekit gets to `1.0`. Until then, we want to be able to break the API in order to create the most convenient experience for the majority of users.
+Yep! You can use queries or any document anywhere you can use a svelte store. Just define your query in an external file and use the store api as described in [Query Store](/api/query/store) api docs.
 
 ### Can I define graphql documents in external files?
 
 Yes! You'll just have to rely on the store apis for your documents and write your route's loads manually.
 For more information on using your document's stores check out [Working with GraphQL](/guides/working-with-graphql) guide.
-
-### Can I use queries in endpoints?
-
-Yep! You can use queries or any document anywhere you can use a svelte store. Just define your query in an external file and use the store api as described in [Query Store](/api/query/store) api docs.
 
 ### How does the preprocessor work?
 
@@ -77,3 +69,11 @@ If this store part was confusing, please check out the [Working with GraphQL](/g
 ### Why is the inline query variable API so weird?
 
 To understand why things are designed the way they are, you should consider the output of the preprocessor (shown above). Any logic that's used to compute the query variables needs to be hoisted up to the module context block so that the value could be passed onto the server. Since the user would naturally want to execute arbitrary logic when computing this value, we have to make sure that any imports or function definitions are available to the module context so that they can run.
+
+### My IDE is complaining that the internal directives and fragments don't exist.
+
+Every plugin and editor is different so we can't give you an exact answer but Houdini will write a file inside of the `$houdini` directory that contains all of the custom definitions that it relies on. Be default this file is located at `$houdini/definitions.gql`. You can configure this value in your [config file](/api/config) under the `definitionsPath` value.
+
+### When will version `1.0` be released?
+
+Quick answer is when svelekit gets to `1.0`. Until then, we want to be able to break the API in order to create the most convenient experience for the majority of users.
