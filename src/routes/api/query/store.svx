@@ -117,9 +117,9 @@ about the last query that was sent:
 
 ## Fetching Data
 
-### Client Mode only (SPA)
+The easiest thing to do is Client-Side Rendering (CSR). _It's also how Single Page Application (SPA) are working._
 
-All you need to do to load data is to call a store's `fetch` method when running in the
+All you need to do to load data in the client, is to call a store's `fetch` method when running in the
 browser:
 
 ```svelte
@@ -133,9 +133,9 @@ browser:
 {$MyQueryStore.data.value}
 ```
 
-### Enabeling SSR
+## Server-Side Rendering
 
-In Sapper or SvelteKit, you can prefetch data from the server side. To opt-in this behavior, you have to use the `prefetch` method in the `context module` like this:
+In Sapper or SvelteKit, you can prefetch data from the server side (SSR). To opt-in this behavior, you have to use the `prefetch` method in the `context module` like this:
 
 ```svelte
 <script context="module">
