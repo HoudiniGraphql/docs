@@ -99,7 +99,7 @@ sent to the server, and a caching layer used to orchestrate data across the appl
 ### The Cache
 
 As with most of this guide, the most reliable place to get an understanding of how
-the cache's internals are organized is the [test suite](https://github.com/HoudiniGraphQL/houdini/tree/main/src/runtime/cache/cache.test.ts).
+the cache's internals are organized is the [test suite](https://github.com/HoudiniGraphql/houdini/tree/main/src/runtime/cache/tests).
 However, here is a brief explanation of the overall architecture so you can orient yourself:
 
 Houdini's cache is built on top of two core interactions: writing data and
@@ -126,6 +126,12 @@ an object matching the entire corresponding selection.
 For a general introduction to normalized caching for GraphQL queries, check out the
 [urql page on Normalized Caching](https://formidable.com/open-source/urql/docs/graphcache/normalized-caching/),
 which gives a very good overview of the task, even if some of the actual implementation details differ from houdini's.
+
+## Integration tests
+
+We invested for some time in writing integration tests for Houdini to check features one by one. You can find these tests in the dedicated folder [integration](https://github.com/HoudiniGraphql/houdini/tree/main/integration) at the root of Houdini's repository.
+
+Breafly, the idea is to test the runtime's behavior in a variety of ways (To do so, we try to have a route per functionality). This is giving us a great confidence for solving issues, having no regessions and all evolutions of Houdini.
 
 ## Piecing It All Together
 
