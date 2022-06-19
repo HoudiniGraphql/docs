@@ -120,7 +120,9 @@ about the last query that was sent:
 
 ## Fetching Data
 
-In the simplest situations, all you need to do to load data is to call a store's `fetch` method when running in the
+### Client Mode only (SPA)
+
+All you need to do to load data is to call a store's `fetch` method when running in the
 browser:
 
 ```svelte
@@ -134,8 +136,9 @@ browser:
 {$MyQueryStore.data.value}
 ```
 
-However when working with frameworks like Sapper or SvelteKit, you will want to add a sever-side request that
-fills the cache with data before your component mounts. This is done with the `prefetch` method:
+### Enabeling SSR
+
+In Sapper or SvelteKit, you can prefetch data from the server side. To opt-in this behavior, you have to use the `prefetch` method in the `context module` like this:
 
 ```svelte
 <script context="module">
@@ -156,7 +159,7 @@ fills the cache with data before your component mounts. This is done with the `p
 {$MyQueryStore.data.value}
 ```
 
-Remember to thread your variables through if you compute them in `load`:
+If you have some variables, to avoid repeating them, it could look like:
 
 ```svelte
 <script context="module">
@@ -183,7 +186,7 @@ Remember to thread your variables through if you compute them in `load`:
 {$MyQueryStore.data.value}
 ```
 
-#### Server-side Blocking
+#### Advance - Server-side Blocking
 
 If we're not careful, the above code will cause every route transition to
 block while the store waits for the server. While this sounds great
