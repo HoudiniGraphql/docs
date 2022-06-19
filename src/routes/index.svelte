@@ -93,7 +93,6 @@
 
 	// @ts-ignore
 	const files = REPLACE_WITH_OUTLINE.inline
-	console.log(`files`, files)
 </script>
 
 <svelte:head>
@@ -568,8 +567,13 @@
 			box-sizing: border-box;
 		}
 	}
-
 	@media (max-width: 650px) {
+		:global(#hero pre) {
+			width: 95%;
+		}
+	}
+
+	@media (max-width: 580px) {
 		h1 {
 			padding: 0 30px;
 		}
