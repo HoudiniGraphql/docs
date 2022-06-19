@@ -27,8 +27,9 @@ description: An overview of the store-based API provided by Houdini and how it r
 # Working with GraphQL
 
 There are two different ways you can define graphql documents in a Houdini application. You can either take advantage of the preprocessor to define your
-documents inside of `.svelte` files or you can define them in external graphql files and interact the document's dedicated store. While the two approaches are totally equivalent, they have
-different strengths and weaknesses so you'll often find yourself mixing and matching the techniques in a given project.
+documents inside of `.svelte` files or you can define them in external in external graphql files (.gql or .graphql for example) and interact the document's
+dedicated store. While the two approaches are totally equivalent, they have different strengths and weaknesses so you'll often find yourself mixing and matching
+the techniques in a given project.
 
 Before we get to the actual differences we should first go over the core abstraction powering Houdini's data fetching: document stores.
 
@@ -64,8 +65,10 @@ store to avoid bundling any unnecessary dependencies:
 
 {$ViewerProfileStore.data.viewerProfile.firstName}
 
-<!-- make sure that the latest value is always fetched -->
-$: browser && ViewerProfileStore.fetch()
+<script>
+    <!-- make sure that the latest value is always fetched -->
+    $: browser && ViewerProfileStore.fetch()
+</script>
 
 ```
 
@@ -92,11 +95,17 @@ And using a mutation store looks something like
 
 <DeepDive title="Importing Document Stores">
 
-All document stores can be imported in two different ways. You can either import the default export of the path which will provide an
+All document stores can be imported in three different ways. You can either import the default export of the path which will provide an
 instance of the store you can work with easily:
 
 ```javascript
 import store from '$houdini/stores/MyQuery'
+```
+
+You can import the same instance from the root of the runtime with `GQL_` prepended to the store's name.
+
+```javascript
+import { GQL_MyQuery } from '$houdini'
 ```
 
 Or, you can import a factory from the module that will let you instantiate multiple copies of the same store if you need to:
@@ -110,10 +119,7 @@ const store = MyQueryStore()
 </DeepDive>
 
 While the stores are incredibly flexible, we're already starting to see the biggest downside:
-there is a lot of boilerplate required to connect your component and store.
-Every time you invoke `.mutate` you have to pass in the component context. For a query store, you
-must remember to use `store.prefetch` in `load` and `store.fetch` in the component. You also have to thread
-the query variables from your `load` function into the call to `store.fetch`. If this seems like a lot
+there is a good amount of boilerplate required to connect your component and store. If this seems like a lot
 to remember, don't worry - that's where the preprocessor comes in.
 
 ## Inline Documents
@@ -146,8 +152,6 @@ Mutations also have a simpler API with the preprocessor. Notice how there's no m
 ```svelte
 <script>
     import AddUser from '$houdini/stores/AddUser'
-    import { getHoudiniContext } from '$houdini/runtime'
-
 
     // a function to invoke the mutation
     const addUser = mutation(graphql`
