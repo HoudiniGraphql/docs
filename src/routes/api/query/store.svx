@@ -117,10 +117,8 @@ about the last query that was sent:
 
 ## Fetching Data
 
-The easiest thing to do is Client-Side Rendering (CSR). _It's also how Single Page Application (SPA) are working._
-
-All you need to do to load data in the client, is to call a store's `fetch` method when running in the
-browser:
+The quickest way to load data into a store is to call the `fetch` method when running in the browser. In a
+SvelteKit route, this looks something like:
 
 ```svelte
 <script>
@@ -135,7 +133,8 @@ browser:
 
 ## Server-Side Rendering
 
-In Sapper or SvelteKit, you can prefetch data from the server side (SSR). To opt-in this behavior, you have to use the `prefetch` method in the `context module` like this:
+In frameworks like Sapper or SvelteKit, you can prefetch data for your component so that it loads before the
+the component mounts. To do this, you have to use the `prefetch` method:
 
 ```svelte
 <script context="module">
@@ -156,7 +155,7 @@ In Sapper or SvelteKit, you can prefetch data from the server side (SSR). To opt
 {$MyQueryStore.data.value}
 ```
 
-If you have some variables, to avoid repeating them, it could look like:
+If your query has variables, you can avoid repeating them using a prop:
 
 ```svelte
 <script context="module">
@@ -183,7 +182,7 @@ If you have some variables, to avoid repeating them, it could look like:
 {$MyQueryStore.data.value}
 ```
 
-#### Advance - Server-side Blocking
+#### Advanced - Server-side Blocking
 
 If we're not careful, the above code will cause every route transition to
 block while the store waits for the server. While this sounds great

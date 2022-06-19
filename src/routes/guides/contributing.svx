@@ -129,9 +129,12 @@ which gives a very good overview of the task, even if some of the actual impleme
 
 ## Integration tests
 
-We invested for some time in writing integration tests for Houdini to check features one by one. You can find these tests in the dedicated folder [integration](https://github.com/HoudiniGraphql/houdini/tree/main/integration) at the root of Houdini's repository.
+The best way to ensure that your feature works is to create a test that simulates the user's experience. We do this
+using a suite of integration tests that verify some of the more complex behaviors. You can find these tests in the dedicated
+[integration folder](https://github.com/HoudiniGraphql/houdini/tree/main/integration) at the root of Houdini's repository.
 
-Breafly, the idea is to test the runtime's behavior in a variety of ways (To do so, we try to have a route per functionality). This is giving us a great confidence for solving issues, having no regessions and all evolutions of Houdini.
+The general idea is to create specific routes in a SvelteKit application that showcase a single behavior and then
+use [https://playwright.dev/] to simulate a user interacting with the UI and verify that things are working as expected.
 
 ## Piecing It All Together
 
