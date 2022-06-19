@@ -22,10 +22,12 @@
 	const bullets = [
 		'The same API for Kit, Sapper, or vanilla Svelte',
 		'Normalized cache with declarative field updates and list mutations',
-		'Colocated data requirements',
+		'Colocate data requirements or define operations in external files with generated stores',
+		'Fine tune between SSR and FCP',
 		'First-class support for advanced patterns like subscriptions and pagination'
 	]
-
+	// Server Side Rendering
+	// First Contentful Paint
 	const sellingPoints = [
 		{
 			header: 'Composable',
