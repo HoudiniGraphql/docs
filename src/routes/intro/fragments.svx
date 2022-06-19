@@ -7,7 +7,7 @@ description: The second part of the Houdini intro focusing how to reuse parts of
 <script>
     import { Highlight } from 'svelte-highlight'
     import { GraphQLExplained, Icon, DeepDive } from '~/components'
-    import { graphql } from '~/lib/higlight'  
+    import { graphql } from '~/lib/highlight'  
 </script>
 
 # Reusing Parts of a Query
