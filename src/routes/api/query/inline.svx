@@ -7,10 +7,8 @@ description: Queries in Houdini
 <script>
     import { HeaderWithMode } from '~/components'
     import { Highlight, HighlightAuto } from 'svelte-highlight'
-    import graphqlLangDef from '~/lib/graphql-language'
     import { Transformation } from '~/components'
-
-    const graphql = { name: 'graphql', register: graphqlLangDef }
+    import { graphql } from '~/lib/highlight'
 </script>
 
 <HeaderWithMode title="Query" />

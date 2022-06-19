@@ -5,20 +5,20 @@ description: An overview of the store-based API provided by Houdini and how it r
 ---
 
 <script>
-    import { Highlight, HighlightAuto } from 'svelte-highlight'
-    import graphqlLangDef from '~/lib/graphql-language'
+    import { Highlight } from 'svelte-highlight'
     import { Transformation, DeepDive } from '~/components'
-    const graphql = { name: 'graphql', register: graphqlLangDef }
+    import { graphql, typescript } from '~/lib/highlight'
 
     const storeSource = `
-    # Operation in a .gql or .graphql file
+    # Operation defined in a .gql or .graphql file
     query ViewerProfile {
         viewer {
             firstName
         }
     }`
 
-    const storeTypeDef = `// Store generated
+    const storeTypeDef = `
+// Generated Store 
 type ViewerProfileStore = {
     subscribe: Readable<ViewerProfile>
     prefetch(...): Promise<ViewerProfile>
@@ -46,7 +46,7 @@ querying your API but also subscribing to changes in Houdini's cache so everythi
 
 <Transformation>
     <Highlight language={graphql} code={storeSource} slot="from"/>
-    <HighlightAuto code={storeTypeDef} slot="to" />
+    <Highlight language={typescript} code={storeTypeDef} slot="to" />
 </Transformation>
 
 This is the core abstraction powering Houdini's. And it's used in **Inline documents** AND **External documents**.

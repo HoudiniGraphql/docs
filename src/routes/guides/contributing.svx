@@ -201,7 +201,7 @@ With the information embedded in the artifacts, all that's left is to teach the 
 is broken down into two parts:
 
 1. When the cache encounters a request to subscribe to a field marked as a list,
-   it [saves a handler to that list](https://github.com/HoudiniGraphql/houdini/blob/main/src/runtime/cache/subscription.ts#L52L217) in an internal Map under the provided name.
+   it [saves a handler to that list](https://github.com/HoudiniGraphql/houdini/blob/main/src/runtime/cache/subscription.ts#L55-L72) in an internal Map under the provided name.
 1. When writing data, if the cache [encounters a field with a list of operations](https://github.com/HoudiniGraphql/houdini/blob/main/src/runtime/cache/cache.ts#L487)
    embedded in the selection object, it [inserts the result](https://github.com/HoudiniGraphql/houdini/blob/main/src/runtime/cache/cache.ts#L517) in the list
    using the handler it stored in step one.
