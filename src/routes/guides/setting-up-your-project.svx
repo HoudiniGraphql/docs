@@ -42,7 +42,8 @@ npx houdini init
 > You will also need to provide the same flag to `generate` when using the
 > `--pull-schema` flag.
 
-Finally, follow the steps appropriate for your framework.
+Finally, follow the steps appropriate for your framework. If you are using typescript, there is a section at the end
+of this doc with more instructions for setting it up.
 
 ### SvelteKit
 
@@ -123,3 +124,22 @@ config file to `"svelte"`.
 Please keep in mind that returning the response from a query, you should not rely on `this.redirect` to handle the
 redirect as it will update your browsers `location` attribute, causing a hard transition to that url. Instead, you should
 use `this.error` to return an error and handle the redirect in a way that's appropriate for your application.
+
+## Typescript
+
+The only thing required to configure when setting up a project with typescript is to teach the compiler how to resolve the `$houdini`
+import:
+
+```typescript
+{
+	// ...
+    "compilerOptions": {
+        "paths": {
+			// ...
+            "$houdini": [
+                "./$houdini/"
+            ]
+        }
+    }
+}
+```
