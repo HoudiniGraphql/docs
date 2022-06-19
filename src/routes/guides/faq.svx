@@ -21,7 +21,7 @@ For more information on using your document's stores check out [Working with Gra
 
 If you are familiar with the SvelteKit API, you probably noticed that you don't need to define a `load` function as described in the [SvelteKit docs](https://kit.svelte.dev/docs/loading) when using inline documents. Don't worry, your routes are still rendered on the server thanks to the preprocessor. One of its responsibilities is moving the actual fetch into a `load`.
 
-For example, consider this query from the [Introduction](/intro/welcome):
+For example, consider this query from the [Getting started](/intro/welcome):
 
 ```svelte
 <script>
