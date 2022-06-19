@@ -8,16 +8,18 @@ description: An overview of the store-based API provided by Houdini and how it r
     import { Highlight, HighlightAuto } from 'svelte-highlight'
     import graphqlLangDef from '~/lib/graphql-language'
     import { Transformation, DeepDive } from '~/components'
-
     const graphql = { name: 'graphql', register: graphqlLangDef }
 
-    const storeSource = `query ViewerProfile {
+    const storeSource = `
+    # Operation in a .gql or .graphql file
+    query ViewerProfile {
         viewer {
             firstName
         }
     }`
 
-    const storeTypeDef = `type ViewerProfileStore = {
+    const storeTypeDef = `// Store generated
+type ViewerProfileStore = {
     subscribe: Readable<ViewerProfile>
     prefetch(...): Promise<ViewerProfile>
     fetch(...): Promise<void>
@@ -35,7 +37,7 @@ Before we get to the actual differences we should first go over the core abstrac
 
 ## Document Stores
 
-When you run the `generate` command, Houdini creates a dedicated store for every document it runs into (either inside of a `.svelte` or graphql file).
+When you run the `generate` command, Houdini creates a dedicated store for every document it runs into either inside of a `.svelte` or in external graphql files (`.gql` or `.graphql`)
 
 For example, a graphql document containing a query will have a corresponding store generated that is not only responsible for
 querying your API but also subscribing to changes in Houdini's cache so everything is kept in sync when mutations and subscriptions fire.
