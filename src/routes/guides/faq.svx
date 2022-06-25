@@ -53,7 +53,7 @@ You can think of it as equivalent to:
     import { browser } from '$app/env'
 
     export async function load({ event }) {
-        await SpeciesInfoStore.prefetch({ event } )
+        await SpeciesInfoStore.fetch({ event } )
     }
 </script>
 
@@ -64,7 +64,7 @@ You can think of it as equivalent to:
 </script>
 ```
 
-If this store part was confusing, please check out the [Working with GraphQL](/guides/working-with-graphql) guide.
+If you haven't seen Houdini's document stores before, please check out the [Working with GraphQL](/guides/working-with-graphql) guide.
 
 ### Why is the inline query variable API so weird?
 

@@ -21,7 +21,6 @@ description: An overview of the store-based API provided by Houdini and how it r
 // Generated Store
 type ViewerProfileStore = {
     subscribe: Readable<ViewerProfile>
-    prefetch(...): Promise<ViewerProfile>
     fetch(...): Promise<void>
 }`
 </script>
@@ -31,9 +30,9 @@ type ViewerProfileStore = {
 There are two different ways you can define graphql documents in a Houdini application.
 
 - **External documents**: you write your graphql operations in dedicated graphql files (`.gql` or
-`.graphql` for example) and interact with the store API directly.
+  `.graphql` for example) and interact with the store API directly.
 - **Inline documents**: you write your graphql operations inside your `.svelte` files and the preprocessor
-will take care of all the boilerplate code for you.
+  will take care of all the boilerplate code for you.
 
 While the two approaches are totally equivalent in functionality, they have different strengths
 and weaknesses so you'll often find yourself mixing and matching the techniques in a given project.
@@ -69,7 +68,7 @@ hooks, etc. Here's an example of a SvelteKit route that uses a query document:
 
     export async load(event) {
         // make sure the store has the latest data
-        await ViewerProfileStore.prefetch({ event })
+        await ViewerProfileStore.fetch({ event })
 
         // have to return _something_ to make sveltekit happy
         return {}

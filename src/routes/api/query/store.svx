@@ -5,7 +5,7 @@ description: Queries in Houdini
 ---
 
 <script>
-    import { HeaderWithMode } from '~/components'
+    import { HeaderWithMode, DeepDive } from '~/components'
     import { Highlight, HighlightAuto } from 'svelte-highlight'
     import { Transformation } from '~/components'
     import { graphql } from '~/lib/highlight'  
@@ -87,7 +87,7 @@ Load data from the server and subscribe to any changes of fields we detect from 
 
     export async load(event) {
         // make sure the store has the latest data
-        await ViewerProfileStore.prefetch({ event })
+        await ViewerProfileStore.fetch({ event })
 
         // have to return _something_ to make SvelteKit happy
         return {}
@@ -133,8 +133,8 @@ SvelteKit route, this looks something like:
 
 ## Server-Side Rendering
 
-In frameworks like Sapper or SvelteKit, you can prefetch data for your component so that it loads before the
-the component mounts. To do this, you have to use the `prefetch` method:
+In frameworks like Sapper or SvelteKit, you can fetch data for your component so that it loads before the
+the component mounts. To do this, you have to use the `fetch` method inside of your `load` function:
 
 ```svelte
 <script context="module">
@@ -142,7 +142,7 @@ the component mounts. To do this, you have to use the `prefetch` method:
   import MyQueryStore from '$houdini/stores/MyQuery'
 
   export async function load(event) {
-    await MyQueryStore.prefetch({ event })
+    await MyQueryStore.fetch({ event })
 
     return {}
   }
@@ -165,7 +165,7 @@ If your query has variables, you can avoid repeating them using a prop:
   export async function load(event) {
     const variables = { ... }
 
-    await MyQueryStore.prefetch({ event, variables })
+    await MyQueryStore.fetch({ event, variables })
 
     return {
       props: { variables }
@@ -182,7 +182,7 @@ If your query has variables, you can avoid repeating them using a prop:
 {$MyQueryStore.data.value}
 ```
 
-#### Advanced - Server-side Blocking
+<DeepDive title="Blocking Navigation">
 
 If we're not careful, the above code will cause every route transition to
 block while the store waits for the server. While this sounds great
@@ -196,7 +196,7 @@ which will make the `await` behave like normal:
 ```javascript
 export async function load(event) {
 	// blocking:true makes this await "real"
-	const { data } = await MyStore.prefetch({ event, blocking: true })
+	const { data } = await MyStore.fetch({ event, blocking: true })
 
 	// check the response of the query and redirect when appropriate
 	if (!data.fieldName) {
@@ -208,6 +208,8 @@ export async function load(event) {
 	return {}
 }
 ```
+
+</DeepDive>
 
 ## Paginated Queries
 
