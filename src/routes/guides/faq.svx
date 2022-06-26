@@ -17,6 +17,10 @@ Yep! You can use queries or any document anywhere you can use a svelte store. Ju
 Yes! You'll just have to rely on the store apis for your documents and write your route's loads manually.
 For more information on using your document's stores check out [Working with GraphQL](/guides/working-with-graphql) guide.
 
+### What's the best way to build a Full-Stack application with SvelteKit?
+
+Simple answer, we recommend [KitQL](https://www.kitql.dev/). It gives you everything you need when building a full-stack application with GraphQL (including [Houdini](https://www.houdinigraphql.com/) of course 😉). For more information about our collaboration, head over to this [blog post](https://www.the-guild.dev/blog/houdini-and-kitql).
+
 ### How does the preprocessor work?
 
 If you are familiar with the SvelteKit API, you probably noticed that you don't need to define a `load` function as described in the [SvelteKit docs](https://kit.svelte.dev/docs/loading) when using inline documents. Don't worry, your routes are still rendered on the server thanks to the preprocessor. One of its responsibilities is moving the actual fetch into a `load`.
