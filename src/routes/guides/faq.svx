@@ -21,6 +21,11 @@ For more information on using your document's stores check out [Working with Gra
 
 Simple answer, we recommend [KitQL](https://www.kitql.dev/). It gives you everything you need when building a full-stack application with GraphQL (including [Houdini](https://www.houdinigraphql.com/) of course 😉). For more information about our collaboration, head over to this [blog post](https://www.the-guild.dev/blog/houdini-and-kitql).
 
+### How do I customize the fetching logic on a case-by-case basis?
+
+You should use the `metadata` parameter in the document store to pass arbitrary information into your client's network function. For more information,
+please visit [the query store docs](/api/query/store#passing-metadata).
+
 ### How does the preprocessor work?
 
 If you are familiar with the SvelteKit API, you probably noticed that you don't need to define a `load` function as described in the [SvelteKit docs](https://kit.svelte.dev/docs/loading) when using inline documents. Don't worry, your routes are still rendered on the server thanks to the preprocessor. One of its responsibilities is moving the actual fetch into a `load`.
@@ -81,3 +86,7 @@ Every plugin and editor is different so we can't give you an exact answer but Ho
 ### When will version `1.0` be released?
 
 Quick answer is when svelekit gets to `1.0`. Until then, we want to be able to break the API in order to create the most convenient experience for the majority of users.
+
+### Does Houdini support Framework X?
+
+At the moment, Houdini only support SvelteKit, Sapper, and vanilla Svelte projects. If you are interested in integrating Houdini into another framework, please reach out! We are very interested in adding support for additional frameworks, we just don't have an abundance of time 😅

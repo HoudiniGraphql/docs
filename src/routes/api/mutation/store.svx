@@ -7,6 +7,7 @@ description: Mutations in Houdini
 <script>
     import { HeaderWithMode } from '~/components'
     import mode from '~/lib/mode'
+	import ListOperations from '~/sections/list-operations.svx'
 </script>
 
 <HeaderWithMode title="Mutation" />
@@ -61,7 +62,7 @@ record's id.
 
 ## Lists
 
-For an overview of how to work with lists, please check out the [List Operations](/api/list-operations) docs.
+<ListOperations />
 
 ## Optimistic Responses
 

@@ -6,6 +6,7 @@ description: Mutations in Houdini
 
 <script>
     import { HeaderWithMode } from '~/components'
+	import ListOperations from '~/sections/list-operations.svx'
 </script>
 
 <HeaderWithMode title="Mutation" />
@@ -102,7 +103,7 @@ Take for example, an `TodoItemRow` component:
 
 ## Lists
 
-For an overview of how to work with lists, please check out the [List Operations](/api/list-operations) docs.
+<ListOperations />
 
 ## Optimistic Responses
 

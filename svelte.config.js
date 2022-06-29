@@ -23,7 +23,10 @@ const config = {
 	// for more information about preprocessors
 	preprocess: [
 		mdsvex({
-			layout: path.resolve('./src/routes/_page.svelte'),
+			layout: {
+				blank: path.resolve('./src/routes/_blank.svelte'),
+				_: path.resolve('./src/routes/_page.svelte')
+			},
 			rehypePlugins: [rehypeSlug, rehypeAutolinkHeadings],
 			highlight: {
 				highlighter(str, lang) {
