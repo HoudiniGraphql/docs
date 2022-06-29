@@ -12,6 +12,7 @@ here are a few links:
 
 - [Config Values](#config-values)
 - [Environment](#environment)
+- [Session and Fetch arguments](#session-and-fetch-arguments)
 - [@parentID](#parentid)
 
 ## What Changed
@@ -44,6 +45,29 @@ import `HoudiniClient` from your runtime and instantiate it as you used to do wi
 
 Beyond just the name there was also a change in the way you configure your runtime to use your environment. Now,
 instead of `setEnvironment(client)` you should just use `client.init()`.
+
+## Session and Fetch Arguments
+
+The `session` and `fetch` arguments are now passed to your client's network function in the same object as `text`. You should update
+your client definition to look something like:
+
+```typescript
+async function fetchQuery({ fetch, session, text, variables }) {
+	const result = await fetch('http://localhost:4000/graphql', {
+		method: 'POST',
+		headers: {
+			'Content-Type': 'application/json',
+			Authorization: `Bearer ${session?.token}`
+		},
+		body: JSON.stringify({
+			query: text,
+			variables
+		})
+	})
+
+	return await result.json()
+}
+```
 
 ## @parentID
 
