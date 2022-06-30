@@ -27,6 +27,7 @@ It can contain the following values:
 - `defaultKeys` (optional): A list of fields to use when computing a record's id. The default value is `['id']`. For more information see the [Caching Guide](/guides/caching-data#custom-ids).
 - `types` (optional): an object that customizes the resolution behavior for a specific type. For more information see the [Caching Guide](/guides/caching-data#custom-ids).
 - `logLevel` (optional): Specifies the style of logging houdini will use when generating your file. One of "quiet", "full", "summary", or "short-summary".
+- `disableMasking` (optional): A boolean indicating whether fields from referenced fragments should be included in a document's selection set
 
 ## Custom Scalars
 
