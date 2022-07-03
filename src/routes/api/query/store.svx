@@ -233,7 +233,7 @@ Whatever the case may be, you can pass a `metadata` parameter to fetch:
 This value will get forwarded to the network function in your client definition, usually found in `src/client.js`:
 
 ```typescript
-async function fetchQuery({ fetch, text, variables, metadata }) {
+async function fetchQuery({ fetch, text, variables, session, metadata }) {
 	// do anything with metadata inside of here
 }
 

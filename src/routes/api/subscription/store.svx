@@ -36,7 +36,7 @@ Subscription bodies can contain all of the list operations described in [this do
 ## Configuring the client
 
 Houdini can work with any websocket client as long as you can provide an object that satisfies
-the `SubscriptionHandler` interface as the second argument to the Environment's constructor. Keep in mind
+the `SubscriptionHandler` interface as the second argument to the HoudiniClient's constructor. Keep in mind
 that WebSocket connections only exist between the browser and your API, therefor you must remember to
 pass `null` when configuring your environment on the rendering server.
 
@@ -46,7 +46,7 @@ If your API supports the [`graphql-ws`](https://github.com/enisdenjo/graphql-ws)
 client and pass it directly:
 
 ```typescript
-// environment.ts
+// client.ts
 
 import { createClient } from 'graphql-ws'
 import { browser } from '$app/env'
@@ -58,7 +58,7 @@ let socketClient = browser
 	  })
 	: null
 
-export default new Environment(fetchQuery, socketClient)
+export default new HoudiniClient(fetchQuery, socketClient)
 ```
 
 ### Using `subscriptions-transport-ws`
@@ -67,7 +67,7 @@ If you are using the deprecated `subscriptions-transport-ws` library and associa
 you will have to slightly modify the above block:
 
 ```typescript
-// environment.ts
+// client.ts
 
 import { SubscriptionClient } from 'subscriptions-transport-ws'
 import { browser } from '$app/env'
@@ -91,5 +91,5 @@ if (browser) {
 	}
 }
 
-export default new Environment(fetchQuery, socketClient)
+export default new HoudiniClient(fetchQuery, socketClient)
 ```
