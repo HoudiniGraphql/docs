@@ -122,3 +122,16 @@ mutation FavoriteBand($input: FavoriteBandInput!, $userID: String!) {
 	}
 }
 ```
+
+## Enums
+
+Houdini generates runtime representations of every enum in your schema. They can be imported directly from
+`$houdini`:
+
+```javascript
+import { MyEnum, GQL_MyMutation } from '$houdini
+
+function onClick() {
+	GQL_MyMutation.mutate({ variables: { input: MyEnum.Value1 }})
+}
+```
