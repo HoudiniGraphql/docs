@@ -64,6 +64,14 @@ const subscriptionExample = `subscription(graphql\`
 \`)`
 
 const cliExample = `houdini generate --pull-schema`
+
+const preprocessorExample = `// svelte.config.js
+import houdini from 'houdini/preprocess'
+
+export default {
+    preprocess: [houdini()],
+}
+`
 </script>
 
 # Houdini API Reference
@@ -126,4 +134,11 @@ description="Command line tool commands and arguments"
 href="/api/cli"
 example={cliExample}
 language={bash}
+/>
+
+<APIShowcase
+title="Preprocessor"
+description="A powerful tool to enable Houdini's declarative API"
+href="/api/preprocessor"
+example={preprocessorExample}
 />
