@@ -38,12 +38,12 @@ async function fetchQuery({
 		})
 	})
 
-	// return the result as a JSON object to Houdini
-	return await result.json()
+	// extract and assign the json body of the response to a variable
+	const json = await result.json()
 
 	// metadata usage example
 	if (metadata?.logResult === true) {
-		console.info(JSON.strignify(json, null, 2))
+		console.info(JSON.stringify(json, null, 2))
 	}
 
 	return json
