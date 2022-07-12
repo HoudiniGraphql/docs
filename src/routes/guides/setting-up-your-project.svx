@@ -70,8 +70,6 @@ export default {
 Next, you need to update your `vite.config.js` to look like:
 
 ```javascript
-import path from 'path'
-
 export default {
 	server: {
 		fs: {
@@ -86,7 +84,7 @@ this, add the following block of code to `src/routes/__layout.svelte` and any `_
 
 ```html
 <script context="module">
-	import houdiniClient from '../client'
+	import houdiniClient from '../houdiniClient'
 
 	houdiniClient.init()
 </script>
