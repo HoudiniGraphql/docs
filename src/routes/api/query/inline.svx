@@ -68,7 +68,7 @@ modified example [from the source repository](https://github.com/HoudiniGraphql/
 
 <!-- src/routes/[filter].svelte -->
 <script lang="ts">
-	import { query, graphql, AllItems } from '$houdini'
+	import { query, graphql, type AllItems } from '$houdini'
 
 	// load the items
 	const { data } = query<AllItems>(graphql`
