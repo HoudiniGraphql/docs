@@ -105,13 +105,8 @@ For more information on GraphQL Queries, [this is a good resource](https://graph
 
 </GraphQLExplained>
 
-Once you've saved the file, we will have to tell Houdini to generate the necessary files so that our component can render. In order to do this, invoke the compiler with:
-
-```bash
-npm run generate
-```
-
-Keep in mind, you will have to do this every time you change any graphql string in a houdini project. I know this sounds like a big burden but bear with us. We are actively working on a way to avoid this altogether, its just not ready yet.
+If everything is set up properly, you should see a message printed in your terminal once you save the file. Behind the scenes, Houdini is constantly validating and processing
+your queries so you can catch errors as quickly as possible.
 
 By the way, if you ever change your schema and you need to update the local version, you can pass `-p` to `generate` and it will pull the latest version from your API before generating everything.
 
@@ -195,8 +190,6 @@ query SpeciesInfo($id: Int!) {
 }
 ```
 
-If you run the generate command now, you will see an error since the runtime does not know how to compute the value for the `id` variable - let's fix that.
-
 In order to tell the runtime how to compute that value, you have to define a function called `SpeciesInfoVariables` in the `module` context of your component that returns the correct value. Add the following block of code under the closing `script` tag in your component:
 
 ```svelte
@@ -209,7 +202,7 @@ In order to tell the runtime how to compute that value, you have to define a fun
 </script>
 ```
 
-If you didn't do it earlier, you should now execute `npm run generate` in order to see your changes. Once that's done, you should be able to navigate to `/6` to see Charizard's information. It's worth mentioning that if you _did_ run `generate` after adding the variable to the query, you don't need to run it again because of the new function. You only need to run it when you change something inside of a `graphql` tag.
+Once that's done, you should be able to navigate to `/6` to see Charizard's information. It's worth mentioning that if you _did_ run `generate` after adding the variable to the query, you don't need to run it again because of the new function. You only need to run it when you change something inside of a `graphql` tag.
 
 Note: the name of the function that returns the values for a query's variables must follow a very specific format. It must be called `{QueryName}Variables`. If you look at the query we are working with, you'll see its named `SpeciesInfo` which is why this function is named `SpeciesInfoVariables`.
 

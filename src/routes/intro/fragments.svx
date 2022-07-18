@@ -131,7 +131,7 @@ And change the instance of `Sprite` to look like:
 />
 ```
 
-Once that's all done, you will need to regenerate your runtime with `npm run generate` and if everything went according to plan, there shouldn't be any noticeable change in your browser.
+Once that's all done, there shouldn't be any noticeable change in your browser.
 
 ## What Just Happened?
 
@@ -212,7 +212,7 @@ Next, copy and paste the following code above the `nav` in the right panel. You'
 </div>
 ```
 
-If you haven't regenerated the runtime since we made the changes to the `SpeciesPreview`, you should do so now with `npm run generate` and confirm that you can see all of the forms associated with a species' evolution chain. Pretty cool, huh?
+You should now go and confirm that you can see all of the forms associated with a species' evolution chain. Pretty cool, huh?
 
 <DeepDive title="Fragments are your building blocks">
 

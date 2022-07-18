@@ -83,7 +83,7 @@ With that in place we can now define a function that will invoke the `toggleFavo
 <button on:click={() => toggleFavorite({id: $data.species.id})}>
 ```
 
-Generate your runtime with `npm run generate` and try clicking on the grey star for any species. It should flip between gold and grey every time you click it.
+Now, try clicking on the grey star for any species. It should flip between gold and grey every time you click it.
 
 That's all there is to it! You see, Houdini maintains an in-memory representation of all of the data being shown in our UI as well as which components rely on each field. Since we asked for the fields that could change as part of our mutation, Houdini was able to detect that it needed to use the new `favorite` value to update the field of the species with the matching `id` and keep our view up to date. By the way, we could have omitted that `id` in the selection, Houdini will add it behind the scenes if we don't include it explicitly.
 
@@ -133,7 +133,7 @@ Before we get too far, let's add a place in our UI to show us the list of favori
 
 In general, having multiple queries on a single page isn't the best practice since we have to pay network latency costs twice but it simplifies the copy and pasting so we're going to do it anyway 😅
 
-You might notice that we added something new to this query: the `@list` directive. Don't worry about that just yet - we'll explain what it does in a bit. For now, just regenerate your runtime and notice that in order to see your favorites in the list, you have to refresh your browser after every click. That shouldn't be too surprising since we haven't told Houdini how to update our view in response to the mutation. Connecting those dots just requires updating the mutation to look like this:
+You might notice that we added something new to this query: the `@list` directive. Don't worry about that just yet - we'll explain what it does in a bit. For now, just notice that you have to refresh your browser after every click. That shouldn't be too surprising since we haven't told Houdini how to update our view in response to the mutation. Connecting those dots just requires updating the mutation to look like this:
 
 ```graphql
 mutation ToggleFavorite($id: Int!) {
@@ -147,7 +147,7 @@ mutation ToggleFavorite($id: Int!) {
 }
 ```
 
-Go head, regenerate your runtime and try clicking on the star. You should see the species pop in and out of the list of favorites.
+Go head, save the file and try clicking on the star. You should see the species pop in and out of the list of favorites.
 
 If you look closely at the mutation you'll notice that we are using a fragment in the payload that you never defined. That fragment name follows a very specific form and acts a special instruction to the Houdini runtime to toggle the object referenced by the `species` field in the mutation in or out of the list named `FavoriteSpecies`. We didn't even have to worry about asking for all of the right fields, once we told Houdini which list we wanted to add it to, it was able to take care of the rest. This was the reason for the `@list` decorator in the query above: we needed a way to identify the field as a target for a list operation. If we had named that list `AllFavorites` instead, the query would reference `AllFavorites_toggle`.
 
