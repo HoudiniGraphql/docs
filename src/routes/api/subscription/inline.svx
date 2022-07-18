@@ -50,7 +50,7 @@ the information needed for the mutation (for an example of this pattern, see bel
 
 ## List Operations
 
-Subscription bodies can contain all of the list operations described in [this document](/api/list-operations).
+Subscription bodies can contain all of the list operations described in [this document](/api/graphql).
 
 ## Configuring the client
 
