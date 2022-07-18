@@ -28,7 +28,7 @@ yarn add -D houdini
 npm install --save-dev houdini
 ```
 
-## Configuration
+## Starting a New Project
 
 Adding houdini to an existing project can easily be done with the provided command-line tool.
 If you don't already have an existing app, visit [this link](https://kit.svelte.dev/docs)
@@ -48,7 +48,7 @@ npx houdini init
 > You will also need to provide the same flag to `generate` when using the
 > `--pull-schema` flag.
 
-With that done, you should be all set with everything you need to work with Houdini. If something
+And that's it! You should be all set with everything you need to work with Houdini. If something
 went wrong, or you need to update your project by hand for some reason, here are the framework and
 technology specific steps you need to take:
 
@@ -137,7 +137,7 @@ Please keep in mind that returning the response from a query, you should not rel
 redirect as it will update your browsers `location` attribute, causing a hard transition to that url. Instead, you should
 use `this.error` to return an error and handle the redirect in a way that's appropriate for your application.
 
-## Typescript
+### Typescript
 
 The only thing required to configure when setting up a project with typescript is to teach the compiler how to resolve the `$houdini`
 import:
