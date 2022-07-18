@@ -1,57 +1,7 @@
 ---
-title: Subscription
-index: 4
-description: Subscriptions in Houdini
+sidebar: false
+layout: blank
 ---
-
-<script>
-    import { HeaderWithMode } from '~/components'
-	import SubscriptionClient from '~/sections/subscription-client.svx'
-</script>
-
-<HeaderWithMode title="Subscription" />
-
-Listen for real-time updates from your server using GraphQL Subscriptions.
-
-```svelte
-<script>
-	import { graphql, subscription } from '$houdini'
-
-	// this information should usually come from a fragment
-	export let itemID
-
-	subscription(
-		graphql`
-			subscription ItemUpdate($id: ID!) {
-				itemUpdate(id: $id) {
-					item {
-						id
-						completed
-						text
-					}
-				}
-			}
-		`,
-		{ id: itemID }
-	)
-</script>
-```
-
-### Inputs
-
-1. A string tagged with `graphql` containing a single document with one named subscription
-2. An object containing any arguments for the subscription
-
-### Return Values
-
-`subscription` returns a store containing the latest version of the subscription value
-
-Note: mutations usually do best when combined with at least one fragment grabbing
-the information needed for the mutation (for an example of this pattern, see below.)
-
-## List Operations
-
-Subscription bodies can contain all of the list operations described in [this document](/api/list-operations).
 
 ## Configuring the client
 
@@ -107,6 +57,34 @@ if (browser) {
 
 			// return the function to unsubscribe
 			return unsubscribe
+		}
+	}
+}
+
+export default new HoudiniClient(fetchQuery, socketClient)
+```
+
+### Server-Side Events
+
+If your server supports the latest Server-Side events, you can use them to power your subscriptions:
+
+```javascript
+import { SubscriptionClient } from 'subscriptions-transport-ws'
+import { browser } from '$app/env'
+
+let socketClient: SubscriptionHandler | null = null
+if (browser) {
+	socketClient = {
+		subscribe(payload, handlers) {
+			const url = new URL('/api/graplhql', location.href)
+			url.searchParams.append('query', payload.query)
+			url.searchParams.append('variables', JSON.stringify(payload.variables))
+
+			const eventSource = new EventSource(url)
+
+			eventSource.addEventListener('message', (ev) => handlers.next(JSON.parse(ev.data)))
+
+			return () => eventSource.close()
 		}
 	}
 }
