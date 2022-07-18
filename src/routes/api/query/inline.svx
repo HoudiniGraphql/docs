@@ -48,7 +48,7 @@ that are passed to the `preload` function described in the [Sapper](https://sapp
 documentation. In a SvelteKit project, this function takes the same arguments passed to the `load` function
 described in the [SvelteKit](https://kit.svelte.dev/docs#Loading) docs. Regardless of the framework, you can return
 the value from `this.error` and `this.redirect` in order to change the behavior of the response. Here is a
-modified example [from the source repository](./https://github.com/HoudiniGraphql/houdini/tree/main/example):
+modified example [from the source repository](https://github.com/HoudiniGraphql/houdini/tree/main/example):
 
 ```svelte
 <script context="module" lang="ts">
@@ -68,7 +68,7 @@ modified example [from the source repository](./https://github.com/HoudiniGraphq
 
 <!-- src/routes/[filter].svelte -->
 <script lang="ts">
-	import { query, graphql, AllItems } from '$houdini'
+	import { query, graphql, type AllItems } from '$houdini'
 
 	// load the items
 	const { data } = query<AllItems>(graphql`
