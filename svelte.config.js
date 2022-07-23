@@ -50,7 +50,7 @@ const config = {
 
 	kit: {
 		adapter: adapter(),
-		routes: (route) => !route.startsWith('_') || route === '_content.js',
+		routes: (route) => !route.startsWith('_') || route === '_content.js'
 	}
 }
 
