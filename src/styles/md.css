@@ -111,12 +111,12 @@ h3 > code {
 	font-weight: bolder;
 }
 
-#doc-content blockquote { 
+#doc-content blockquote {
 	border-left: 15px solid #475465;
 	padding-left: 40px;
 	margin-bottom: 30px;
 }
 
-#doc-content blockquote p { 
+#doc-content blockquote p {
 	padding-bottom: 0px;
 }

@@ -2,10 +2,10 @@
 	"name": "houdini-docs",
 	"version": "0.0.1",
 	"scripts": {
-		"dev": "svelte-kit dev",
-		"build": "svelte-kit build",
-		"package": "svelte-kit package",
-		"preview": "svelte-kit preview",
+		"dev": "vite dev",
+		"build": "vite build",
+		"package": "vite package",
+		"preview": "vite preview",
 		"check": "svelte-check --tsconfig ./tsconfig.json",
 		"check:watch": "svelte-check --tsconfig ./tsconfig.json --watch",
 		"lint": "prettier --ignore-path .gitignore --check --plugin-search-dir=. . && eslint --ignore-path .gitignore .",
@@ -33,10 +33,11 @@
 		"svelte": "^3.44.0",
 		"svelte-check": "^2.2.6",
 		"svelte-highlight": "^5.2.1",
-		"svelte-kit-cookie-session": "^2.1.4",
+		"vite-cookie-session": "^2.1.4",
 		"svelte-preprocess": "^4.10.1",
 		"tslib": "^2.3.1",
-		"typescript": "~4.5.4"
+		"typescript": "~4.5.4",
+		"vite": "^3.0.2"
 	},
 	"type": "module",
 	"lint-staged": {
